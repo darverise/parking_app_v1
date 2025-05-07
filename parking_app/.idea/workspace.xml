@@ -3,6 +3,28 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5bc899ac-52f6-49c3-8b43-441aa5f2b680" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;darverise&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/darverise/parking_app_v1.git&quot;,
+    &quot;accountId&quot;: &quot;2afcfc42-db3e-4b8e-afaa-fb1c31c77c90&quot;
+  }
+}</component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
       <MavenImportingSettings>
@@ -10,24 +32,91 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2wlLr4cpErZYOmOjBDEGy0LOAIU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#1 on feature&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
+    ]
   }
 }</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SvnConfiguration">
     <configuration>$USER_HOME$/.subversion</configuration>
   </component>
+  <component name="SwiftWorkspaceSettings">
+    <option name="detectedToolchain" value="true" />
+    <option name="toolchainPathValue" value="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain" />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+      <changelist id="5bc899ac-52f6-49c3-8b43-441aa5f2b680" name="Changes" comment="" />
       <created>1746153757706</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1746153757706</updated>
       <workItem from="1746153764265" duration="1012000" />
+      <workItem from="1746611411465" duration="1678000" />
+      <workItem from="1746616599302" duration="314000" />
     </task>
+    <task id="LOCAL-00001" summary="Remove parking_app.zip from the repository&#10;&#10;Deleted the parking_app.zip file as it does not belong in the repository. Keeping binary or unnecessary files out ensures a cleaner and more maintainable codebase.">
+      <option name="closed" value="true" />
+      <created>1746611863169</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1746611863169</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Remove unused files and streamline plugin registration&#10;&#10;Deleted unnecessary generated localization files, extension discovery cache, and adjusted plugin registration to an empty function. These changes reduce build artifacts and simplify the project structure.">
+      <option name="closed" value="true" />
+      <created>1746611976756</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1746611976756</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Remove parking_app.zip from the repository&#10;&#10;Deleted the parking_app.zip file as it does not belong in the repository. Keeping binary or unnecessary files out ensures a cleaner and more maintainable codebase." />
+    <MESSAGE value="Remove unused files and streamline plugin registration&#10;&#10;Deleted unnecessary generated localization files, extension discovery cache, and adjusted plugin registration to an empty function. These changes reduce build artifacts and simplify the project structure." />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove unused files and streamline plugin registration&#10;&#10;Deleted unnecessary generated localization files, extension discovery cache, and adjusted plugin registration to an empty function. These changes reduce build artifacts and simplify the project structure." />
   </component>
 </project>

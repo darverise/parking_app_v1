@@ -1,0 +1,96 @@
+{
+    "dataType": "Map",
+    "value": [
+        [
+            "ios/Runner.xcodeproj",
+            {
+                "timestamp": 1746614345394.4102,
+                "list": {
+                    "dataType": "Set",
+                    "value": [
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Flutter/AppFrameworkInfo.plist",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Flutter/Debug.xcconfig",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Flutter/Release.xcconfig",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Flutter/Generated.xcconfig",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Base.lproj/Main.storyboard",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Assets.xcassets",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Base.lproj/LaunchScreen.storyboard",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Info.plist",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/GeneratedPluginRegistrant.h",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/GeneratedPluginRegistrant.m",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/AppDelegate.swift",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Runner-Bridging-Header.h",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/RunnerTests/RunnerTests.swift",
+                            "isFolder": false
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios",
+                            "isFolder": true
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios",
+                            "isFolder": true
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner",
+                            "isFolder": true
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner",
+                            "isFolder": true
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner",
+                            "isFolder": true
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios",
+                            "isFolder": true
+                        },
+                        {
+                            "path": "/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/RunnerTests",
+                            "isFolder": true
+                        }
+                    ]
+                }
+            }
+        ]
+    ]
+}

@@ -1,0 +1,78 @@
+{
+    "folders": [
+        {
+            "name": "parking_app/ios/Runner.xcworkspace",
+            "path": "../.."
+        },
+        {
+            "name": "Dependencies",
+            "path": "/Users/darverise/Library/Developer/Xcode/DerivedData/Runner-hjhoggcgwurlushjmoyghrziicos/SourcePackages/checkouts"
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "web": true,
+            "test": true,
+            "scheme_memo": true,
+            "pubspec.yaml": true,
+            "pubspec.lock": true,
+            "parking_app.iml": true,
+            "lib": true,
+            "l10n.yaml": true,
+            "generate_directory_structure.txt": true,
+            "directory.txt": true,
+            "build": true,
+            "assets": true,
+            "android": true,
+            "analysis_options.yaml": true,
+            "UI": true,
+            "README.md": true,
+            "LICENSE": true,
+            "Database": true,
+            ".metadata": true,
+            ".idea": true,
+            ".flutter-plugins-dependencies": true,
+            ".flutter-plugins": true,
+            ".dart_tool": true,
+            ".vscode/xcode/fifo": true,
+            ".vscode/xcode/bundles": true
+        },
+        "search.exclude": {
+            "web": true,
+            "test": true,
+            "scheme_memo": true,
+            "pubspec.yaml": true,
+            "pubspec.lock": true,
+            "parking_app.iml": true,
+            "lib": true,
+            "l10n.yaml": true,
+            "generate_directory_structure.txt": true,
+            "directory.txt": true,
+            "build": true,
+            "assets": true,
+            "android": true,
+            "analysis_options.yaml": true,
+            "UI": true,
+            "README.md": true,
+            "LICENSE": true,
+            "Database": true,
+            ".metadata": true,
+            ".idea": true,
+            ".flutter-plugins-dependencies": true,
+            ".flutter-plugins": true,
+            ".dart_tool": true,
+            ".vscode/xcode/fifo": true,
+            ".vscode/xcode/bundles": true
+        },
+        "swift.autoGenerateLaunchConfigurations": false,
+        "swift.disableAutoResolve": true,
+        "swift.sourcekit-lsp.disable": true,
+        "swift.disableSwiftPackageManagerIntegration": true,
+        "swift.searchSubfoldersForPackages": false
+    },
+    "extensions": {
+        "unwantedRecommendations": [
+            "sswg.swift-lang"
+        ]
+    }
+}

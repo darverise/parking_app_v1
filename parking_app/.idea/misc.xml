@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <type id="android" />
+  </component>
   <component name="Kotlin2JsCompilerArguments">
     <option name="moduleKind" value="plain" />
-  </component>
-  <component name="Kotlin2JvmCompilerArguments">
-    <option name="jvmTarget" value="1.8" />
-  </component>
-  <component name="KotlinCommonCompilerArguments">
-    <option name="apiVersion" value="2.1" />
-    <option name="languageVersion" value="2.1" />
   </component>
   <component name="KotlinNotebookOptionsProvider">
     <option name="jdkName" value="17" />
   </component>
-  <component name="KubernetesApiProvider">{}</component>
+  <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
   <component name="MavenRunner">
     <option name="jreName" value="21" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Android API 35, extension level 13 Platform" project-jdk-type="Android SDK">
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />

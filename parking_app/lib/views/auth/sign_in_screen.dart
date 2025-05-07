@@ -7,6 +7,9 @@ import '../common/widgets/buttons.dart';
 import '../common/widgets/input_fields.dart';
 import '../common/widgets/error.dart';
 
+// Define enum outside the class
+enum UserRole { user, owner }
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
@@ -23,6 +26,9 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _isLoading = false;
   String? _errorMessage;
 
+  // Add user role tracking
+  UserRole _selectedRole = UserRole.user;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -30,6 +36,12 @@ class _SignInScreenState extends State<SignInScreen> {
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  void _updateUserRole(UserRole role) {
+    setState(() {
+      _selectedRole = role;
+    });
   }
 
   Future<void> _handleSignIn() async {
@@ -139,6 +151,34 @@ class _SignInScreenState extends State<SignInScreen> {
                             color: AppColors.primary,
                           );
                         },
+                      ),
+                    ),
+
+                    // User/Owner segmented control
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 24.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            children: [
+                              _buildRoleOption(
+                                UserRole.user,
+                                'ユーザー',
+                                Icons.person,
+                              ),
+                              _buildRoleOption(
+                                UserRole.owner,
+                                'オーナー',
+                                Icons.business,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
 
@@ -254,6 +294,42 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Helper method to build each role option
+  Widget _buildRoleOption(UserRole role, String label, IconData icon) {
+    final isSelected = _selectedRole == role;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _updateUserRole(role),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(6.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 18.0,
+                color: isSelected ? Colors.white : AppColors.textPrimary,
+              ),
+              const SizedBox(width: 8.0),
+              Text(
+                label,
+                style: TextStyles.bodyMedium.copyWith(
+                  color: isSelected ? Colors.white : AppColors.textPrimary,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ],
           ),
         ),
       ),

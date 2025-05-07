@@ -6,7 +6,7 @@
     },
     "welcomeMessage": "Welcome to Parking App",
     "@welcomeMessage": {
-        "description": "Welcome message displayed on the home screen"
+        "description": "The welcome message displayed on the home screen"
     },
     "welcome": "Welcome",
     "login": "Login",

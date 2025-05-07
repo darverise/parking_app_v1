@@ -1,0 +1,11 @@
+{
+  "PROJECT_FILE": "ios/Runner.xcworkspace",
+  "PROJECT_SCHEME": "Runner",
+  "PROJECT_CONFIGURATION": "Debug",
+  "DEVICE_ID": {
+    "platform": "iOS Simulator",
+    "id": "B31FAE24-EC14-43E6-A7B1-B6040161E5B5",
+    "OS": "17.5",
+    "name": "iPhone 15 Pro"
+  }
+}
