@@ -1,7 +1,7 @@
 {
     "@@locale": "ja",
     "appTitle": "パーキングアプリ",
-    "welcome": "パーキングアプリへようこそ",
+    "welcomeMessage": "パーキングアプリへようこそ",
     "login": "ログイン",
     "logout": "ログアウト",
     "findParking": "駐車場を探す",
@@ -13,5 +13,17 @@
     "settings": "設定",
     "profile": "プロフィール",
     "help": "ヘルプ",
-    "language": "言語"
+    "language": "言語",
+    
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "forgotPassword": "パスワードをお忘れの方はこちら",
+    "or": "または",
+    "createAccount": "アカウントをお持ちでないですか？新規登録",
+    "emailHint": "example@email.com",
+    "passwordHint": "パスワードを入力",
+    "registerNow": "新規登録",
+    "requiredField": "この項目は必須です",
+    "invalidEmail": "有効なメールアドレスを入力してください",
+    "passwordTooShort": "パスワードは6文字以上で入力してください"
 }
