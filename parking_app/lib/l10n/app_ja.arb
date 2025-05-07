@@ -1,0 +1,17 @@
+{
+    "@@locale": "ja",
+    "appTitle": "パーキングアプリ",
+    "welcome": "パーキングアプリへようこそ",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "findParking": "駐車場を探す",
+    "availableSpots": "利用可能なスポット",
+    "parkingTime": "駐車時間",
+    "startParking": "駐車開始",
+    "endParking": "駐車終了",
+    "payment": "支払い",
+    "settings": "設定",
+    "profile": "プロフィール",
+    "help": "ヘルプ",
+    "language": "言語"
+}
