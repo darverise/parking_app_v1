@@ -14,33 +14,45 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+```bash
 flutter --version
+```
 
 ## Navigate to your Flutter project directory
+
 ```bash
 cd parking_app
 ```
 
 ## Get dependencies
+
 ```bash
 flutter pub get
 ```
+
 ## Run the app (this will build and launch on connected device/emulator)
+
 ```bash
 flutter run
 ```
 
 ## For Android
+
 ```bash
 flutter build apk --release
 ```
 
 ## For iOS
+
 ```bash
 flutter build ios --release
 ```
 
 ## iOS Simulator
+
+> Note: `xcrun` is a command-line tool in macOS that runs or locates development tools within the Xcode developer directory.
+> `simctl` is a subcommand of xcrun for controlling the iOS Simulator programmatically.
 
 ```bash
 # List all available iOS simulators
@@ -74,6 +86,7 @@ flutter run
 ```
 
 ## Other
+
 ```bash
 flutter gen-l10n
 flutter pub run build_runner build --delete-conflicting-outputs
@@ -81,11 +94,13 @@ flutter clean
 flutter pub get
 cd ios
 pod install --repo-update
+flutter run -d ios
+flutter run -d android
 ```
 
-
 ## DART
+
 ```dart
-final l10n = AppLocalizations.of(context);
-Text(l10n.login);
+// final l10n = AppLocalizations.of(context);
+// Text(l10n.login);
 ```
