@@ -90,7 +90,7 @@
       <updated>1746153757706</updated>
       <workItem from="1746153764265" duration="1012000" />
       <workItem from="1746611411465" duration="1678000" />
-      <workItem from="1746616599302" duration="314000" />
+      <workItem from="1746616599302" duration="708000" />
     </task>
     <task id="LOCAL-00001" summary="Remove parking_app.zip from the repository&#10;&#10;Deleted the parking_app.zip file as it does not belong in the repository. Keeping binary or unnecessary files out ensures a cleaner and more maintainable codebase.">
       <option name="closed" value="true" />
@@ -108,7 +108,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746611976756</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add user role selection and update project configurations&#10;&#10;Introduced user role selection in the sign-in screen with segmented controls, enhancing user interaction. Updated iOS project configurations for CocoaPods integration and improved compatibility. Added new dependencies and localization support to streamline functionality.">
+      <option name="closed" value="true" />
+      <created>1746616945098</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1746616945098</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +125,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Remove parking_app.zip from the repository&#10;&#10;Deleted the parking_app.zip file as it does not belong in the repository. Keeping binary or unnecessary files out ensures a cleaner and more maintainable codebase." />
     <MESSAGE value="Remove unused files and streamline plugin registration&#10;&#10;Deleted unnecessary generated localization files, extension discovery cache, and adjusted plugin registration to an empty function. These changes reduce build artifacts and simplify the project structure." />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove unused files and streamline plugin registration&#10;&#10;Deleted unnecessary generated localization files, extension discovery cache, and adjusted plugin registration to an empty function. These changes reduce build artifacts and simplify the project structure." />
+    <MESSAGE value="Add user role selection and update project configurations&#10;&#10;Introduced user role selection in the sign-in screen with segmented controls, enhancing user interaction. Updated iOS project configurations for CocoaPods integration and improved compatibility. Added new dependencies and localization support to streamline functionality." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add user role selection and update project configurations&#10;&#10;Introduced user role selection in the sign-in screen with segmented controls, enhancing user interaction. Updated iOS project configurations for CocoaPods integration and improved compatibility. Added new dependencies and localization support to streamline functionality." />
   </component>
 </project>
