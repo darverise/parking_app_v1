@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パーキングアプリ - 認証コード</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="signal-icon">📶</span>
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span class="battery-icon">🔋 100%</span>
+        </div>
+    </div>
+    
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <!-- VERIFICATION SCREEN -->
+    <div class="screen">
+        <div class="verification-container">
+            <div class="back-button" id="back-to-register">
+                <span class="back-arrow">←</span>
+                <span data-ja="登録に戻る" data-en="Back to registration">登録に戻る</span>
+            </div>
+            
+            <div class="verification-title" data-ja="認証コード" data-en="Verification Code">認証コード</div>
+            <div class="verification-message" data-ja="メールアドレスに送信された6桁の認証コードを入力してください。" data-en="Please enter the 6-digit verification code sent to your email address.">メールアドレスに送信された6桁の認証コードを入力してください。</div>
+            
+            <div class="verification-code-container">
+                <input type="text" maxlength="1" class="code-input active" data-index="1">
+                <input type="text" maxlength="1" class="code-input" data-index="2">
+                <input type="text" maxlength="1" class="code-input" data-index="3">
+                <input type="text" maxlength="1" class="code-input" data-index="4">
+                <input type="text" maxlength="1" class="code-input" data-index="5">
+                <input type="text" maxlength="1" class="code-input" data-index="6">
+            </div>
+            
+            <button class="primary-button verify-button" id="show-success" data-ja="確認" data-en="Verify" style="width: 160px;">
+                確認
+                <div class="ripple"></div>
+            </button>
+            
+            <div class="resend-code">
+                <span class="resend-text" data-ja="コードが届きませんか？" data-en="Didn't receive the code?">コードが届きませんか？</span>
+                <a class="resend-link" data-ja="再送信" data-en="Resend">再送信</a>
+                <span class="resend-timer" id="timer">(59秒)</span>
+            </div>
+            
+            <div class="separator">
+                <div class="separator-line"></div>
+                <div class="separator-text" data-ja="または" data-en="Or">または</div>
+                <div class="separator-line"></div>
+            </div>
+            
+            <div class="verification-message" data-ja="電話番号で認証したい場合" data-en="If you prefer to verify with your phone number">電話番号で認証したい場合</div>
+            
+            <button class="social-button">
+                <div class="social-icon" style="background-color: #3366CC; color: white;">📱</div>
+                <div class="social-text" data-ja="SMSで認証コードを受け取る" data-en="Receive code via SMS">SMSで認証コードを受け取る</div>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setupVerificationCodeInputs();
+        });
+    </script>
+</body>
+</html>

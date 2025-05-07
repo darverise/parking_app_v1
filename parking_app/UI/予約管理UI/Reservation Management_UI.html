@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パーキングアプリ - 予約管理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F5F7FA;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .signal-icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .battery-icon {
+            margin-left: 5px;
+        }
+        
+        .header {
+            background-color: #3366CC;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .back-button {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .language-selector {
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .container {
+            padding: 20px;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+        
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid #DDDDDD;
+            padding: 0 15px;
+            font-size: 16px;
+            background-color: #FFFFFF;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        
+        .filter-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #555555;
+            border-bottom: 2px solid #EEEEEE;
+            cursor: pointer;
+        }
+        
+        .filter-tab.active {
+            color: #3366CC;
+            border-bottom: 2px solid #3366CC;
+        }
+        
+        .reservation-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .reservation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .reservation-parking {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .reservation-status {
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .status-confirmed {
+            background-color: #E6F7EE;
+            color: #00A86B;
+        }
+        
+        .status-pending {
+            background-color: #FFF3E0;
+            color: #FF6F00;
+        }
+        
+        .status-cancelled {
+            background-color: #FFE6E6;
+            color: #FF3B30;
+        }
+        
+        .reservation-details {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 10px;
+        }
+        
+        .reservation-details p {
+            margin-bottom: 5px;
+        }
+        
+        .reservation-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .action-button {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .action-details {
+            background-color: #F5F7FA;
+            color: #3366CC;
+        }
+        
+        .action-approve {
+            background-color: #3366CC;
+            color: #FFFFFF;
+        }
+        
+        .action-cancel {
+            background-color: #FF3B30;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="signal-icon">📶</span>
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span class="battery-icon">🔋 100%</span>
+        </div>
+    </div>
+    
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="header">
+        <div class="back-button">←</div>
+        <div class="header-title" data-ja="予約管理" data-en="Reservation Management">予約管理</div>
+        <div style="width: 36px;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="駐車場名やユーザー名で検索" data-ja-placeholder="駐車場名やユーザー名で検索" data-en-placeholder="Search by parking lot or user name">
+        </div>
+        
+        <div class="filter-tabs">
+            <div class="filter-tab active" data-ja="すべて" data-en="All">すべて</div>
+            <div class="filter-tab" data-ja="確認済み" data-en="Confirmed">確認済み</div>
+            <div class="filter-tab" data-ja="保留中" data-en="Pending">保留中</div>
+            <div class="filter-tab" data-ja="キャンセル済み" data-en="Cancelled">キャンセル済み</div>
+        </div>
+        
+        <div class="reservation-card">
+            <div class="reservation-header">
+                <div class="reservation-parking">東京駅前パーキング</div>
+                <div class="reservation-status status-confirmed" data-ja="確認済み" data-en="Confirmed">確認済み</div>
+            </div>
+            <div class="reservation-details">
+                <p data-ja="日時: 2025/04/30 10:00 - 12:00" data-en="Date: 2025/04/30 10:00 - 12:00">日時: 2025/04/30 10:00 - 12:00</p>
+                <p data-ja="ユーザー: 山田 花子" data-en="User: Hanako Yamada">ユーザー: 山田 花子</p>
+                <p data-ja="料金: ¥1,000" data-en="Fee: ¥1,000">料金: ¥1,000</p>
+            </div>
+            <div class="reservation-actions">
+                <button class="action-button action-details" data-ja="詳細" data-en="Details">詳細</button>
+            </div>
+        </div>
+        
+        <div class="reservation-card">
+            <div class="reservation-header">
+                <div class="reservation-parking">渋谷センター駐車場</div>
+                <div class="reservation-status status-pending" data-ja="保留中" data-en="Pending">保留中</div>
+            </div>
+            <div class="reservation-details">
+                <p data-ja="日時: 2025/04/30 14:00 - 16:00" data-en="Date: 2025/04/30 14:00 - 16:00">日時: 2025/04/30 14:00 - 16:00</p>
+                <p data-ja="ユーザー: 佐藤 太郎" data-en="User: Taro Sato">ユーザー: 佐藤 太郎</p>
+                <p data-ja="料金: ¥1,200" data-en="Fee: ¥1,200">料金: ¥1,200</p>
+            </div>
+            <div class="reservation-actions">
+                <button class="action-button action-details" data-ja="詳細" data-en="Details">詳細</button>
+                <button class="action-button action-approve" data-ja="承認" data-en="Approve">承認</button>
+                <button class="action-button action-cancel" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+            </div>
+        </div>
+        
+        <div class="reservation-card">
+            <div class="reservation-header">
+                <div class="reservation-parking">新宿東口パーキング</div>
+                <div class="reservation-status status-cancelled" data-ja="キャンセル済み" data-en="Cancelled">キャンセル済み</div>
+            </div>
+            <div class="reservation-details">
+                <p data-ja="日時: 2025/04/29 09:00 - 11:00" data-en="Date: 2025/04/29 09:00 - 11:00">日時: 2025/04/29 09:00 - 11:00</p>
+                <p data-ja="ユーザー: 鈴木 次郎" data-en="User: Jiro Suzuki">ユーザー: 鈴木 次郎</p>
+                <p data-ja="料金: ¥1,100" data-en="Fee: ¥1,100">料金: ¥1,100</p>
+            </div>
+            <div class="reservation-actions">
+                <button class="action-button action-details" data-ja="詳細" data-en="Details">詳細</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                    document.title = 'Parking App - Reservation Management';
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                    document.title = 'パーキングアプリ - 予約管理';
+                }
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update placeholders
+                const placeholdersToUpdate = document.querySelectorAll('[data-ja-placeholder][data-en-placeholder]');
+                placeholdersToUpdate.forEach(function(element) {
+                    element.placeholder = element.getAttribute(`data-${currentLanguage}-placeholder`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            });
+            
+            // Back button
+            const backButton = document.querySelector('.back-button');
+            backButton.addEventListener('click', function() {
+                alert('オーナーダッシュボードに戻ります');
+            });
+            
+            // Filter tabs
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    alert(`フィルター: ${this.textContent}`);
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            searchInput.addEventListener('input', function() {
+                alert(`検索: ${this.value}`);
+            });
+            
+            // Action buttons
+            const actionButtons = document.querySelectorAll('.action-button');
+            actionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Check if this is the approve button
+                    if (this.classList.contains('action-approve')) {
+                        // Redirect to the Approve Reservation UI
+                        window.location.href = 'Approve_Reservation_UI.html';
+                    } else if (this.classList.contains('action-cancel')) {
+                        // Redirect to the Reservation Cancel UI
+                        window.location.href = 'Reservation_Cancel_UI.html';
+                    } else {
+                        // Other buttons still show an alert
+                        alert(`${this.textContent} ボタンがクリックされました`);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

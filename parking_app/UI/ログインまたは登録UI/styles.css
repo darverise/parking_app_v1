@@ -1,0 +1,471 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #F5F7FA;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #333333;
+    max-width: 430px; /* iPhone 15 Pro Max width */
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-bar {
+    height: 44px;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 10;
+}
+
+.status-left {
+    display: flex;
+    align-items: center;
+}
+
+.signal-icon {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.battery-icon {
+    margin-left: 5px;
+}
+
+.language-selector {
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 15px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.language-selector .jp {
+    color: #333333;
+    margin-right: 5px;
+    font-weight: 500;
+}
+
+.language-selector .en {
+    color: #3366CC;
+    font-weight: 500;
+}
+
+.language-selector.en-active .jp {
+    color: #3366CC;
+}
+
+.language-selector.en-active .en {
+    color: #333333;
+}
+
+.screen {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 44px);
+    top: 0;
+    left: 0;
+    padding-bottom: 30px;
+    overflow-y: auto;
+}
+
+.app-logo {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-circle {
+    width: 110px;
+    height: 110px;
+    background-color: #3366CC;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+}
+
+.logo-inner-circle {
+    width: 90px;
+    height: 90px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-letter {
+    color: #3366CC;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.app-title {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.app-name {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.app-tagline {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #666666;
+}
+
+.form-container {
+    margin-top: 50px;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.input-field {
+    width: 100%;
+    height: 65px;
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 20px;
+    padding: 12px 20px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.input-field.active {
+    border: 2px solid #3366CC;
+}
+
+.input-label {
+    font-size: 13px;
+    color: #999999;
+    display: block;
+    margin-top: 5px;
+}
+
+.input-value {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: #F5F7FA;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #666666;
+    cursor: pointer;
+}
+
+.primary-button {
+    height: 56px;
+    background-color: #3366CC;
+    border: none;
+    border-radius: 28px;
+    color: #FFFFFF;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 30px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+}
+
+.ripple {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.forgot-password {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.forgot-password a {
+    color: #3366CC;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    margin: 35px 0;
+}
+
+.separator-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #DDDDDD;
+}
+
+.separator-text {
+    padding: 0 15px;
+    color: #888888;
+    font-size: 14px;
+}
+
+.social-login {
+    margin-bottom: 20px;
+}
+
+.social-button {
+    width: 100%;
+    height: 56px;
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.social-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.google-icon {
+    background-color: white;
+    color: #4285F4;
+    border: 1px solid #EEEEEE;
+}
+
+.apple-icon {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+.line-icon {
+    background-color: #06C755;
+    color: #FFFFFF;
+}
+
+.social-text {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.account-toggle {
+    margin-top: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.account-toggle-text {
+    color: #666666;
+    font-size: 14px;
+}
+
+.account-toggle-link {
+    margin-left: 10px;
+    color: #3366CC;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #3366CC;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.back-arrow {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.verification-container {
+    margin-top: 60px;
+    text-align: center;
+    padding: 0 40px;
+}
+
+.verification-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.verification-message {
+    font-size: 15px;
+    color: #666666;
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+.verification-code-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.code-input {
+    width: 50px;
+    height: 60px;
+    border-radius: 12px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.code-input.active {
+    border: 2px solid #3366CC;
+}
+
+.resend-code {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.resend-text {
+    color: #666666;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.resend-link {
+    color: #3366CC;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.resend-timer {
+    color: #666666;
+    font-size: 14px;
+}
+
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 40px;
+    text-align: center;
+}
+
+.success-icon {
+    width: 120px;
+    height: 120px;
+    background-color: #F0F7FF;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    color: #3366CC;
+    font-size: 50px;
+}
+
+.success-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.success-message {
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+.continue-button {
+    width: 100%;
+    height: 56px;
+    background-color: #3366CC;
+    border: none;
+    border-radius: 28px;
+    color: #FFFFFF;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+}
+
+/* For the ripple effect demonstration */
+@keyframes ripple {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+}
+
+.ripple {
+    animation: ripple 1s ease-out;
+}

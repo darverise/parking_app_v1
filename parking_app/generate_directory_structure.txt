@@ -1,0 +1,105 @@
+.
+├── LICENSE
+├── README.md
+├── analysis_options.yaml
+├── android
+│   ├── app
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── debug
+│   │       │   └── AndroidManifest.xml
+│   │       ├── main
+│   │       │   ├── AndroidManifest.xml
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── flutter
+│   │       │   │           └── plugins
+│   │       │   │               └── GeneratedPluginRegistrant.java
+│   │       │   ├── kotlin
+│   │       │   │   └── jp
+│   │       │   │       └── co
+│   │       │   │           └── parkingapp
+│   │       │   │               └── parking_app
+│   │       │   │                   └── MainActivity.kt
+│   │       │   └── res
+│   │       │       ├── drawable
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── drawable-v21
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── mipmap-hdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-mdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xxhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xxxhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── values
+│   │       │       │   └── styles.xml
+│   │       │       └── values-night
+│   │       │           └── styles.xml
+│   │       └── profile
+│   │           └── AndroidManifest.xml
+│   ├── build.gradle.kts
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── local.properties
+│   ├── parking_app_android.iml
+│   └── settings.gradle.kts
+├── assets
+│   ├── fonts
+│   ├── icons
+│   └── images
+├── build
+│   └── ae30582a806dc4248fd237072391b5a0
+│       ├── gen_localizations.stamp
+│       └── outputs.json
+├── directory.txt
+├── generate_directory_structure.txt
+├── lib
+│   ├── config
+│   ├── constants
+│   ├── error
+│   ├── ffi
+│   ├── l10n
+│   │   ├── app_en.arb
+│   │   ├── app_ja.arb
+│   │   └── app_zh.arb
+│   ├── main.dart
+│   ├── storage
+│   ├── theme
+│   ├── utils
+│   └── views
+│       ├── common
+│       │   ├── adaptive
+│       │   └── widgets
+│       ├── login
+│       ├── owner
+│       ├── profile
+│       └── user
+│           └── maps
+├── parking_app_api #rust 相关生成的文件
+├── parking_app.iml
+├── pubspec.lock
+├── pubspec.yaml
+├── scheme_memo
+├── test
+│   └── widget_test.dart
+└── web
+    ├── favicon.png
+    ├── icons
+    │   ├── Icon-192.png
+    │   ├── Icon-512.png
+    │   ├── Icon-maskable-192.png
+    │   └── Icon-maskable-512.png
+    ├── index.html
+    └── manifest.json
+
+55 directories, 47 files

@@ -1,0 +1,17 @@
+{
+    "@@locale": "zh",
+    "appTitle": "停车应用",
+    "welcome": "欢迎使用停车应用",
+    "login": "登录",
+    "logout": "登出",
+    "findParking": "查找停车位",
+    "availableSpots": "可用车位",
+    "parkingTime": "停车时间",
+    "startParking": "开始停车",
+    "endParking": "结束停车",
+    "payment": "支付",
+    "settings": "设置",
+    "profile": "个人资料",
+    "help": "帮助",
+    "language": "语言"
+}

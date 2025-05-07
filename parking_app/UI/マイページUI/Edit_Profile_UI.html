@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パーキングアプリ - プロフィール変更</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F5F7FA;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .signal-icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .battery-icon {
+            margin-left: 5px;
+        }
+        
+        .header {
+            background-color: #3366CC;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .back-button {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .container {
+            padding: 20px;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+        
+        .profile-image-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #EEEEEE;
+            cursor: pointer;
+        }
+        
+        .upload-text {
+            font-size: 14px;
+            color: #3366CC;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid #DDDDDD;
+            padding: 0 15px;
+            font-size: 16px;
+            background-color: #FFFFFF;
+            color: #333333;
+        }
+        
+        .form-input.textarea {
+            height: 100px;
+            padding: 15px;
+            resize: none;
+        }
+        
+        .error-message {
+            font-size: 12px;
+            color: #FF3B30;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .save-button, .cancel-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .save-button {
+            background-color: #3366CC;
+            color: #FFFFFF;
+        }
+        
+        .cancel-button {
+            background-color: #F5F7FA;
+            color: #3366CC;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="signal-icon">📶</span>
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span class="battery-icon">🔋 100%</span>
+        </div>
+    </div>
+    
+    <div class="header">
+        <div class="back-button">←</div>
+        <div class="header-title" data-ja="プロフィール変更" data-en="Edit Profile">プロフィール変更</div>
+        <div style="width: 36px;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="profile-image-section">
+            <img src="https://via.placeholder.com/100" class="profile-image" id="profile-image" alt="Profile Image">
+            <div class="upload-text" data-ja="画像を変更" data-en="Change Image">画像を変更</div>
+            <input type="file" id="image-upload" accept="image/*" style="display: none;">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" data-ja="ニックネーム（ID）" data-en="Nickname (ID)">ニックネーム（ID）</label>
+            <input type="text" class="form-input" value="taro123" placeholder="ニックネームを入力" data-ja-placeholder="ニックネームを入力" data-en-placeholder="Enter nickname">
+            <div class="error-message" data-ja="ニックネームを入力してください" data-en="Please enter a nickname">ニックネームを入力してください</div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" data-ja="氏名（フルネーム）" data-en="Full Name">氏名（フルネーム）</label>
+            <input type="text" class="form-input" value="佐藤 太郎" placeholder="氏名を入力" data-ja-placeholder="氏名を入力" data-en-placeholder="Enter full name">
+            <div class="error-message" data-ja="氏名を入力してください" data-en="Please enter your full name">氏名を入力してください</div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" data-ja="住所" data-en="Address">住所</label>
+            <textarea class="form-input textarea" placeholder="住所を入力" data-ja-placeholder="住所を入力" data-en-placeholder="Enter address">東京都渋谷区道玄坂1-2-3</textarea>
+            <div class="error-message" data-ja="住所を入力してください" data-en="Please enter your address">住所を入力してください</div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" data-ja="電話番号" data-en="Phone Number">電話番号</label>
+            <input type="tel" class="form-input" value="080-1234-5678" placeholder="電話番号を入力" data-ja-placeholder="電話番号を入力" data-en-placeholder="Enter phone number">
+            <div class="error-message" data-ja="有効な電話番号を入力してください" data-en="Please enter a valid phone number">有効な電話番号を入力してください</div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" data-ja="メールアドレス" data-en="Email Address">メールアドレス</label>
+            <input type="email" class="form-input" value="taro.sato@example.com" placeholder="メールアドレスを入力" data-ja-placeholder="メールアドレスを入力" data-en-placeholder="Enter email address">
+            <div class="error-message" data-ja="有効なメールアドレスを入力してください" data-en="Please enter a valid email address">有効なメールアドレスを入力してください</div>
+        </div>
+        
+        <div class="button-group">
+            <button class="cancel-button" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+            <button class="save-button" data-ja="保存" data-en="Save">保存</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                    document.title = 'Parking App - Edit Profile';
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                    document.title = 'パーキングアプリ - プロフィール変更';
+                }
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update placeholders
+                const placeholdersToUpdate = document.querySelectorAll('[data-ja-placeholder][data-en-placeholder]');
+                placeholdersToUpdate.forEach(function(element) {
+                    element.placeholder = element.getAttribute(`data-${currentLanguage}-placeholder`);
+                });
+                
+                // Update error messages
+                const errorMessages = document.querySelectorAll('.error-message');
+                errorMessages.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            });
+            
+            // Back button
+            const backButton = document.querySelector('.back-button');
+            backButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ? 'オーナーダッシュボードに戻ります。' : 'Returning to Owner Dashboard.');
+                window.location.href = 'owner_dashboard.html';
+            });
+            
+            // Image upload
+            const profileImage = document.getElementById('profile-image');
+            const uploadText = document.querySelector('.upload-text');
+            const imageUpload = document.getElementById('image-upload');
+            
+            profileImage.addEventListener('click', function() {
+                imageUpload.click();
+            });
+            
+            uploadText.addEventListener('click', function() {
+                imageUpload.click();
+            });
+            
+            imageUpload.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profileImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                    alert(currentLanguage === 'ja' ? '画像が選択されました。' : 'Image selected.');
+                }
+            });
+            
+            // Form validation and save
+            const saveButton = document.querySelector('.save-button');
+            saveButton.addEventListener('click', function() {
+                let hasError = false;
+                const inputs = document.querySelectorAll('.form-input');
+                
+                inputs.forEach(input => {
+                    const errorMessage = input.nextElementSibling;
+                    if (!input.value.trim()) {
+                        errorMessage.style.display = 'block';
+                        hasError = true;
+                    } else {
+                        errorMessage.style.display = 'none';
+                    }
+                    
+                    if (input.type === 'email' && input.value.trim()) {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(input.value)) {
+                            errorMessage.style.display = 'block';
+                            hasError = true;
+                        }
+                    }
+                    
+                    if (input.type === 'tel' && input.value.trim()) {
+                        const phonePattern = /^\d{10,11}$|^\d{3}-\d{4}-\d{4}$/;
+                        if (!phonePattern.test(input.value.replace(/-/g, ''))) {
+                            errorMessage.style.display = 'block';
+                            hasError = true;
+                        }
+                    }
+                });
+                
+                if (!hasError) {
+                    alert(currentLanguage === 'ja' ? 'プロフィールを保存しました。' : 'Profile saved.');
+                    // Actual implementation would submit data to backend
+                    window.location.href = '../オーナーUI/Owner_Dashboard_UI.html';
+                }
+            });
+            
+            // Cancel button
+            const cancelButton = document.querySelector('.cancel-button');
+            cancelButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ? '変更をキャンセルしました。' : 'Changes cancelled.');
+                window.location.href = '../オーナーUI/Owner_Dashboard_UI.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パーキングアプリ - ログイン</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="signal-icon">📶</span>
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span class="battery-icon">🔋 100%</span>
+        </div>
+    </div>
+    
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <!-- LOGIN SCREEN -->
+    <div class="screen">
+        <div class="app-logo">
+            <div class="logo-circle">
+                <div class="logo-inner-circle">
+                    <div class="logo-letter">P</div>
+                </div>
+            </div>
+            <div class="app-title">
+                <div class="app-name" data-ja="パーキング" data-en="Parking">パーキング</div>
+                <div class="app-tagline" data-ja="簡単に駐車場を予約" data-en="Easy Parking Reservation">簡単に駐車場を予約</div>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <div class="input-field">
+                    <div class="input-label" data-ja="メールアドレス" data-en="Email">メールアドレス</div>
+                    <div class="input-value">example@email.com</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="input-field active">
+                    <div class="input-label" data-ja="パスワード" data-en="Password">パスワード</div>
+                    <div class="input-value">••••••••</div>
+                    <div class="password-toggle">👁</div>
+                </div>
+            </div>
+            
+            <button class="primary-button login-button" data-ja="ログイン" data-en="Log in">
+                ログイン
+                <div class="ripple"></div>
+            </button>
+            
+            <div class="forgot-password">
+                <a href="#" data-ja="パスワードをお忘れですか？" data-en="Forgot Password?">パスワードをお忘れですか？</a>
+            </div>
+            
+            <div class="separator">
+                <div class="separator-line"></div>
+                <div class="separator-text" data-ja="または" data-en="Or">または</div>
+                <div class="separator-line"></div>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-button">
+                    <div class="social-icon google-icon">G</div>
+                    <div class="social-text" data-ja="Googleでログイン" data-en="Sign in with Google">Googleでログイン</div>
+                </button>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-button">
+                    <div class="social-icon apple-icon">A</div>
+                    <div class="social-text" data-ja="Appleでログイン" data-en="Sign in with Apple">Appleでログイン</div>
+                </button>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-button">
+                    <div class="social-icon line-icon">L</div>
+                    <div class="social-text" data-ja="LINEでログイン" data-en="Sign in with LINE">LINEでログイン</div>
+                </button>
+            </div>
+            
+            <div class="account-toggle">
+                <div class="account-toggle-text" data-ja="アカウントをお持ちでないですか？" data-en="Don't have an account?">アカウントをお持ちでないですか？</div>
+                <a class="account-toggle-link" id="show-register" data-ja="新規登録" data-en="Sign up">新規登録</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

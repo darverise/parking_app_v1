@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ja="パーキングアプリ - 履歴" data-en="Parking App - History">パーキングアプリ - 履歴</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F8FAFD;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            padding: 20px 20px 90px 20px;
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 8px;
+            color: #3366CC;
+            font-size: 18px;
+        }
+        
+        /* History Section */
+        .history-card {
+            padding: 15px;
+            border: 1px solid #EEEEEE;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .history-card:hover {
+            background-color: rgba(51, 102, 204, 0.05);
+        }
+        
+        .history-info {
+            flex: 1;
+        }
+        
+        .history-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+        
+        .history-address {
+            font-size: 13px;
+            color: #666666;
+            margin-bottom: 3px;
+        }
+        
+        .history-time {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 3px;
+        }
+        
+        .history-fee {
+            font-size: 14px;
+            color: #FF3B30;
+            font-weight: 500;
+        }
+        
+        .history-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(51, 102, 204, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #3366CC;
+            font-size: 20px;
+        }
+        
+        /* Bottom Navbar */
+        .bottom-navbar {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 70px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active {
+            color: #3366CC;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            font-size: 24px;
+            color: #999999;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: #3366CC;
+            transform: scale(1.2);
+        }
+        
+        .nav-item div:not(.nav-icon) {
+            font-size: 12px;
+            color: #999999;
+            font-weight: 500;
+        }
+        
+        .nav-item.active div:not(.nav-icon) {
+            color: #3366CC;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="section history-section">
+        <h2 class="section-title" data-ja="入出庫履歴" data-en="Check-in/out History">
+            <span class="section-icon">🕓</span>
+            <span>入出庫履歴</span>
+        </h2>
+        <div class="history-card">
+            <div class="history-info">
+                <div class="history-name" data-ja="東京中央パーキング" data-en="Tokyo Central Parking">東京中央パーキング</div>
+                <div class="history-address" data-ja="東京都中央区1-2-3" data-en="1-2-3 Chuo-ku, Tokyo">東京都中央区1-2-3</div>
+                <div class="history-time" data-ja="2025/04/29 15:00〜20:00" data-en="04/29/2025 15:00-20:00">2025/04/29 15:00〜20:00</div>
+                <div class="history-fee" data-ja="¥1,500" data-en="$15">¥1,500</div>
+            </div>
+            <div class="history-icon">🕓</div>
+        </div>
+        <div class="history-card">
+            <div class="history-info">
+                <div class="history-name" data-ja="渋谷パーキング" data-en="Shibuya Parking">渋谷パーキング</div>
+                <div class="history-address" data-ja="東京都渋谷区2-4-5" data-en="2-4-5 Shibuya-ku, Tokyo">東京都渋谷区2-4-5</div>
+                <div class="history-time" data-ja="2025/04/28 10:00〜12:00" data-en="04/28/2025 10:00-12:00">2025/04/28 10:00〜12:00</div>
+                <div class="history-fee" data-ja="¥800" data-en="$8">¥800</div>
+            </div>
+            <div class="history-icon">🕓</div>
+        </div>
+    </div>
+    
+    <div class="bottom-navbar">
+        <div class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <div data-ja="ホーム" data-en="Home">ホーム</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🔍</div>
+            <div data-ja="検索" data-en="Search">検索</div>
+        </div>
+        <div class="nav-item active">
+            <div class="nav-icon">🕓</div>
+            <div data-ja="履歴" data-en="History">履歴</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div data-ja="アカウント" data-en="Account">アカウント</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            function updateLanguage() {
+                // Update page title
+                document.title = document.querySelector('title').getAttribute(`data-${currentLanguage}`);
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            }
+            
+            languageToggle.addEventListener('click', function() {
+                currentLanguage = currentLanguage === 'ja' ? 'en' : 'ja';
+                languageToggle.classList.toggle('en-active', currentLanguage === 'en');
+                document.documentElement.lang = currentLanguage;
+                updateLanguage();
+            });
+            
+            // Initial language update
+            updateLanguage();
+            
+            // History cards
+            const historyCards = document.querySelectorAll('.history-card');
+            historyCards.forEach(function(card) {
+                card.addEventListener('click', function() {
+                    const historyName = this.querySelector('.history-name').getAttribute(`data-${currentLanguage}`);
+                    alert(currentLanguage === 'ja' ?
+                        `${historyName}の詳細を表示します` :
+                        `Viewing details for ${historyName}`);
+                });
+            });
+            
+            // Bottom navbar
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    const navLabel = this.querySelector('div:not(.nav-icon)').getAttribute(`data-${currentLanguage}`);
+                    alert(currentLanguage === 'ja' ?
+                        `${navLabel}画面に移動します` :
+                        `Navigating to ${navLabel} screen`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

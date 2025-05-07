@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約承認確認</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            max-width: 430px;
+            margin: 0 auto;
+        }
+        
+        .modal {
+            background-color: #FFFFFF;
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 390px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            background-color: #3366CC;
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .language-selector {
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .reservation-details {
+            margin-bottom: 20px;
+        }
+        
+        .detail-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333333;
+        }
+        
+        .detail-item {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 5px;
+        }
+        
+        .warning {
+            background-color: #FFF3E0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #FF6F00;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .cancel-button, .confirm-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .cancel-button {
+            background-color: #CCCCCC;
+            color: #333333;
+        }
+        
+        .confirm-button {
+            background-color: #3366CC;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal">
+        <div class="header">
+            <span data-ja="予約を承認" data-en="Approve Reservation">予約を承認</span>
+            <div class="language-selector" id="language-toggle">
+                <span class="jp">日本語</span>
+                <span class="en">/ EN</span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="reservation-details">概要説明：背景使用模态对话框背景
+                <div class="detail-title" data-ja="予約詳細" data-en="Reservation Details">予約詳細</div>
+                <p class="detail-item" data-ja="駐車場: 渋谷センター駐車場" data-en="Parking Lot: Shibuya Center Parking">駐車場: 渋谷センター駐車場</p>
+                <p class="detail-item" data-ja="日時: 2025/04/30 14:00 - 16:00" data-en="Date: 2025/04/30 14:00 - 16:00">日時: 2025/04/30 14:00 - 16:00</p>
+                <p class="detail-item" data-ja="ユーザー: 佐藤 太郎" data-en="User: Taro Sato">ユーザー: 佐藤 太郎</p>
+                <p class="detail-item" data-ja="料金: ¥1,200" data-en="Fee: ¥1,200">料金: ¥1,200</p>
+            </div>
+            <div class="warning">
+                <span data-ja="注意: 承認後、予約は「確認済み」状態になります。" data-en="Note: After approval, the reservation will be marked as 'Confirmed'.">注意: 承認後、予約は「確認済み」状態になります。</span>
+            </div>
+            <div class="actions">
+                <button class="cancel-button" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+                <button class="confirm-button" data-ja="承認する" data-en="Approve">承認する</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                    document.title = 'Reservation Approval Confirmation';
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                    document.title = '予約承認確認';
+                }
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            });
+            
+            // Cancel button
+            const cancelButton = document.querySelector('.cancel-button');
+            cancelButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ? '承認をキャンセルしました。' : 'Approval cancelled.');
+            });
+            
+            // Confirm button
+            const confirmButton = document.querySelector('.confirm-button');
+            confirmButton.addEventListener('click', function() {
+                window.location.href = 'Approval_Completed_UI.html';
+            });
+        });
+    </script>
+</body>
+</html>

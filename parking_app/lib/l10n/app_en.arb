@@ -1,0 +1,17 @@
+{
+    "@@locale": "en",
+    "appTitle": "Parking App",
+    "welcome": "Welcome to Parking App",
+    "login": "Login",
+    "logout": "Logout",
+    "findParking": "Find Parking",
+    "availableSpots": "Available Spots",
+    "parkingTime": "Parking Time",
+    "startParking": "Start Parking",
+    "endParking": "End Parking",
+    "payment": "Payment",
+    "settings": "Settings",
+    "profile": "Profile",
+    "help": "Help",
+    "language": "Language"
+}

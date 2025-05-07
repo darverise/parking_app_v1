@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ja="パーキングアプリ - ホーム" data-en="Parking App - Home">パーキングアプリ - ホーム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F8FAFD;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            padding: 20px 20px 90px 20px;
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 8px;
+            color: #3366CC;
+            font-size: 18px;
+        }
+        
+        /* Check-in/out Section */
+        .check-in-out {
+            border: 2px solid #3366CC;
+        }
+        
+        .reservation-info {
+            margin-bottom: 20px;
+        }
+        
+        .parking-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+        
+        .reservation-time {
+            font-size: 14px;
+            color: #666666;
+        }
+        
+        .reservation-empty {
+            font-size: 14px;
+            color: #666666;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .check-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .check-button {
+            flex: 1;
+            height: 50px;
+            border-radius: 25px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .check-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .check-button:disabled {
+            background: #CCCCCC;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .check-in {
+            background: linear-gradient(135deg, #3366CC, #5E8AE0);
+        }
+        
+        .check-out {
+            background: linear-gradient(135deg, #FF9500, #FFCC00);
+        }
+        
+        .check-icon {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        /* Recent Searches */
+        .search-card {
+            padding: 15px;
+            border: 1px solid #EEEEEE;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .search-card:hover {
+            background-color: rgba(51, 102, 204, 0.05);
+        }
+        
+        .search-info {
+            flex: 1;
+        }
+        
+        .search-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+        
+        .search-address {
+            font-size: 13px;
+            color: #666666;
+            margin-bottom: 3px;
+        }
+        
+        .search-time {
+            font-size: 12px;
+            color: #999999;
+        }
+        
+        .search-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(51, 102, 204, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #3366CC;
+            font-size: 20px;
+        }
+        
+        /* Favorites */
+        .favorites-container {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .favorite-card {
+            padding: 15px;
+            border: 1px solid #EEEEEE;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .favorite-card:hover {
+            background-color: rgba(51, 102, 204, 0.05);
+        }
+        
+        .favorite-info {
+            flex: 1;
+        }
+        
+        .favorite-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+        
+        .favorite-address {
+            font-size: 13px;
+            color: #666666;
+            margin-bottom: 3px;
+        }
+        
+        .favorite-distance {
+            font-size: 13px;
+            color: #666666;
+            margin-bottom: 3px;
+        }
+        
+        .favorite-price {
+            font-size: 13px;
+            color: #FF3B30;
+            font-weight: 500;
+        }
+        
+        .favorite-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(51, 102, 204, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #FF3B30;
+            font-size: 20px;
+        }
+        
+        /* Bottom Navbar */
+        .bottom-navbar {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 70px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active {
+            color: #3366CC;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            font-size: 24px;
+            color: #999999;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: #3366CC;
+            transform: scale(1.2);
+        }
+        
+        .nav-item div:not(.nav-icon) {
+            font-size: 12px;
+            color: #999999;
+            font-weight: 500;
+        }
+        
+        .nav-item.active div:not(.nav-icon) {
+            color: #3366CC;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="section check-in-out">
+        <h2 class="section-title" data-ja="入出庫状況" data-en="Check-in/out Status">
+            <span class="section-icon">🚗</span>
+            <span>入出庫状況</span>
+        </h2>
+        <div class="reservation-info">
+            <div class="parking-name" data-ja="東京中央パーキング" data-en="Tokyo Central Parking">東京中央パーキング</div>
+            <div class="reservation-time" data-ja="2025/04/29 15:00〜20:00" data-en="04/29/2025 15:00-20:00">2025/04/29 15:00〜20:00</div>
+            <div class="reservation-empty" data-ja="予約がありません" data-en="No active reservation"></div>
+        </div>
+        <div class="check-buttons">
+            <button class="check-button check-in" data-ja="入庫" data-en="Check-in">
+                <span class="check-icon">🅸</span>
+                <span>入庫</span>
+            </button>
+            <button class="check-button check-out" data-ja="出庫" data-en="Check-out">
+                <span class="check-icon">🅾</span>
+                <span>出庫</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="section recent-searches">
+        <h2 class="section-title" data-ja="最近の検索履歴" data-en="Recent Search History">
+            <span class="section-icon">🔍</span>
+            <span>最近の検索履歴</span>
+        </h2>
+        <div class="search-card">
+            <div class="search-info">
+                <div class="search-name" data-ja="東京中央" data-en="Tokyo Central">東京中央</div>
+                <div class="search-address" data-ja="東京都中央区1-2-3" data-en="1-2-3 Chuo-ku, Tokyo">東京都中央区1-2-3</div>
+                <div class="search-time" data-ja="今日" data-en="Today">今日</div>
+            </div>
+            <div class="search-icon">🔍</div>
+        </div>
+        <div class="search-card">
+            <div class="search-info">
+                <div class="search-name" data-ja="渋谷" data-en="Shibuya">渋谷</div>
+                <div class="search-address" data-ja="東京都渋谷区2-4-5" data-en="2-4-5 Shibuya-ku, Tokyo">東京都渋谷区2-4-5</div>
+                <div class="search-time" data-ja="昨日" data-en="昨日">昨日</div>
+            </div>
+            <div class="search-icon">🔍</div>
+        </div>
+    </div>
+    
+    <div class="section favorites">
+        <h2 class="section-title" data-ja="お気に入り" data-en="Favorites">
+            <span class="section-icon">❤️</span>
+            <span>お気に入り</span>
+        </h2>
+        <div class="favorites-container">
+            <div class="favorite-card">
+                <div class="favorite-info">
+                    <div class="favorite-name" data-ja="東京中央パーキング" data-en="Tokyo Central Parking">東京中央パーキング</div>
+                    <div class="favorite-address" data-ja="東京都中央区1-2-3" data-en="1-2-3 Chuo-ku, Tokyo">東京都中央区1-2-3</div>
+                    <div class="favorite-distance" data-ja="駅から徒歩3分" data-en="3 min walk from station">駅から徒歩3分</div>
+                    <div class="favorite-price" data-ja="¥300/時間" data-en="$3/hour">¥300/時間</div>
+                </div>
+                <div class="favorite-icon">❤️</div>
+            </div>
+            <div class="favorite-card">
+                <div class="favorite-info">
+                    <div class="favorite-name" data-ja="渋谷パーキング" data-en="Shibuya Parking">渋谷パーキング</div>
+                    <div class="favorite-address" data-ja="東京都渋谷区2-4-5" data-en="2-4-5 Shibuya-ku, Tokyo">東京都渋谷区2-4-5</div>
+                    <div class="favorite-distance" data-ja="駅から徒歩5分" data-en="5 min walk from station">駅から徒歩5分</div>
+                    <div class="favorite-price" data-ja="¥400/時間" data-en="$4/hour">¥400/時間</div>
+                </div>
+                <div class="favorite-icon">❤️</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-navbar">
+        <div class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <div data-ja="ホーム" data-en="Home">ホーム</div>
+        </div>
+        <div class="nav-item active">
+            <div class="nav-icon">🔍</div>
+            <div data-ja="検索" data-en="Search">検索</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🕓</div>
+            <div data-ja="履歴" data-en="History">履歴</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div data-ja="アカウント" data-en="Account">アカウント</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            function updateLanguage() {
+                // Update page title
+                document.title = document.querySelector('title').getAttribute(`data-${currentLanguage}`);
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            }
+            
+            languageToggle.addEventListener('click', function() {
+                currentLanguage = currentLanguage === 'ja' ? 'en' : 'ja';
+                languageToggle.classList.toggle('en-active', currentLanguage === 'en');
+                document.documentElement.lang = currentLanguage;
+                updateLanguage();
+            });
+            
+            // Initial language update
+            updateLanguage();
+            
+            // Check-in/out buttons
+            const checkInButton = document.querySelector('.check-in');
+            const checkOutButton = document.querySelector('.check-out');
+            const parkingNameEl = document.querySelector('.parking-name');
+            const reservationTimeEl = document.querySelector('.reservation-time');
+            const reservationEmptyEl = document.querySelector('.reservation-empty');
+            
+            checkInButton.addEventListener('click', function() {
+                const parkingName = parkingNameEl.getAttribute(`data-${currentLanguage}`);
+                const confirmed = confirm(currentLanguage === 'ja' ?
+                    `${parkingName}への入庫を確定しますか？` :
+                    `Confirm check-in to ${parkingName}?`);
+                if (confirmed) {
+                    alert(currentLanguage === 'ja' ?
+                        '入庫を記録しました' :
+                        'Check-in recorded');
+                }
+            });
+            
+            checkOutButton.addEventListener('click', function() {
+                const parkingName = parkingNameEl.getAttribute(`data-${currentLanguage}`);
+                const confirmed = confirm(currentLanguage === 'ja' ?
+                    `${parkingName}からの出庫を確定しますか？` :
+                    `Confirm check-out from ${parkingName}?`);
+                if (confirmed) {
+                    // Clear reservation info
+                    parkingNameEl.style.display = 'none';
+                    reservationTimeEl.style.display = 'none';
+                    reservationEmptyEl.style.display = 'block';
+                    // Disable buttons
+                    checkInButton.disabled = true;
+                    checkOutButton.disabled = true;
+                    // Show success message
+                    alert(currentLanguage === 'ja' ?
+                        '出庫を記録しました' :
+                        'Check-out recorded');
+                }
+            });
+            
+            // Recent search cards
+            const searchCards = document.querySelectorAll('.search-card');
+            searchCards.forEach(function(card) {
+                card.addEventListener('click', function() {
+                    const searchName = this.querySelector('.search-name').getAttribute(`data-${currentLanguage}`);
+                    alert(currentLanguage === 'ja' ?
+                        `${searchName}を再検索します` :
+                        `Searching ${searchName} again`);
+                });
+            });
+            
+            // Favorite cards
+            const favoriteIcons = document.querySelectorAll('.favorite-icon');
+            favoriteIcons.forEach(function(icon) {
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const parkingName = this.parentElement.querySelector('.favorite-name').getAttribute(`data-${currentLanguage}`);
+                    alert(currentLanguage === 'ja' ?
+                        `${parkingName}をお気に入りから削除しますか？` :
+                        `Remove ${parkingName} from favorites?`);
+                });
+            });
+            
+            const favoriteCards = document.querySelectorAll('.favorite-card');
+            favoriteCards.forEach(function(card) {
+                card.addEventListener('click', function(e) {
+                    if (e.target !== this.querySelector('.favorite-icon')) {
+                        const parkingName = this.querySelector('.favorite-name').getAttribute(`data-${currentLanguage}`);
+                        alert(currentLanguage === 'ja' ?
+                            `${parkingName}の詳細を表示します` :
+                            `Viewing details for ${parkingName}`);
+                    }
+                });
+            });
+            
+            // Bottom navbar
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    const navLabel = this.querySelector('div:not(.nav-icon)').getAttribute(`data-${currentLanguage}`);
+                    
+                    // Navigate to the appropriate page based on which nav item was clicked
+                    const navText = this.querySelector('div:not(.nav-icon)').getAttribute('data-ja');
+                    switch(navText) {
+                        case 'ホーム':
+                            window.location.href = 'Home_UI.html';
+                            break;
+                        case '検索':
+                            window.location.href = 'Parking_Search_UI.html';
+                            break;
+                        case '履歴':
+                            window.location.href = 'History_UI.html';
+                            break;
+                        case 'アカウント':
+                            // Keep the alert for now, or specify a target page if needed
+                            alert(currentLanguage === 'ja' ?
+                                `${navLabel}画面に移動します` :
+                                `Navigating to ${navLabel} screen`);
+                            break;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
