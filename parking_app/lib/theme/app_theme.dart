@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'text_styles.dart';
+import 'app_typography.dart';
 
+/// Class responsible for defining the app theme and styling
 class AppTheme {
+  /// Returns light theme configuration
   static ThemeData lightTheme() {
     return ThemeData(
+      fontFamily: AppTypography.fontFamily,
       colorScheme: ColorScheme.light(
         primary: AppColors.primary,
         secondary: AppColors.secondary,
@@ -12,14 +16,17 @@ class AppTheme {
         error: AppColors.error,
       ),
       textTheme: TextTheme(
-        displayLarge: TextStyles.displayLarge,
-        displayMedium: TextStyles.displayMedium,
-        displaySmall: TextStyles.displaySmall,
+        displayLarge: AppTypography.h1,
+        displayMedium: AppTypography.h2,
+        displaySmall: AppTypography.h3,
         headlineMedium: TextStyles.headlineMedium,
         headlineSmall: TextStyles.headlineSmall,
         titleLarge: TextStyles.titleLarge,
-        bodyLarge: TextStyles.bodyLarge,
-        bodyMedium: TextStyles.bodyMedium,
+        bodyLarge: AppTypography.bodyLarge,
+        bodyMedium: AppTypography.bodyMedium,
+        bodySmall: AppTypography.bodySmall,
+        labelLarge: AppTypography.button,
+        labelSmall: AppTypography.caption,
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -59,6 +66,35 @@ class AppTheme {
           textStyle: TextStyles.buttonText.copyWith(color: AppColors.primary),
         ),
       ),
+    );
+  }
+
+  /// Returns dark theme configuration
+  static ThemeData darkTheme() {
+    final darkTextTheme = TextTheme(
+      displayLarge: AppTypography.h1.copyWith(color: Colors.white),
+      displayMedium: AppTypography.h2.copyWith(color: Colors.white),
+      displaySmall: AppTypography.h3.copyWith(color: Colors.white),
+      headlineMedium: TextStyles.headlineMedium.copyWith(color: Colors.white),
+      headlineSmall: TextStyles.headlineSmall.copyWith(color: Colors.white),
+      titleLarge: TextStyles.titleLarge.copyWith(color: Colors.white),
+      bodyLarge: AppTypography.bodyLarge.copyWith(color: Colors.white),
+      bodyMedium: AppTypography.bodyMedium.copyWith(color: Colors.white),
+      bodySmall: AppTypography.bodySmall.copyWith(color: Colors.white),
+      labelLarge: AppTypography.button.copyWith(color: Colors.white),
+      labelSmall: AppTypography.caption.copyWith(color: Colors.white),
+    );
+
+    return ThemeData.dark().copyWith(
+      textTheme: darkTextTheme,
+      primaryTextTheme: darkTextTheme,
+      colorScheme: ColorScheme.dark(
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
+        surface: AppColors.surface.withOpacity(0.8),
+        error: AppColors.error,
+      ),
+      // Add other theme customization here
     );
   }
 }

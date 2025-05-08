@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Parking App',
-      theme: AppTheme.lightTheme(),
-
+      theme: AppTheme.lightTheme(), // Apply the light theme with NotoSansJP
+      darkTheme: AppTheme.darkTheme(), // Apply the dark theme with NotoSansJP
       // Set up localization
       localizationsDelegates: const [
         AppLocalizations.delegate,
