@@ -15,7 +15,7 @@ class AppTextField extends StatefulWidget {
   final bool showTogglePasswordVisibility;
 
   const AppTextField({
-    Key? key,
+    super.key,
     required this.label,
     this.hintText,
     required this.controller,
@@ -26,7 +26,7 @@ class AppTextField extends StatefulWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.showTogglePasswordVisibility = false,
-  }) : super(key: key);
+  });
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -90,12 +90,12 @@ class AppSearchField extends StatelessWidget {
   final VoidCallback? onClear;
 
   const AppSearchField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     required this.onChanged,
     this.onClear,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

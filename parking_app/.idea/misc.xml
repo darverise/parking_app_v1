@@ -11,9 +11,6 @@
     <option name="jdkName" value="17" />
   </component>
   <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
-  <component name="MavenRunner">
-    <option name="jreName" value="21" />
-  </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Android API 35, extension level 13 Platform" project-jdk-type="Android SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

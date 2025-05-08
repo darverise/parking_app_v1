@@ -21,5 +21,44 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "appTitle": MessageLookupByLibrary.simpleMessage("Parking App"),
+    "availableSpots": MessageLookupByLibrary.simpleMessage("Available Spots"),
+    "createAccount": MessageLookupByLibrary.simpleMessage(
+      "Don\'t have an account? Register",
+    ),
+    "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "emailHint": MessageLookupByLibrary.simpleMessage("example@email.com"),
+    "endParking": MessageLookupByLibrary.simpleMessage("End Parking"),
+    "findParking": MessageLookupByLibrary.simpleMessage("Find Parking"),
+    "forgotPassword": MessageLookupByLibrary.simpleMessage(
+      "Forgot your password?",
+    ),
+    "help": MessageLookupByLibrary.simpleMessage("Help"),
+    "invalidEmail": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid email address",
+    ),
+    "language": MessageLookupByLibrary.simpleMessage("Language"),
+    "login": MessageLookupByLibrary.simpleMessage("Login"),
+    "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+    "or": MessageLookupByLibrary.simpleMessage("or"),
+    "parkingTime": MessageLookupByLibrary.simpleMessage("Parking Time"),
+    "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "passwordHint": MessageLookupByLibrary.simpleMessage("Enter your password"),
+    "passwordTooShort": MessageLookupByLibrary.simpleMessage(
+      "Password must be at least 6 characters",
+    ),
+    "payment": MessageLookupByLibrary.simpleMessage("Payment"),
+    "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+    "registerNow": MessageLookupByLibrary.simpleMessage("Register"),
+    "requiredField": MessageLookupByLibrary.simpleMessage(
+      "This field is required",
+    ),
+    "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "startParking": MessageLookupByLibrary.simpleMessage("Start Parking"),
+    "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
+    "welcomeMessage": MessageLookupByLibrary.simpleMessage(
+      "Welcome to the Parking App",
+    ),
+  };
 }

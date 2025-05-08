@@ -6,12 +6,14 @@ import '../../theme/text_styles.dart';
 import '../common/widgets/buttons.dart';
 import '../common/widgets/input_fields.dart';
 import '../common/widgets/error.dart';
+import '../../services/api/dio_client.dart';
+import '../../services/api/api_endpoints.dart';
 
 // Define enum outside the class
 enum UserRole { user, owner }
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -55,16 +57,30 @@ class _SignInScreenState extends State<SignInScreen> {
     });
 
     try {
-      // Here you would implement actual authentication logic
-      await Future.delayed(
-        const Duration(seconds: 2),
-      ); // Simulate network request
+      // Create an instance of DioClient
+      final dioClient = DioClient();
+      final response = await dioClient.post(
+        ApiEndpoints.login,
+        data: {
+          'email': _emailController.text,
+          'password': _passwordController.text,
+          'role': _selectedRole == UserRole.owner ? "1" : "0",
+        },
+      );
 
-      // For demonstration, we'll just print the credentials
-      debugPrint('Signing in with: ${_emailController.text}');
+      // 登录成功，打印响应数据
+      debugPrint('Login success: ${response.data}');
 
-      // Navigate to home screen or handle success scenario
-      // Navigator.of(context).pushReplacementNamed('/home');
+      // TODO: 保存用户token和信息到本地存储
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // prefs.setString('token', response.data['token']);
+
+      // TODO: 根据角色导航到适当的主页
+      // if (_selectedRole == UserRole.owner) {
+      //   Navigator.of(context).pushReplacementNamed('/owner-home');
+      // } else {
+      //   Navigator.of(context).pushReplacementNamed('/user-home');
+      // }
     } catch (e) {
       setState(() {
         _errorMessage = e.toString();
