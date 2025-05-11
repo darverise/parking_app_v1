@@ -49,6 +49,22 @@ class TextStyles {
     color: AppColors.textPrimary,
   );
 
+  // 添加缺失的titleMedium
+  static final TextStyle titleMedium = TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textPrimary,
+  );
+
+  // 添加缺失的titleSmall
+  static final TextStyle titleSmall = TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textPrimary,
+  );
+
   // Body styles
   static final TextStyle bodyLarge = TextStyle(
     fontFamily: _fontFamily,
@@ -60,6 +76,14 @@ class TextStyles {
   static final TextStyle bodyMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textPrimary,
+  );
+
+  // 添加缺失的bodySmall
+  static final TextStyle bodySmall = TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 12.0,
     fontWeight: FontWeight.w400,
     color: AppColors.textPrimary,
   );

@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "jp.co.parkingapp.parking_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // <-- Set highest required NDK version
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

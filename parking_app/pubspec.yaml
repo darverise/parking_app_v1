@@ -30,9 +30,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+
+
+  # Add the following dependencies for localization and internationalization
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0  # Use specific version as needed（default any）
+  intl: ^0.19.0
   http: ^1.2.2
   google_maps_flutter: ^2.9.0
   provider: ^6.0.5
@@ -43,10 +49,9 @@ dependencies:
   fluttertoast: ^8.2.2
   jwt_decoder: ^2.0.1
   connectivity_plus: ^4.0.0
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  # Add the following dependencies for image picker and file picker
+  image_picker: ^1.0.4
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
@@ -126,13 +131,7 @@ flutter:
           weight: 800
         - asset: assets/fonts/NotoSansJP-Black.ttf
           weight: 900
-    # Add a monospace font family (if using a different font for monospace text)
-    - family: NotoSansJP Mono
-      fonts:
-        - asset: assets/fonts/NotoSansJPMono-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/NotoSansJPMono-Bold.ttf
-          weight: 700
+
 
 # Add this section for l10n configuration
 flutter_intl:

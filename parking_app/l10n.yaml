@@ -8,3 +8,4 @@ use-deferred-loading: false
 use-material-design: true
 use-async-await: false
 use-async-await-syntax: false
+untranslated-messages-file: untranslated_messages.txt
