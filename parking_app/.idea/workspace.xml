@@ -11,6 +11,32 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/.." source="origin/master" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/.." source="origin/feature" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -25,6 +51,9 @@
     &quot;accountId&quot;: &quot;2afcfc42-db3e-4b8e-afaa-fb1c31c77c90&quot;
   }
 }</component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="ckC8Cyf7" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
       <MavenImportingSettings>
@@ -32,16 +61,26 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="21" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2wlLr4cpErZYOmOjBDEGy0LOAIU" />
+  <component name="ProjectReloadState">
+    <option name="STATE" value="1" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -49,10 +88,12 @@
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;#1 on feature&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/assets/fonts&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
     &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
@@ -66,6 +107,11 @@
     ]
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/fonts" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -90,7 +136,14 @@
       <updated>1746153757706</updated>
       <workItem from="1746153764265" duration="1012000" />
       <workItem from="1746611411465" duration="1678000" />
-      <workItem from="1746616599302" duration="708000" />
+      <workItem from="1746616599302" duration="2623000" />
+      <workItem from="1746620414364" duration="834000" />
+      <workItem from="1746621437223" duration="6247000" />
+      <workItem from="1746631645052" duration="2000" />
+      <workItem from="1746684373818" duration="1854000" />
+      <workItem from="1746686332800" duration="6958000" />
+      <workItem from="1746886106763" duration="142000" />
+      <workItem from="1746940532314" duration="17000" />
     </task>
     <task id="LOCAL-00001" summary="Remove parking_app.zip from the repository&#10;&#10;Deleted the parking_app.zip file as it does not belong in the repository. Keeping binary or unnecessary files out ensures a cleaner and more maintainable codebase.">
       <option name="closed" value="true" />
@@ -116,7 +169,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746616945098</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add user role selection and update project setup&#10;&#10;Introduced user role selection on the sign-in screen to improve user experience. Updated iOS configurations for CocoaPods compatibility, added dependencies, and enhanced localization. Modified README to include setup instructions for Flutter, iOS, and Android environments.">
+      <option name="closed" value="true" />
+      <created>1746617332218</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746617332218</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Update l10n configuration and improve README formatting&#10;&#10;Added new localization settings to l10n.yaml for better customization. Enhanced README with additional commands, improved formatting, and added explanatory notes for better clarity.">
+      <option name="closed" value="true" />
+      <created>1746620451996</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1746620451996</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,6 +195,8 @@
     <MESSAGE value="Remove parking_app.zip from the repository&#10;&#10;Deleted the parking_app.zip file as it does not belong in the repository. Keeping binary or unnecessary files out ensures a cleaner and more maintainable codebase." />
     <MESSAGE value="Remove unused files and streamline plugin registration&#10;&#10;Deleted unnecessary generated localization files, extension discovery cache, and adjusted plugin registration to an empty function. These changes reduce build artifacts and simplify the project structure." />
     <MESSAGE value="Add user role selection and update project configurations&#10;&#10;Introduced user role selection in the sign-in screen with segmented controls, enhancing user interaction. Updated iOS project configurations for CocoaPods integration and improved compatibility. Added new dependencies and localization support to streamline functionality." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add user role selection and update project configurations&#10;&#10;Introduced user role selection in the sign-in screen with segmented controls, enhancing user interaction. Updated iOS project configurations for CocoaPods integration and improved compatibility. Added new dependencies and localization support to streamline functionality." />
+    <MESSAGE value="Add user role selection and update project setup&#10;&#10;Introduced user role selection on the sign-in screen to improve user experience. Updated iOS configurations for CocoaPods compatibility, added dependencies, and enhanced localization. Modified README to include setup instructions for Flutter, iOS, and Android environments." />
+    <MESSAGE value="Update l10n configuration and improve README formatting&#10;&#10;Added new localization settings to l10n.yaml for better customization. Enhanced README with additional commands, improved formatting, and added explanatory notes for better clarity." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update l10n configuration and improve README formatting&#10;&#10;Added new localization settings to l10n.yaml for better customization. Enhanced README with additional commands, improved formatting, and added explanatory notes for better clarity." />
   </component>
 </project>

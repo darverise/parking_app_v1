@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:parking_app/views/auth/signin_screen.dart';
 import 'theme/app_theme.dart';
-import 'views/auth/sign_in_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Parking App',
-      theme: AppTheme.lightTheme(),
-
+      theme: AppTheme.lightTheme(), // Apply the light theme with NotoSansJP
+      darkTheme: AppTheme.darkTheme(), // Apply the dark theme with NotoSansJP
       // Set up localization
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), // English
         Locale('ja'), // Japanese
+        Locale('en'), // English
         Locale('zh'), // Chinese
       ],
 

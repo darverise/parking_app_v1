@@ -35,8 +35,14 @@ dependencies:
   intl: ^0.19.0  # Use specific version as needed（default any）
   http: ^1.2.2
   google_maps_flutter: ^2.9.0
-  provider: ^6.1.2
-  dio: ^5.3.3  # Latest stable version, adjust as needed
+  provider: ^6.0.5
+  dio: ^5.3.2
+  flutter_secure_storage: ^8.0.0
+  json_annotation: ^4.8.1
+  shared_preferences: ^2.2.0
+  fluttertoast: ^8.2.2
+  jwt_decoder: ^2.0.1
+  connectivity_plus: ^4.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -45,25 +51,15 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
-  generate: true
-  uses-material-design: true
-
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -95,12 +91,48 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  generate: true
+  uses-material-design: true
   # For details regarding fonts from package dependencies,
   assets:
     - assets/fonts/
     - assets/icons/
     - assets/images/
     - lib/l10n/
+  fonts:
+    - family: NotoSansJP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Regular.ttf
+        - asset: assets/fonts/NotoSansJP-Medium.ttf
+        - asset: assets/fonts/NotoSansJP-Bold.ttf
+        - asset: assets/fonts/NotoSansJP-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/NotoSansJP-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/NotoSansJP-Light.ttf
+          weight: 300
+        - asset: assets/fonts/NotoSansJP-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/NotoSansJP-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/NotoSansJP-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NotoSansJP-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/NotoSansJP-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/NotoSansJP-Black.ttf
+          weight: 900
+    # Add a monospace font family (if using a different font for monospace text)
+    - family: NotoSansJP Mono
+      fonts:
+        - asset: assets/fonts/NotoSansJPMono-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/NotoSansJPMono-Bold.ttf
+          weight: 700
 
 # Add this section for l10n configuration
 flutter_intl:
