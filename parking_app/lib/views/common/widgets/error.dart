@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../theme/app_colors.dart';
-import '../../../theme/text_styles.dart';
-import 'buttons.dart';
+import 'package:parking_app/theme/app_colors.dart';
+import 'package:parking_app/theme/text_styles.dart';
+import 'package:parking_app/views/common/widgets/buttons.dart';
 
 class ErrorMessageDisplay extends StatelessWidget {
   final String message;
@@ -10,12 +10,12 @@ class ErrorMessageDisplay extends StatelessWidget {
   final IconData icon;
 
   const ErrorMessageDisplay({
-    Key? key,
+    super.key,
     required this.message,
     this.actionButtonText,
     this.onActionPressed,
     this.icon = Icons.error_outline,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,7 @@ class FormErrorText extends StatelessWidget {
   final String? text;
   final bool visible;
 
-  const FormErrorText({Key? key, this.text, this.visible = true})
-    : super(key: key);
+  const FormErrorText({super.key, this.text, this.visible = true});
 
   @override
   Widget build(BuildContext context) {

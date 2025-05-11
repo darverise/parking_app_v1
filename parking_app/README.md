@@ -96,11 +96,32 @@ cd ios
 pod install --repo-update
 flutter run -d ios
 flutter run -d android
+
+Flutter run key commands.
+r Hot reload. 🔥🔥🔥
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
 ```
 
 ## DART
 
 ```dart
-// final l10n = AppLocalizations.of(context);
-// Text(l10n.login);
+final l10n = AppLocalizations.of(context);
+Text(l10n.login);
+
+Dart 的命名规则与约定：
+
+Dart 并没有强制要求文件名必须与主类名相同
+文件名通常使用 snake_case（小写字母加下划线），如 response.dart
+类名通常使用 UpperCamelCase（首字母大写驼峰式），如 ApiResponse
+
+
+Flutter/Dart 的常见实践：
+
+虽然没有强制规定，但通常一个 Dart 文件中定义的主要类名与文件名相对应是一个很好的实践
+例如，如果主类是 ApiResponse，文件名最好是 api_response.dart
+但在许多 Flutter 项目中，确实存在文件名与主类名不完全对应的情况
 ```

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../theme/app_colors.dart';
-import '../../../theme/text_styles.dart';
+import 'package:parking_app/theme/app_colors.dart';
+import 'package:parking_app/theme/text_styles.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -9,12 +9,12 @@ class PrimaryButton extends StatelessWidget {
   final bool fullWidth;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
     this.fullWidth = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +52,11 @@ class SecondaryButton extends StatelessWidget {
   final bool fullWidth;
 
   const SecondaryButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.fullWidth = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +77,7 @@ class LinkButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
 
-  const LinkButton({Key? key, required this.text, required this.onPressed})
-    : super(key: key);
+  const LinkButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
