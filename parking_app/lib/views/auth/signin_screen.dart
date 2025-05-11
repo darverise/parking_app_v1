@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:parking_app/core/services/auth_signin_service.dart';
+import 'package:parking_app/views/auth/home_screen.dart';
+import 'package:parking_app/views/common/widgets/buttons.dart';
+import 'package:parking_app/views/common/widgets/error.dart';
+import 'package:parking_app/views/common/widgets/input_fields.dart';
+import 'package:provider/provider.dart';
 import 'package:parking_app/theme/app_colors.dart';
-
-import '../../theme/text_styles.dart';
-import '../common/widgets/buttons.dart';
-import '../common/widgets/input_fields.dart';
-import '../common/widgets/error.dart';
+import 'package:parking_app/theme/text_styles.dart';
+import 'package:parking_app/core/models/auth_signin_model.dart';
 
 // Define enum outside the class
 enum UserRole { user, owner }
@@ -25,10 +28,17 @@ class _SignInScreenState extends State<SignInScreen> {
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
   bool _isLoading = false;
+  bool _rememberMe = false;
   String? _errorMessage;
 
   // Add user role tracking
   UserRole _selectedRole = UserRole.user;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkSavedCredentials();
+  }
 
   @override
   void dispose() {
@@ -37,6 +47,25 @@ class _SignInScreenState extends State<SignInScreen> {
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkSavedCredentials() async {
+    try {
+      final authService = Provider.of<AuthSignInService>(
+        context,
+        listen: false,
+      );
+      final isRemembered = await authService.isRememberUserLogin();
+      if (isRemembered) {
+        setState(() {
+          _rememberMe = true;
+          // If you stored the email, you could retrieve it here
+          // _emailController.text = savedEmail;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error checking saved credentials: $e');
+    }
   }
 
   void _updateUserRole(UserRole role) {
@@ -56,33 +85,68 @@ class _SignInScreenState extends State<SignInScreen> {
     });
 
     try {
-      // Create an instance of DioClient
-      // final dioClient = DioClient();
-      // final response = await dioClient.post(
-      //   ApiEndpoints.login,
-      //   data: {
-      //     'email': _emailController.text,
-      //     'password': _passwordController.text,
-      //     'role': _selectedRole == UserRole.owner ? "1" : "0",
-      //   },
-      // );
+      final authService = Provider.of<AuthSignInService>(
+        context,
+        listen: false,
+      );
 
-      // 登录成功，打印响应数据
-      // debugPrint('Login success: ${response.data}');
+      // Create sign-in request
+      final signInRequest = SignInRequest(
+        username: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
 
-      // TODO: 保存用户token和信息到本地存储
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // prefs.setString('token', response.data['token']);
+      // Call API
+      final response = await authService.signIn(
+        signInRequest.username,
+        signInRequest.password,
+      );
 
-      // TODO: 根据角色导航到适当的主页
-      // if (_selectedRole == UserRole.owner) {
-      //   Navigator.of(context).pushReplacementNamed('/owner-home');
-      // } else {
-      //   Navigator.of(context).pushReplacementNamed('/user-home');
-      // }
+      if (!response.isSuccess || response.data == null) {
+        throw Exception(response.message ?? "Login failed");
+      }
+
+      final authUserModel = response.data!;
+
+      // Check if user selected role matches the actual role from the backend
+      final bool isOwner = authUserModel.is_owner;
+      if ((_selectedRole == UserRole.owner && !isOwner) ||
+          (_selectedRole == UserRole.user && isOwner)) {
+        setState(() {
+          _errorMessage =
+              AppLocalizations.of(context).invalidInput ??
+              "選択した役割がアカウントタイプと一致しません";
+        });
+        return;
+      }
+
+      // Save "remember me" preference
+      await authService.rememberUserLogin(_rememberMe);
+
+      if (mounted) {
+        // Navigate to home screen and pass the user data
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder:
+                (context) =>
+                    HomePage(authUserModel: authUserModel, isOwner: isOwner),
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        // Convert error message to user-friendly format
+        if (e.toString().contains('InvalidCredentials')) {
+          _errorMessage =
+              AppLocalizations.of(context).invalidInput ??
+              "メールアドレスまたはパスワードが無効です";
+        } else if (e.toString().contains('AccountLocked')) {
+          _errorMessage =
+              AppLocalizations.of(context).invalidInput ??
+              "試行回数が多すぎるため、アカウントがロックされました";
+        } else {
+          _errorMessage = e.toString();
+        }
       });
     } finally {
       if (mounted) {
@@ -94,47 +158,53 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   String? _validateEmail(String? value) {
-    // メールアドレスの検証を行う
-    final l10n = AppLocalizations.of(context); // 非nullアサーション演算子を削除
+    final l10n = AppLocalizations.of(context);
     if (value == null || value.isEmpty) {
-      return l10n.requiredField;
+      return l10n.requiredField ?? "この項目は必須です";
     }
-    final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-    if (!emailRegExp.hasMatch(value)) {
-      return l10n.invalidEmail;
+
+    // Allow both email and phone input
+    if (value.contains('@')) {
+      // Validate as email
+      final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+      if (!emailRegExp.hasMatch(value)) {
+        return l10n.invalidEmail ?? "有効なメールアドレスを入力してください";
+      }
+    } else {
+      // Validate as phone
+      final phoneRegExp = RegExp(r'^\d{10,15}$');
+      if (!phoneRegExp.hasMatch(value.replaceAll(RegExp(r'[^0-9]'), ''))) {
+        return l10n.invalidInput ?? "有効な電話番号を入力してください";
+      }
     }
+
     return null;
   }
 
   String? _validatePassword(String? value) {
-    // パスワードの検証を行う
-    final l10n = AppLocalizations.of(context); // 非nullアサーション演算子を削除
+    final l10n = AppLocalizations.of(context);
     if (value == null || value.isEmpty) {
-      return l10n.requiredField;
+      return l10n.requiredField ?? "この項目は必須です";
     }
     if (value.length < 6) {
-      return l10n.passwordTooShort;
+      return l10n.passwordTooShort ?? "パスワードは6文字以上で入力してください";
     }
     return null;
   }
 
   void _navigateToRegister() {
-    // 登録画面に移動する
-    // Navigator.of(context).pushNamed('/register');
-    debugPrint('Navigate to register screen');
+    // 使用直接的路径字符串而非未定义的AppRoutes常量
+    Navigator.of(context).pushNamed('/register');
   }
 
   void _navigateToForgotPassword() {
-    // パスワード再設定画面に移動する
-    // Navigator.of(context).pushNamed('/forgot-password');
-    debugPrint('Navigate to forgot password screen');
+    // 使用直接的路径字符串而非未定义的AppRoutes常量
+    Navigator.of(context).pushNamed('/forgot-password');
   }
 
   @override
   Widget build(BuildContext context) {
-    // 国際化リソースを取得
-    final l10n = AppLocalizations.of(context); // 非nullアサーション演算子を削除
-    // 画面サイズを取得
+    final l10n = AppLocalizations.of(context);
     final screenSize = MediaQuery.of(context).size;
     final isSmallScreen = screenSize.width < 600;
 
@@ -156,10 +226,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 32.0),
                       child: Image.asset(
-                        'assets/images/app_logo.png', // Ensure this asset exists
+                        'assets/images/app_logo.png',
                         height: 120,
                         errorBuilder: (context, error, stackTrace) {
-                          // Fallback if logo image doesn't exist
                           return Icon(
                             Icons.local_parking,
                             size: 80.0,
@@ -183,12 +252,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             children: [
                               _buildRoleOption(
                                 UserRole.user,
-                                'ユーザー',
+                                "ユーザー", // 使用硬编码替代l10n?.welcome
                                 Icons.person,
                               ),
                               _buildRoleOption(
                                 UserRole.owner,
-                                'オーナー',
+                                "オーナー", // 使用硬编码替代l10n?.welcome
                                 Icons.business,
                               ),
                             ],
@@ -199,7 +268,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     // Title
                     Text(
-                      l10n.login,
+                      l10n.login ?? "ログイン",
                       style: TextStyles.titleLarge.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 28.0,
@@ -215,10 +284,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: FormErrorText(text: _errorMessage),
                       ),
 
-                    // Email input field
+                    // Email/Phone input field
                     AppTextField(
-                      label: l10n.email,
-                      hintText: l10n.emailHint,
+                      label: l10n.email ?? "メールアドレス/電話番号",
+                      hintText: l10n.emailHint ?? "メールアドレスまたは電話番号を入力してください",
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       validator: _validateEmail,
@@ -232,8 +301,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     // Password input field
                     AppTextField(
-                      label: l10n.password,
-                      hintText: l10n.passwordHint,
+                      label: l10n.password ?? "パスワード",
+                      hintText: l10n.passwordHint ?? '••••••••',
                       controller: _passwordController,
                       obscureText: true,
                       validator: _validatePassword,
@@ -243,20 +312,42 @@ class _SignInScreenState extends State<SignInScreen> {
                       onFieldSubmitted: (_) => _handleSignIn(),
                     ),
 
-                    // Forgot password link
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: _navigateToForgotPassword,
-                        child: Text(l10n.forgotPassword),
-                      ),
+                    // Remember me and Forgot password row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Remember me checkbox
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _rememberMe,
+                              onChanged: (value) {
+                                setState(() {
+                                  _rememberMe = value ?? false;
+                                });
+                              },
+                              activeColor: AppColors.primary,
+                            ),
+                            Text(
+                              "ログイン情報を保存", // 使用硬编码替代l10n?.welcome
+                              style: TextStyles.bodyMedium,
+                            ),
+                          ],
+                        ),
+
+                        // Forgot password link
+                        TextButton(
+                          onPressed: _navigateToForgotPassword,
+                          child: Text(l10n.forgotPassword ?? "パスワードをお忘れの方はこちら"),
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 24.0),
 
                     // Login button
                     PrimaryButton(
-                      text: l10n.login,
+                      text: l10n.login ?? "ログイン",
                       onPressed: _handleSignIn,
                       isLoading: _isLoading,
                     ),
@@ -270,7 +361,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
-                            l10n.or,
+                            l10n.or ?? "または",
                             style: TextStyles.bodyMedium.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -286,13 +377,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     Center(
                       child: RichText(
                         text: TextSpan(
-                          text: '${l10n.createAccount.split('？')[0]}？',
+                          text: l10n.createAccount ?? "アカウントをお持ちでないですか？",
                           style: TextStyles.bodyMedium.copyWith(
                             color: AppColors.textPrimary,
                           ),
                           children: [
                             TextSpan(
-                              text: l10n.registerNow,
+                              text: l10n.registerNow ?? "新規登録",
                               style: TextStyles.bodyMedium.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w500,
