@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
+import 'package:parking_app/theme/app_colors.dart';
 
 class TextStyles {
   static const String _fontFamily = 'Roboto';
@@ -79,5 +79,21 @@ class TextStyles {
   );
   static final TextStyle inputHint = bodyMedium.copyWith(
     color: AppColors.textHint,
+  );
+
+  // Dialog text styles
+  static const TextStyle dialogTitle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const TextStyle dialogBody = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+  );
+
+  static const TextStyle dialogLabel = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
   );
 }
