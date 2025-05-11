@@ -28,7 +28,7 @@ class AuthSignInApi {
       final response = await _client.post(
         ApiConstants.BASE_URL + ApiConstants.SIGNOUT,
       );
-      return ApiResponse.fromJson(response.data, (_) => null);
+      return ApiResponse.fromJson(response.data, (_) {});
     } catch (e) {
       return ApiResponse.error(e.toString());
     }
@@ -88,7 +88,7 @@ class AuthSignInApi {
         ApiConstants.BASE_URL + ApiConstants.CHANGE_PASSWORD,
         data: request.toJson(),
       );
-      return ApiResponse.fromJson(response.data, (_) => null);
+      return ApiResponse.fromJson(response.data, (_) {});
     } catch (e) {
       return ApiResponse.error(e.toString());
     }
