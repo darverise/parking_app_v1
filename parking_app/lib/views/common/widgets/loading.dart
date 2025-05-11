@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
-import '../../../theme/app_colors.dart';
+import 'package:parking_app/theme/app_colors.dart';
 
-class AppLoadingIndicator extends StatelessWidget {
+class LoadingIndicator extends StatelessWidget {
   final double size;
-  final Color? color;
+  final Color color;
 
-  const AppLoadingIndicator({super.key, this.size = 36.0, this.color});
+  const LoadingIndicator({
+    Key? key,
+    this.size = 24.0,
+    this.color = AppColors.primary,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: CircularProgressIndicator(
-          color: color ?? AppColors.primary,
-          strokeWidth: 3.0,
-        ),
+    return SizedBox(
+      width: size,
+      height: size,
+      child: CircularProgressIndicator(
+        strokeWidth: 2.0,
+        valueColor: AlwaysStoppedAnimation<Color>(color),
       ),
     );
   }
@@ -48,7 +50,7 @@ class AppLoadingOverlay extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const AppLoadingIndicator(),
+                  const LoadingIndicator(),
                   if (loadingText != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),

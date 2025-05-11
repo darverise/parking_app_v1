@@ -32,5 +32,6 @@
     "registerNow": "Register",
     "requiredField": "This field is required",
     "invalidEmail": "Please enter a valid email address",
-    "passwordTooShort": "Password must be at least 6 characters"
+    "passwordTooShort": "Password must be at least 6 characters",
+    "invalidInput": "Invalid input"
 }

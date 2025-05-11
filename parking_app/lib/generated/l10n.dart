@@ -249,6 +249,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Invalid input`
+  String get invalidInput {
+    return Intl.message(
+      'Invalid input',
+      name: 'invalidInput',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

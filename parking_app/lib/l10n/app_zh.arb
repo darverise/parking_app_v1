@@ -26,5 +26,6 @@
     "requiredField": "此字段为必填项",
     "invalidEmail": "请输入有效的电子邮箱地址",
     "passwordTooShort": "密码至少需要6个字符",
-    "welcomeMessage": "欢迎使用停车应用"
+    "welcomeMessage": "欢迎使用停车应用",
+    "invalidInput": "无效输入"
 }

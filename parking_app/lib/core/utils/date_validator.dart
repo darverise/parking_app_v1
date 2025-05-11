@@ -6,7 +6,7 @@ class DateValidator {
   /// Validates if the string is a valid date format (yyyy-MM-dd)
   static bool isValidDateFormat(String input, {String format = 'yyyy-MM-dd'}) {
     try {
-      final DateTime date = DateFormat(format).parseStrict(input);
+      DateFormat(format).parseStrict(input);
       return true;
     } catch (e) {
       return false;

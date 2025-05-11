@@ -80,4 +80,20 @@ class TextStyles {
   static final TextStyle inputHint = bodyMedium.copyWith(
     color: AppColors.textHint,
   );
+
+  // Dialog text styles
+  static const TextStyle dialogTitle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const TextStyle dialogBody = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+  );
+
+  static const TextStyle dialogLabel = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  );
 }

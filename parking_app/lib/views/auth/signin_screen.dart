@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../theme/app_colors.dart';
+import 'package:parking_app/theme/app_colors.dart';
+
 import '../../theme/text_styles.dart';
 import '../common/widgets/buttons.dart';
 import '../common/widgets/input_fields.dart';
 import '../common/widgets/error.dart';
-import '../../services/api/dio_client.dart';
-import '../../services/api/api_endpoints.dart';
 
 // Define enum outside the class
 enum UserRole { user, owner }
@@ -58,18 +57,18 @@ class _SignInScreenState extends State<SignInScreen> {
 
     try {
       // Create an instance of DioClient
-      final dioClient = DioClient();
-      final response = await dioClient.post(
-        ApiEndpoints.login,
-        data: {
-          'email': _emailController.text,
-          'password': _passwordController.text,
-          'role': _selectedRole == UserRole.owner ? "1" : "0",
-        },
-      );
+      // final dioClient = DioClient();
+      // final response = await dioClient.post(
+      //   ApiEndpoints.login,
+      //   data: {
+      //     'email': _emailController.text,
+      //     'password': _passwordController.text,
+      //     'role': _selectedRole == UserRole.owner ? "1" : "0",
+      //   },
+      // );
 
       // 登录成功，打印响应数据
-      debugPrint('Login success: ${response.data}');
+      // debugPrint('Login success: ${response.data}');
 
       // TODO: 保存用户token和信息到本地存储
       // SharedPreferences prefs = await SharedPreferences.getInstance();
