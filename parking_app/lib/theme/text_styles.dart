@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
+import 'package:parking_app/theme/app_colors.dart';
 
 class TextStyles {
   static const String _fontFamily = 'Roboto';

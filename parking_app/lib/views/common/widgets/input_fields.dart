@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../theme/app_colors.dart';
-import '../../../theme/text_styles.dart';
+import 'package:parking_app/theme/app_colors.dart';
+import 'package:parking_app/theme/text_styles.dart';
 
 class AppTextField extends StatefulWidget {
   final String label;

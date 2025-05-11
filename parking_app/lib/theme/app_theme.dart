@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
-import 'text_styles.dart';
-import 'app_typography.dart';
+import 'package:parking_app/theme/app_colors.dart';
+import 'package:parking_app/theme/text_styles.dart';
+import 'package:parking_app/theme/app_typography.dart';
 
 /// Class responsible for defining the app theme and styling
 class AppTheme {
