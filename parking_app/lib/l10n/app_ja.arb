@@ -28,7 +28,7 @@
     "passwordTooShort": "パスワードは6文字以上で入力してください",
     "invalidInput": "無効な入力",
     "signup": "新規登録",
-    "backToLogin": "← ログインに戻る",
+    "backToLogin": "ログインに戻る",
     "createAccountTitle": "アカウントを作成する",
     "name": "氏名",
     "nameHint": "例: 山田 太郎",
