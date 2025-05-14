@@ -39,8 +39,6 @@
 │   │       │       ├── values
 │   │       │       │   └── styles.xml
 │   │       │       └── values-night
-│   │       │           └── styles.xml
-│   │       └── profile
 │   │           └── AndroidManifest.xml
 │   ├── build.gradle.kts
 │   ├── gradle
@@ -101,5 +99,35 @@
     │   └── Icon-maskable-512.png
     ├── index.html
     └── manifest.json
+
+/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app
+├── lib
+│   ├── main.dart
+│   ├── screens
+│   │   ├── home_screen.dart
+│   │   ├── login_screen.dart
+│   │   └── parking_details_screen.dart
+│   ├── models
+│   │   ├── parking_spot.dart
+│   │   └── user.dart
+│   ├── services
+│   │   ├── auth_service.dart
+│   │   └── parking_service.dart
+│   ├── widgets
+│   │   ├── parking_map.dart
+│   │   └── custom_button.dart
+│   └── utils
+│       ├── constants.dart
+│       └── helpers.dart
+├── assets
+│   ├── images
+│   │   └── logo.png
+│   └── fonts
+├── test
+│   └── widget_test.dart
+├── pubspec.yaml
+├── android
+├── ios
+└── web
 
 55 directories, 47 files
