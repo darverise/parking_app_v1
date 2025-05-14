@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:parking_app/core/services/auth_signin_service.dart';
 import 'package:parking_app/views/auth/home_screen.dart';
+import 'package:parking_app/views/auth/signup_screen.dart'; // Add this import
 import 'package:parking_app/views/common/widgets/buttons.dart';
 import 'package:parking_app/views/common/widgets/error.dart';
 import 'package:parking_app/views/common/widgets/input_fields.dart';
@@ -187,8 +188,9 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _navigateToRegister() {
-    // 使用直接的路径字符串而非未定义的AppRoutes常量
-    Navigator.of(context).pushNamed('/register');
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
   }
 
   void _navigateToForgotPassword() {
