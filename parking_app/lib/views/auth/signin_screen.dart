@@ -301,8 +301,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     // Password input field
                     AppTextField(
-                      label: l10n.password ?? "パスワード",
-                      hintText: l10n.passwordHint ?? '••••••••',
+                      label: l10n.password,
+                      hintText: l10n.passwordHint,
                       controller: _passwordController,
                       obscureText: true,
                       validator: _validatePassword,
@@ -338,7 +338,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         // Forgot password link
                         TextButton(
                           onPressed: _navigateToForgotPassword,
-                          child: Text(l10n.forgotPassword ?? "パスワードをお忘れの方はこちら"),
+                          child: Text(l10n.forgotPassword),
                         ),
                       ],
                     ),
@@ -347,7 +347,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     // Login button
                     PrimaryButton(
-                      text: l10n.login ?? "ログイン",
+                      text: l10n.login,
                       onPressed: _handleSignIn,
                       isLoading: _isLoading,
                     ),
@@ -361,7 +361,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
-                            l10n.or ?? "または",
+                            l10n.or,
                             style: TextStyles.bodyMedium.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -377,13 +377,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     Center(
                       child: RichText(
                         text: TextSpan(
-                          text: l10n.createAccount ?? "アカウントをお持ちでないですか？",
+                          text: l10n.createAccount,
                           style: TextStyles.bodyMedium.copyWith(
                             color: AppColors.textPrimary,
                           ),
                           children: [
                             TextSpan(
-                              text: l10n.registerNow ?? "新規登録",
+                              text: l10n.registerNow,
                               style: TextStyles.bodyMedium.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w500,

@@ -125,3 +125,62 @@ Flutter/Dart 的常见实践：
 例如，如果主类是 ApiResponse，文件名最好是 api_response.dart
 但在许多 Flutter 项目中，确实存在文件名与主类名不完全对应的情况
 ```
+
+## RUST
+
+``` rust
+我已经创建了一个完整的 .env 文件，它包含了所有原始文件中的配置项，并补充了其他可能需要的设置。这个配置文件分为几个主要部分：
+服务器设置
+
+HOST：HTTP 服务器绑定的 IP 地址
+PORT：HTTP 服务器监听端口
+
+数据库设置
+
+DB_HOST：PostgreSQL 数据库主机名
+DB_PORT：PostgreSQL 数据库端口
+DB_INITIAL_DATABASE：数据库名称
+DB_USERNAME：数据库用户名
+DB_PASSWORD：数据库密码
+DB_MAX_CONNECTIONS：连接池最大连接数
+DB_CONNECTION_TIMEOUT：连接超时（秒）
+DB_IDLE_TIMEOUT：空闲连接超时（秒）
+DB_POOL_TIMEOUT：获取连接池连接的超时时间（秒）
+DB_CONNECTION_POOL_SIZE：连接池初始大小
+
+JWT 设置
+
+JWT_SECRET：用于签名 JWT 的密钥
+
+日志设置
+
+RUST_LOG：Rust 日志级别
+LOG_LEVEL：应用日志级别
+LOG_DIR：日志文件目录
+APP_NAME：应用名称（用于日志文件名）
+ENABLE_FILE_LOGGING：是否启用文件日志
+ENABLE_CONSOLE_LOGGING：是否启用控制台日志
+
+应用特定设置
+
+API_TIMEOUT：API 请求超时时间（秒）
+ENABLE_SWAGGER：是否启用 Swagger 文档
+CORS_ALLOW_ORIGIN：CORS 允许的源
+MAX_REQUEST_BODY_SIZE：请求体最大大小（字节）
+
+速率限制设置
+
+RATE_LIMIT_REQUESTS：单位时间内允许的最大请求数
+RATE_LIMIT_DURATION：速率限制时间段（秒）
+
+安全设置
+
+SECURE_COOKIES：是否使用安全 Cookie（生产环境应设为 true）
+HASH_COST：bcrypt 哈希成本因子
+PASSWORD_MIN_LENGTH：密码最小长度
+
+开发/调试设置
+
+DEBUG_MODE：是否启用调试模式（生产环境应设为 false）
+PRINT_DB_QUERIES：是否打印数据库查询
+```
