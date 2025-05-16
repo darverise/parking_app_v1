@@ -11,14 +11,14 @@ class SlidingDatePicker extends StatefulWidget {
   final String hintText;
 
   const SlidingDatePicker({
-    Key? key,
+    super.key,
     required this.initialDate,
     required this.firstDate,
     required this.lastDate,
     required this.onDateSelected,
     required this.labelText,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   State<SlidingDatePicker> createState() => _SlidingDatePickerState();

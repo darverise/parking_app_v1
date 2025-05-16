@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:parking_app/theme/app_colors.dart';
-import 'package:parking_app/theme/sliding_date_picker.dart';
 import 'package:parking_app/theme/text_styles.dart';
 import 'package:parking_app/views/common/widgets/input_fields.dart';
 import 'package:parking_app/views/common/widgets/buttons.dart';
 import 'package:parking_app/views/common/widgets/error.dart';
+import 'package:parking_app/views/auth/verification_code_screen.dart'; // Add this import
 
 // Define enum outside the class
 enum UserRole { user, owner }
@@ -61,6 +61,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding: EdgeInsets.all(isSmallScreen ? 24.0 : 32.0),
               child: Form(
                 key: _formKey,
+                // Add autovalidateMode to clear errors when user makes corrections
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -240,18 +242,59 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 16.0),
 
-                    // Custom sliding date picker
-                    SlidingDatePicker(
-                      initialDate: _selectedDate,
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime.now(),
-                      labelText: l10n.birthday,
-                      hintText: l10n.birthdayHint,
-                      onDateSelected: (date) {
-                        setState(() {
-                          _selectedDate = date;
-                        });
-                      },
+                    // Custom date picker field (replacing SlidingDatePicker)
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.03),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: InkWell(
+                        onTap: () => _selectDate(context, l10n),
+                        child: InputDecorator(
+                          decoration: InputDecoration(
+                            labelText: l10n.birthday,
+                            hintText: l10n.birthdayHint,
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            // Use semi-transparent border for date picker field
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: AppColors.textSecondary.withOpacity(0.3),
+                                width: 1.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: AppColors.textSecondary.withOpacity(0.3),
+                                width: 1.0,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: AppColors.surface,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${_selectedDate.year}/${_selectedDate.month.toString().padLeft(2, '0')}/${_selectedDate.day.toString().padLeft(2, '0')}",
+                                style: TextStyles.bodyMedium,
+                              ),
+                              const Icon(Icons.calendar_today, size: 18),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 16.0),
 
@@ -369,9 +412,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                             // Simulate API call
                             Future.delayed(const Duration(seconds: 2), () {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              // Use mounted check before setState to avoid calling setState after disposal
+                              if (mounted) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+
+                                // Navigate to verification code screen after successful signup
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => VerificationCodeScreen(
+                                          email: _emailController.text,
+                                        ),
+                                  ),
+                                );
+                              }
                             });
                           }
                         },
@@ -442,11 +499,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
         obscureText: obscureText,
         showTogglePasswordVisibility: showTogglePasswordVisibility,
         validator: validator,
+        // Add onChanged to trigger validation when input changes
+        onChanged: (_) {
+          // This will trigger validation as you type
+          if (_formKey.currentState != null) {
+            _formKey.currentState!.validate();
+          }
+        },
         decoration: InputDecoration(
           labelText: label,
           hintText: hintText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          // Use semi-transparent border instead of solid black
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              color: AppColors.textSecondary.withOpacity(0.3),
+              width: 1.0,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              color: AppColors.primary.withOpacity(0.7),
+              width: 1.5,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              color: Colors.red.withOpacity(0.7),
+              width: 1.0,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              color: Colors.red.withOpacity(0.9),
+              width: 1.5,
+            ),
+          ),
           filled: true,
           fillColor: AppColors.surface,
           contentPadding: const EdgeInsets.symmetric(
@@ -502,5 +594,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  // Add this new method for date selection
+  Future<void> _selectDate(BuildContext context, AppLocalizations l10n) async {
+    // Dismiss keyboard if it's open
+    FocusScope.of(context).unfocus();
+
+    // Delay to allow keyboard to dismiss completely
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.primary,
+              onPrimary: Colors.white,
+              onSurface: AppColors.textPrimary,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && picked != _selectedDate) {
+      // Use setState outside of the layout phase
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
   }
 }

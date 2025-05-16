@@ -12,6 +12,7 @@ class AppTextField extends StatefulWidget {
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
+  final void Function(String)? onChanged; // Added onChanged property
   final bool showTogglePasswordVisibility;
   final InputDecoration? decoration;
 
@@ -26,6 +27,7 @@ class AppTextField extends StatefulWidget {
     this.focusNode,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.onChanged, // Added to constructor
     this.showTogglePasswordVisibility = false,
     this.decoration,
   });
@@ -139,6 +141,7 @@ class _AppTextFieldState extends State<AppTextField> {
       focusNode: _focusNode,
       textInputAction: widget.textInputAction,
       onFieldSubmitted: widget.onFieldSubmitted,
+      onChanged: widget.onChanged, // Pass onChanged to TextFormField
       decoration: finalDecoration,
       style: TextStyles.inputText,
     );

@@ -14,7 +14,6 @@
     "profile": "プロフィール",
     "help": "ヘルプ",
     "language": "言語",
-    
     "email": "メールアドレス",
     "password": "パスワード",
     "forgotPassword": "パスワードをお忘れの方はこちら",
@@ -51,5 +50,21 @@
     "confirmPasswordHint": "もう一度パスワードを入力",
     "passwordsDoNotMatch": "パスワードが一致しません",
     "user": "ユーザー",
-    "owner": "オーナー"
+    "owner": "オーナー",
+    "verificationCode": "認証コード",
+    "verificationCodeInstructions": "メールアドレスに送信された6桁の認証コードを入力してください。",
+    "verify": "確認",
+    "identReceiveCode": "コードが届きませんか？",
+    "resend": "再送信",
+    "verifyWithPhone": "電話番号で認証したい場合",
+    "receiveCodeViaSMS": "SMSで認証コードを受け取る",
+    "verificationCodeIncomplete": "6桁すべてを入力してください",
+    "verificationCodeResent": "認証コードが再送信されました",
+    "backToRegistration": "登録に戻る",
+    "smsVerificationCode": "SMS認証コード",
+    "smsVerificationCodeInstructions": "電話番号に送信された6桁の認証コードを入力してください。",
+    "switchedToSmsVerification": "SMS認証に切り替えました",
+    "verifyWithEmail": "メールで認証したい場合",
+    "receiveCodeViaEmail": "メールで認証コードを受け取る",
+    "switchedToEmailVerification": "メール認証に切り替えました"
 }
