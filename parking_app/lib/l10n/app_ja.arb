@@ -1,71 +1,275 @@
 {
     "@@locale": "ja",
     "appTitle": "パーキングアプリ",
+    "@appTitle": {
+        "description": "The title of the application"
+    },
     "welcomeMessage": "パーキングアプリへようこそ",
+    "@welcomeMessage": {
+        "description": "Welcome message shown on the home screen"
+    },
     "login": "ログイン",
+    "@login": {
+        "description": "Login button text"
+    },
     "logout": "ログアウト",
+    "@logout": {
+        "description": "Logout button text"
+    },
     "findParking": "駐車場を探す",
+    "@findParking": {
+        "description": "Find parking button text"
+    },
     "availableSpots": "利用可能なスポット",
+    "@availableSpots": {
+        "description": "Label for available parking spots"
+    },
     "parkingTime": "駐車時間",
+    "@parkingTime": {
+        "description": "Label for parking time"
+    },
     "startParking": "駐車開始",
+    "@startParking": {
+        "description": "Button text for starting parking"
+    },
     "endParking": "駐車終了",
+    "@endParking": {
+        "description": "Button text for ending parking"
+    },
     "payment": "支払い",
+    "@payment": {
+        "description": "Payment label"
+    },
     "settings": "設定",
+    "@settings": {
+        "description": "Settings label"
+    },
     "profile": "プロフィール",
+    "@profile": {
+        "description": "Profile label"
+    },
     "help": "ヘルプ",
+    "@help": {
+        "description": "Help label"
+    },
     "language": "言語",
+    "@language": {
+        "description": "Language label"
+    },
     "email": "メールアドレス",
+    "@email": {
+        "description": "Email label"
+    },
     "password": "パスワード",
+    "@password": {
+        "description": "Password label"
+    },
     "forgotPassword": "パスワードをお忘れの方はこちら",
+    "@forgotPassword": {
+        "description": "Forgot password link text"
+    },
     "or": "または",
+    "@or": {
+        "description": "Or divider text"
+    },
     "createAccount": "アカウントをお持ちでないですか？",
+    "@createAccount": {
+        "description": "Prompt for users who do not have an account"
+    },
     "emailHint": "example@email.com",
+    "@emailHint": {
+        "description": "Hint text for email input"
+    },
     "passwordHint": "パスワードを入力",
+    "@passwordHint": {
+        "description": "Hint text for password input"
+    },
     "registerNow": "新規登録",
+    "@registerNow": {
+        "description": "Register now link text"
+    },
     "requiredField": "この項目は必須です",
+    "@requiredField": {
+        "description": "Validation message for required fields"
+    },
     "invalidEmail": "有効なメールアドレスを入力してください",
+    "@invalidEmail": {
+        "description": "Validation message for invalid email"
+    },
     "passwordTooShort": "パスワードは6文字以上で入力してください",
+    "@passwordTooShort": {
+        "description": "Validation message for short password"
+    },
     "invalidInput": "無効な入力",
+    "@invalidInput": {
+        "description": "Validation message for invalid input"
+    },
     "signup": "新規登録",
+    "@signup": {
+        "description": "Signup button text"
+    },
     "backToLogin": "ログインに戻る",
+    "@backToLogin": {
+        "description": "Back to login button text"
+    },
     "createAccountTitle": "アカウントを作成する",
+    "@createAccountTitle": {
+        "description": "Title for create account screen"
+    },
     "name": "氏名",
+    "@name": {
+        "description": "Name label"
+    },
     "nameHint": "例: 山田 太郎",
+    "@nameHint": {
+        "description": "Name input hint"
+    },
     "phone": "電話番号",
+    "@phone": {
+        "description": "Phone label"
+    },
     "phoneHint": "例: 090-1234-5678",
+    "@phoneHint": {
+        "description": "Phone input hint"
+    },
     "postalCode": "郵便番号",
+    "@postalCode": {
+        "description": "Postal code label"
+    },
     "postalCodeHint": "例: 123-4567",
+    "@postalCodeHint": {
+        "description": "Postal code input hint"
+    },
     "prefecture": "都道府県",
+    "@prefecture": {
+        "description": "Prefecture label"
+    },
     "prefectureHint": "例: 東京都",
+    "@prefectureHint": {
+        "description": "Prefecture input hint"
+    },
     "address": "建物名や部屋番号",
+    "@address": {
+        "description": "Address label"
+    },
     "addressHint": "例: 渋谷区1-1-1 サンプルマンション101号室",
+    "@addressHint": {
+        "description": "Address input hint"
+    },
     "birthday": "生年月日",
+    "@birthday": {
+        "description": "Birthday label"
+    },
     "birthdayHint": "例: 1990-01-01",
+    "@birthdayHint": {
+        "description": "Birthday input hint"
+    },
     "gender": "性別",
+    "@gender": {
+        "description": "Gender label"
+    },
     "genderHint": "選択してください",
+    "@genderHint": {
+        "description": "Gender select hint"
+    },
     "genderMale": "男性",
+    "@genderMale": {
+        "description": "Male label"
+    },
     "genderFemale": "女性",
+    "@genderFemale": {
+        "description": "Female label"
+    },
     "genderOther": "その他",
+    "@genderOther": {
+        "description": "Other gender label"
+    },
     "confirmPassword": "パスワード確認",
+    "@confirmPassword": {
+        "description": "Confirm password label"
+    },
     "confirmPasswordHint": "もう一度パスワードを入力",
+    "@confirmPasswordHint": {
+        "description": "Confirm password input hint"
+    },
     "passwordsDoNotMatch": "パスワードが一致しません",
+    "@passwordsDoNotMatch": {
+        "description": "Passwords do not match validation"
+    },
     "user": "ユーザー",
+    "@user": {
+        "description": "User label"
+    },
     "owner": "オーナー",
+    "@owner": {
+        "description": "Owner label"
+    },
     "verificationCode": "認証コード",
+    "@verificationCode": {
+        "description": "Verification code label"
+    },
     "verificationCodeInstructions": "メールアドレスに送信された6桁の認証コードを入力してください。",
+    "@verificationCodeInstructions": {
+        "description": "Verification code instructions"
+    },
     "verify": "確認",
+    "@verify": {
+        "description": "Verify button text"
+    },
     "identReceiveCode": "コードが届きませんか？",
+    "@identReceiveCode": {
+        "description": "Didn't receive code prompt"
+    },
     "resend": "再送信",
+    "@resend": {
+        "description": "Resend code button text"
+    },
     "verifyWithPhone": "電話番号で認証したい場合",
+    "@verifyWithPhone": {
+        "description": "Switch to phone verification"
+    },
     "receiveCodeViaSMS": "SMSで認証コードを受け取る",
+    "@receiveCodeViaSMS": {
+        "description": "Receive code via SMS"
+    },
     "verificationCodeIncomplete": "6桁すべてを入力してください",
+    "@verificationCodeIncomplete": {
+        "description": "Verification code incomplete validation"
+    },
     "verificationCodeResent": "認証コードが再送信されました",
+    "@verificationCodeResent": {
+        "description": "Verification code resent message"
+    },
     "backToRegistration": "登録に戻る",
+    "@backToRegistration": {
+        "description": "Back to registration button"
+    },
     "smsVerificationCode": "SMS認証コード",
+    "@smsVerificationCode": {
+        "description": "SMS verification code label"
+    },
     "smsVerificationCodeInstructions": "電話番号に送信された6桁の認証コードを入力してください。",
+    "@smsVerificationCodeInstructions": {
+        "description": "SMS verification code instructions"
+    },
     "switchedToSmsVerification": "SMS認証に切り替えました",
+    "@switchedToSmsVerification": {
+        "description": "Switched to SMS verification message"
+    },
     "verifyWithEmail": "メールで認証したい場合",
+    "@verifyWithEmail": {
+        "description": "Switch to email verification"
+    },
     "receiveCodeViaEmail": "メールで認証コードを受け取る",
+    "@receiveCodeViaEmail": {
+        "description": "Receive code via email"
+    },
     "switchedToEmailVerification": "メール認証に切り替えました",
-    "alreadyHaveAccount": "すでにアカウントをお持ちですか？"
+    "@switchedToEmailVerification": {
+        "description": "Switched to email verification message"
+    },
+    "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
+    "@alreadyHaveAccount": {
+        "description": "Already have account prompt"
+    }
 }
