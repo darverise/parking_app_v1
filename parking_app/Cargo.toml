@@ -3,22 +3,30 @@ name = "parking_app"
 version = "1.0.0"
 edition = "2021"
 
+[lib]
+name = "parking_app_backend"
+path = "src/lib.rs"
+
+[[bin]]
+name = "parking_app_server"
+path = "src/main.rs"
+
 [dependencies]
-# Web 框架
+# Web framework
 actix-web = "4.11.0"
 actix-rt = "2.9.0"
 actix-cors = "0.7.1"
 
-# 数据库
+# Database
 sqlx = { version = "0.8.5", features = ["runtime-tokio-rustls", "postgres", "macros", "uuid", "chrono", "json", "time"] }
 tokio-postgres = { version = "0.7", features = ["with-uuid-1", "with-chrono-0_4"] }
 deadpool-postgres = "0.14.1"
 
-# 环境变量
+# Environment variables
 dotenv = "0.15"
 config = "0.15.11"
 
-# 日志
+# Logging
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] }
 tracing-appender = "0.2"
@@ -27,14 +35,14 @@ tracing-actix-web = "0.7"
 log = "0.4"
 env_logger = "0.11.8"
 
-# 错误处理
+# Error handling
 anyhow = "1.0.98"
 thiserror = "2.0.12"
 
-# 异步运行时
+# Async runtime
 tokio = { version = "1.28", features = ["full"] }
 
-# 实用工具
+# Utilities
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 jsonwebtoken = "9.3.1"
@@ -44,3 +52,10 @@ futures = "0.3"
 argon2 = "0.5"
 rand = "0.9.1"
 async-trait = "0.1.88"
+bcrypt = "0.17.0"
+derive_more = "0.99.17"
+
+[workspace]
+members = [
+    ".",
+]

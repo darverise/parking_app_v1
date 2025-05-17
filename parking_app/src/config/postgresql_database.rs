@@ -10,19 +10,19 @@ use tokio::time::sleep;
 
 #[derive(Error, Debug)]
 pub enum DatabaseError {
-    #[error("Database connection error: {0}")]
+    #[error("データベース接続エラー: {0}")]
     ConnectionError(String),
 
-    #[error("Query execution error: {0}")]
+    #[error("クエリ実行エラー: {0}")]
     QueryError(String),
 
-    #[error("Transaction error: {0}")]
+    #[error("トランザクションエラー: {0}")]
     TransactionError(String),
 
-    #[error("Database timeout error")]
+    #[error("データベースタイムアウトエラー")]
     TimeoutError,
 
-    #[error("Row not found")]
+    #[error("行が見つかりません")]
     RowNotFound,
 }
 
@@ -46,30 +46,30 @@ impl DatabaseConfig {
             port: env::var("DB_PORT")
                 .unwrap_or_else(|_| "5432".to_string())
                 .parse()
-                .context("Failed to parse database port")?,
-            username: env::var("DB_USERNAME").context("DB_USERNAME not set")?,
-            password: env::var("DB_PASSWORD").context("DB_PASSWORD not set")?,
-            database_name: env::var("DB_INITIAL_DATABASE").context("DB_INITIAL_DATABASE not set")?,
+                .context("データベースポートの解析に失敗しました")?,
+            username: env::var("DB_USERNAME").context("DB_USERNAMEが設定されていません")?,
+            password: env::var("DB_PASSWORD").context("DB_PASSWORDが設定されていません")?,
+            database_name: env::var("DB_INITIAL_DATABASE").context("DB_INITIAL_DATABASEが設定されていません")?,
             pool_size: env::var("DB_CONNECTION_POOL_SIZE")
                 .unwrap_or_else(|_| "10".to_string())
                 .parse()
-                .context("Failed to parse pool size")?,
+                .context("コネクションプールサイズの解析に失敗しました")?,
             connection_timeout: env::var("DB_CONNECTION_TIMEOUT")
                 .unwrap_or_else(|_| "10".to_string())
                 .parse()
-                .context("Failed to parse connection timeout")?,
+                .context("コネクションタイムアウトの解析に失敗しました")?,
             idle_timeout: env::var("DB_IDLE_TIMEOUT")
                 .unwrap_or_else(|_| "5".to_string())
                 .parse()
-                .context("Failed to parse idle timeout")?,
+                .context("アイドルタイムアウトの解析に失敗しました")?,
             pool_timeout: env::var("DB_POOL_TIMEOUT")
                 .unwrap_or_else(|_| "30".to_string())
                 .parse()
-                .context("Failed to parse pool timeout")?,
+                .context("プールタイムアウトの解析に失敗しました")?,
             max_connections: env::var("DB_MAX_CONNECTIONS")
                 .unwrap_or_else(|_| "20".to_string())
                 .parse()
-                .context("Failed to parse max connections")?,
+                .context("最大コネクション数の解析に失敗しました")?,
         })
     }
 
@@ -93,12 +93,12 @@ impl PostgresDatabase {
             .idle_timeout(Duration::from_secs(config.idle_timeout))
             .connect(&config.connection_string())
             .await
-            .context("Failed to create database connection pool")?;
+            .context("データベースコネクションプールの作成に失敗しました")?;
 
         // Test connection
         pool.acquire()
             .await
-            .context("Failed to acquire connection from pool")?;
+            .context("プールからのコネクション取得に失敗しました")?;
 
         Ok(Self { pool })
     }
@@ -116,7 +116,7 @@ impl PostgresDatabase {
             .pool
             .acquire()
             .await
-            .context("Failed to acquire connection")?;
+            .context("コネクションの取得に失敗しました")?;
         self.execute_with_retry(conn, query, params, 3).await
     }
 
@@ -157,7 +157,7 @@ impl PostgresDatabase {
             .pool
             .acquire()
             .await
-            .context("Failed to acquire connection")?;
+            .context("コネクションの取得に失敗しました")?;
         let row = sqlx::query(query)
             .fetch_one(&self.pool)
             .await
@@ -228,7 +228,7 @@ impl PostgresDatabase {
         self.pool
             .begin()
             .await
-            .context("Failed to begin transaction")
+            .context("トランザクションの開始に失敗しました")
     }
 
     pub async fn with_transaction<F, R>(&self, f: F) -> Result<R>
@@ -241,16 +241,16 @@ impl PostgresDatabase {
             .pool
             .begin()
             .await
-            .context("Failed to begin transaction")?;
+            .context("トランザクションの開始に失敗しました")?;
 
         match f(&mut tx).await {
             Ok(result) => {
-                tx.commit().await.context("Failed to commit transaction")?;
+                tx.commit().await.context("トランザクションのコミットに失敗しました")?;
                 Ok(result)
             }
             Err(e) => {
                 if let Err(rollback_err) = tx.rollback().await {
-                    eprintln!("Failed to rollback transaction: {}", rollback_err);
+                    eprintln!("トランザクションのロールバックに失敗しました: {}", rollback_err);
                 }
                 Err(e)
             }
@@ -307,6 +307,5 @@ fn calculate_backoff_ms(attempt: u8) -> u64 {
     let max_backoff = 5000;
     let mut rng = rand::rng();
     let jitter: u64 = rng.random_range(..10);
-
     (base * 100 + jitter).min(max_backoff)
 }
