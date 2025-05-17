@@ -66,5 +66,6 @@
     "switchedToSmsVerification": "SMS認証に切り替えました",
     "verifyWithEmail": "メールで認証したい場合",
     "receiveCodeViaEmail": "メールで認証コードを受け取る",
-    "switchedToEmailVerification": "メール認証に切り替えました"
+    "switchedToEmailVerification": "メール認証に切り替えました",
+    "alreadyHaveAccount": "すでにアカウントをお持ちですか？"
 }

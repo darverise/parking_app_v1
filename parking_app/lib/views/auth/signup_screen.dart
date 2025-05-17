@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:parking_app/theme/app_colors.dart';
 import 'package:parking_app/theme/text_styles.dart';
 import 'package:parking_app/views/common/widgets/input_fields.dart';
-import 'package:parking_app/views/common/widgets/buttons.dart';
 import 'package:parking_app/views/common/widgets/error.dart';
 import 'package:parking_app/views/auth/verification_code_screen.dart'; // Add this import
 
@@ -52,21 +51,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final isSmallScreen = screenSize.width < 600;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.white, // 统一背景色
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Container(
               width: isSmallScreen ? double.infinity : 500,
-              padding: EdgeInsets.all(isSmallScreen ? 24.0 : 32.0),
+              padding: EdgeInsets.only(
+                left: isSmallScreen ? 24.0 : 32.0,
+                right: isSmallScreen ? 24.0 : 32.0,
+                bottom: isSmallScreen ? 24.0 : 32.0,
+                top: isSmallScreen ? 24.0 : 32.0,
+              ),
               child: Form(
                 key: _formKey,
-                // Add autovalidateMode to clear errors when user makes corrections
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // ← ログインに戻る
+                    // 返回按钮，风格与 verification_code_screen 一致
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton.icon(
@@ -87,19 +90,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 8.0),
 
-                    // App logo with enhanced styling
+                    // App logo，简化为圆形白底+主色icon
                     Container(
                       height: 80,
                       width: 80,
                       margin: const EdgeInsets.only(bottom: 16.0),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(40),
+                        border: Border.all(
+                          color: AppColors.primary.withOpacity(0.15),
+                          width: 2,
+                        ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withOpacity(0.2),
-                            blurRadius: 10,
-                            spreadRadius: 1,
+                            color: AppColors.primary.withOpacity(0.08),
+                            blurRadius: 12,
+                            spreadRadius: 2,
                           ),
                         ],
                       ),
@@ -110,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
 
-                    // Title with enhanced styling
+                    // 标题
                     Text(
                       l10n.signup,
                       style: TextStyles.titleLarge.copyWith(
@@ -122,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 8.0),
 
-                    // Subtitle with enhanced styling
+                    // 副标题
                     Text(
                       l10n.createAccountTitle,
                       style: TextStyles.bodyMedium.copyWith(
@@ -138,19 +145,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: FormErrorText(text: _errorMessage),
                       ),
 
-                    // User/Owner segmented control with enhanced styling
+                    // 角色选择，风格与 verification_code_screen 按钮一致
                     Container(
                       margin: const EdgeInsets.only(bottom: 24.0),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
                         border: Border.all(
-                          color: AppColors.primary.withOpacity(0.2),
+                          color: Colors.grey[300]!,
                           width: 1.0,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.grey.withOpacity(0.04),
                             blurRadius: 8.0,
                             offset: const Offset(0, 2),
                           ),
@@ -175,7 +182,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
 
-                    // Name field with floating label
+                    // 输入框区域
                     _buildFloatingLabelTextField(
                       label: l10n.name,
                       hintText: l10n.nameHint,
@@ -187,8 +194,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   : null,
                     ),
                     const SizedBox(height: 16.0),
-
-                    // Phone field with floating label
                     _buildFloatingLabelTextField(
                       label: l10n.phone,
                       hintText: l10n.phoneHint,
@@ -201,8 +206,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   : null,
                     ),
                     const SizedBox(height: 16.0),
-
-                    // Postal code field with floating label
                     _buildFloatingLabelTextField(
                       label: l10n.postalCode,
                       hintText: l10n.postalCodeHint,
@@ -215,8 +218,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   : null,
                     ),
                     const SizedBox(height: 16.0),
-
-                    // Prefecture field with floating label
                     _buildFloatingLabelTextField(
                       label: l10n.prefecture,
                       hintText: l10n.prefectureHint,
@@ -228,8 +229,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   : null,
                     ),
                     const SizedBox(height: 16.0),
-
-                    // Address field with floating label
                     _buildFloatingLabelTextField(
                       label: l10n.address,
                       hintText: l10n.addressHint,
@@ -242,13 +241,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 16.0),
 
-                    // Custom date picker field (replacing SlidingDatePicker)
+                    // 生日选择器，风格统一
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Colors.grey[300]!,
+                          width: 1.0,
+                        ),
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
+                            color: Colors.grey.withOpacity(0.03),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -256,29 +260,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       child: InkWell(
                         onTap: () => _selectDate(context, l10n),
+                        borderRadius: BorderRadius.circular(8),
                         child: InputDecorator(
-                          decoration: InputDecoration(
-                            labelText: l10n.birthday,
-                            hintText: l10n.birthdayHint,
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            // Use semi-transparent border for date picker field
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: AppColors.textSecondary.withOpacity(0.3),
-                                width: 1.0,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: AppColors.textSecondary.withOpacity(0.3),
-                                width: 1.0,
-                              ),
-                            ),
-                            filled: true,
-                            fillColor: AppColors.surface,
-                            contentPadding: const EdgeInsets.symmetric(
+                          decoration: const InputDecoration(
+                            labelText: null,
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
                               horizontal: 16,
                               vertical: 16,
                             ),
@@ -290,7 +277,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 "${_selectedDate.year}/${_selectedDate.month.toString().padLeft(2, '0')}/${_selectedDate.day.toString().padLeft(2, '0')}",
                                 style: TextStyles.bodyMedium,
                               ),
-                              const Icon(Icons.calendar_today, size: 18),
+                              const Icon(
+                                Icons.calendar_today,
+                                size: 18,
+                                color: AppColors.primary,
+                              ),
                             ],
                           ),
                         ),
@@ -298,13 +289,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 16.0),
 
-                    // Gender dropdown with enhanced styling
+                    // 性别下拉框
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Colors.grey[300]!,
+                          width: 1.0,
+                        ),
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
+                            color: Colors.grey.withOpacity(0.03),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -312,15 +308,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       child: DropdownButtonFormField<String>(
                         value: _selectedGender,
-                        decoration: InputDecoration(
-                          labelText: l10n.gender,
-                          hintText: l10n.genderHint,
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                        decoration: const InputDecoration(
+                          labelText: null,
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
                           ),
-                          filled: true,
-                          fillColor: AppColors.surface,
                         ),
                         items: [
                           DropdownMenuItem(
@@ -342,11 +336,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 v == null || v.isEmpty
                                     ? l10n.requiredField
                                     : null,
+                        hint: Text(l10n.gender),
                       ),
                     ),
                     const SizedBox(height: 16.0),
 
-                    // Email field with floating label
                     _buildFloatingLabelTextField(
                       label: l10n.email,
                       hintText: l10n.emailHint,
@@ -359,8 +353,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   : null,
                     ),
                     const SizedBox(height: 16.0),
-
-                    // Password field with floating label
                     _buildFloatingLabelTextField(
                       label: l10n.password,
                       hintText: l10n.passwordHint,
@@ -374,8 +366,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   : null,
                     ),
                     const SizedBox(height: 16.0),
-
-                    // Confirm password field with floating label
                     _buildFloatingLabelTextField(
                       label: l10n.confirmPassword,
                       hintText: l10n.confirmPasswordHint,
@@ -388,37 +378,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ? l10n.passwordsDoNotMatch
                                   : null,
                     ),
-                    const SizedBox(height: 24.0),
+                    const SizedBox(height: 32.0),
 
-                    // Enhanced signup button
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withOpacity(0.3),
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: PrimaryButton(
-                        text: l10n.signup,
+                    // 注册按钮，风格统一
+                    SizedBox(
+                      height: 56,
+                      child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            // Here we would handle the signup process
                             setState(() {
                               _isLoading = true;
                             });
-                            // Simulate API call
                             Future.delayed(const Duration(seconds: 2), () {
-                              // Use mounted check before setState to avoid calling setState after disposal
                               if (mounted) {
                                 setState(() {
                                   _isLoading = false;
                                 });
-
-                                // Navigate to verification code screen after successful signup
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -432,22 +407,72 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                           }
                         },
-                        isLoading: _isLoading,
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primary,
+                          minimumSize: const Size(160, 48),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 4,
+                          shadowColor: AppColors.primary.withOpacity(0.15),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                        ),
+                        child:
+                            _isLoading
+                                ? const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                                : Text(
+                                  l10n.signup,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                       ),
                     ),
 
-                    // Enhanced login link
+                    // 分割线
+                    const SizedBox(height: 32.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Divider(color: Colors.grey[300], thickness: 1),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            l10n.or,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(color: Colors.grey[300], thickness: 1),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 24.0),
+
+                    // 登录链接
                     Center(
                       child: RichText(
                         text: TextSpan(
-                          text: "すでにアカウントをお持ちですか？ ",
+                          text: "${l10n.alreadyHaveAccount} ",
                           style: TextStyles.bodyMedium.copyWith(
                             color: AppColors.textPrimary,
                           ),
                           children: [
                             TextSpan(
-                              text: "ログイン",
+                              text: l10n.login,
                               style: TextStyles.bodyMedium.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w500,
@@ -471,6 +496,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  // 输入框风格统一为 AppTextField，移除外层 Container 和装饰
   Widget _buildFloatingLabelTextField({
     required String label,
     required String hintText,
@@ -480,76 +506,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     bool showTogglePasswordVisibility = false,
     String? Function(String?)? validator,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: AppTextField(
-        label: label,
-        hintText: hintText,
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        showTogglePasswordVisibility: showTogglePasswordVisibility,
-        validator: validator,
-        // Add onChanged to trigger validation when input changes
-        onChanged: (_) {
-          // This will trigger validation as you type
-          if (_formKey.currentState != null) {
-            _formKey.currentState!.validate();
-          }
-        },
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: hintText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          // Use semi-transparent border instead of solid black
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: AppColors.textSecondary.withOpacity(0.3),
-              width: 1.0,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: AppColors.primary.withOpacity(0.7),
-              width: 1.5,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: Colors.red.withOpacity(0.7),
-              width: 1.0,
-            ),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: Colors.red.withOpacity(0.9),
-              width: 1.5,
-            ),
-          ),
-          filled: true,
-          fillColor: AppColors.surface,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-        ),
-      ),
+    return AppTextField(
+      label: label,
+      hintText: hintText,
+      controller: controller,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      showTogglePasswordVisibility: showTogglePasswordVisibility,
+      validator: validator,
+      onChanged: (_) {
+        if (_formKey.currentState != null) {
+          _formKey.currentState!.validate();
+        }
+      },
     );
   }
 
+  // 角色选择按钮风格统一
   Widget _buildRoleOption(UserRole role, String label, IconData icon) {
     final isSelected = _selectedRole == role;
     return Expanded(
@@ -559,19 +532,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 12.0),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primary : Colors.transparent,
+            color: isSelected ? AppColors.primary : Colors.white,
             borderRadius: BorderRadius.circular(6.0),
-            boxShadow:
-                isSelected
-                    ? [
-                      BoxShadow(
-                        color: AppColors.primary.withOpacity(0.3),
-                        blurRadius: 4,
-                        spreadRadius: 1,
-                        offset: const Offset(0, 1),
-                      ),
-                    ]
-                    : null,
+            border: Border.all(
+              color: isSelected ? AppColors.primary : Colors.grey[300]!,
+              width: isSelected ? 2 : 1,
+            ),
+            boxShadow: [
+              if (isSelected)
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.08),
+                  blurRadius: 8,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 2),
+                ),
+            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -579,13 +554,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Icon(
                 icon,
                 size: 18.0,
-                color: isSelected ? Colors.white : AppColors.textPrimary,
+                color: isSelected ? Colors.white : AppColors.primary,
               ),
               const SizedBox(width: 8.0),
               Text(
                 label,
                 style: TextStyles.bodyMedium.copyWith(
-                  color: isSelected ? Colors.white : AppColors.textPrimary,
+                  color: isSelected ? Colors.white : AppColors.primary,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
