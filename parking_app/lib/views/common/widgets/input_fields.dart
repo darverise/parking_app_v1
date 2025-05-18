@@ -12,7 +12,9 @@ class AppTextField extends StatefulWidget {
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
+  final void Function(String)? onChanged; // Added onChanged property
   final bool showTogglePasswordVisibility;
+  final InputDecoration? decoration;
 
   const AppTextField({
     super.key,
@@ -25,7 +27,9 @@ class AppTextField extends StatefulWidget {
     this.focusNode,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.onChanged, // Added to constructor
     this.showTogglePasswordVisibility = false,
+    this.decoration,
   });
 
   @override
@@ -34,51 +38,112 @@ class AppTextField extends StatefulWidget {
 
 class _AppTextFieldState extends State<AppTextField> {
   late bool _obscureText;
+  late FocusNode _focusNode;
+  bool _isFocused = false;
 
   @override
   void initState() {
     super.initState();
     _obscureText = widget.obscureText;
+    _focusNode = widget.focusNode ?? FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+  }
+
+  @override
+  void dispose() {
+    if (widget.focusNode == null) {
+      _focusNode.removeListener(_handleFocusChange);
+      _focusNode.dispose();
+    }
+    super.dispose();
+  }
+
+  void _handleFocusChange() {
+    setState(() {
+      _isFocused = _focusNode.hasFocus;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Text(widget.label, style: TextStyles.inputLabel),
-        ),
-        TextFormField(
-          controller: widget.controller,
-          obscureText: _obscureText,
-          keyboardType: widget.keyboardType,
-          validator: widget.validator,
-          focusNode: widget.focusNode,
-          textInputAction: widget.textInputAction,
-          onFieldSubmitted: widget.onFieldSubmitted,
-          decoration: InputDecoration(
-            hintText: widget.hintText,
-            hintStyle: TextStyles.inputHint,
-            suffixIcon:
-                widget.showTogglePasswordVisibility
-                    ? IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: AppColors.textSecondary,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    )
-                    : null,
+    final defaultDecoration = InputDecoration(
+      labelText: widget.label,
+      hintText: widget.hintText,
+      hintStyle: TextStyles.inputHint,
+      labelStyle: TextStyle(
+        color: _isFocused ? AppColors.primary : AppColors.textSecondary,
+        fontWeight: _isFocused ? FontWeight.w500 : FontWeight.normal,
+      ),
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: AppColors.divider),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: AppColors.divider),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: AppColors.primary, width: 2),
+      ),
+      filled: true,
+      fillColor: AppColors.surface,
+      suffixIcon:
+          widget.showTogglePasswordVisibility
+              ? IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
+                  color:
+                      _isFocused ? AppColors.primary : AppColors.textSecondary,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              )
+              : null,
+    );
+
+    final finalDecoration =
+        widget.decoration?.copyWith(
+          labelStyle: TextStyle(
+            color: _isFocused ? AppColors.primary : AppColors.textSecondary,
+            fontWeight: _isFocused ? FontWeight.w500 : FontWeight.normal,
           ),
-          style: TextStyles.inputText,
-        ),
-      ],
+          suffixIcon:
+              widget.showTogglePasswordVisibility
+                  ? IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color:
+                          _isFocused
+                              ? AppColors.primary
+                              : AppColors.textSecondary,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  )
+                  : widget.decoration?.suffixIcon,
+        ) ??
+        defaultDecoration;
+
+    return TextFormField(
+      controller: widget.controller,
+      obscureText: _obscureText,
+      keyboardType: widget.keyboardType,
+      validator: widget.validator,
+      focusNode: _focusNode,
+      textInputAction: widget.textInputAction,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      onChanged: widget.onChanged, // Pass onChanged to TextFormField
+      decoration: finalDecoration,
+      style: TextStyles.inputText,
     );
   }
 }
@@ -103,6 +168,13 @@ class AppSearchField extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.inputFillColor,
         borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: TextField(
         controller: controller,

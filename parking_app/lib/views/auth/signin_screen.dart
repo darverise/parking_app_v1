@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:parking_app/core/services/auth_signin_service.dart';
 import 'package:parking_app/views/auth/home_screen.dart';
+import 'package:parking_app/views/auth/signup_screen.dart'; // Add this import
 import 'package:parking_app/views/common/widgets/buttons.dart';
 import 'package:parking_app/views/common/widgets/error.dart';
 import 'package:parking_app/views/common/widgets/input_fields.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:parking_app/theme/app_colors.dart';
 import 'package:parking_app/theme/text_styles.dart';
 import 'package:parking_app/core/models/auth_signin_model.dart';
+import 'package:parking_app/core/auth/auth_signin_api.dart';
 
 // Define enum outside the class
 enum UserRole { user, owner }
@@ -74,132 +76,54 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  Future<void> _handleSignIn() async {
-    if (_formKey.currentState?.validate() != true) {
-      return;
-    }
+  void _onClickSignIn() async {
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try {
-      final authService = Provider.of<AuthSignInService>(
-        context,
-        listen: false,
-      );
-
-      // Create sign-in request
-      final signInRequest = SignInRequest(
-        username: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
-
-      // Call API
-      final response = await authService.signIn(
-        signInRequest.username,
-        signInRequest.password,
-      );
-
-      if (!response.isSuccess || response.data == null) {
-        throw Exception(response.message ?? "Login failed");
-      }
-
-      final authUserModel = response.data!;
-
-      // Check if user selected role matches the actual role from the backend
-      final bool isOwner = authUserModel.is_owner;
-      if ((_selectedRole == UserRole.owner && !isOwner) ||
-          (_selectedRole == UserRole.user && isOwner)) {
+    final authService = Provider.of<AuthSignInService>(context, listen: false);
+    final user = await authService.signInWithValidation(
+      context: context,
+      username: _emailController.text.trim(),
+      password: _passwordController.text,
+      rememberMe: _rememberMe,
+      isOwnerSelected: _selectedRole == UserRole.owner,
+      onError: (msg) {
         setState(() {
-          _errorMessage =
-              AppLocalizations.of(context).invalidInput ??
-              "選択した役割がアカウントタイプと一致しません";
+          _errorMessage = msg;
         });
-        return;
-      }
+      },
+    );
 
-      // Save "remember me" preference
-      await authService.rememberUserLogin(_rememberMe);
+    if (user != null && mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder:
+              (context) =>
+                  HomePage(authUserModel: user, isOwner: user.is_owner),
+        ),
+      );
+    }
 
-      if (mounted) {
-        // Navigate to home screen and pass the user data
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder:
-                (context) =>
-                    HomePage(authUserModel: authUserModel, isOwner: isOwner),
-          ),
-        );
-      }
-    } catch (e) {
+    if (mounted) {
       setState(() {
-        // Convert error message to user-friendly format
-        if (e.toString().contains('InvalidCredentials')) {
-          _errorMessage =
-              AppLocalizations.of(context).invalidInput ??
-              "メールアドレスまたはパスワードが無効です";
-        } else if (e.toString().contains('AccountLocked')) {
-          _errorMessage =
-              AppLocalizations.of(context).invalidInput ??
-              "試行回数が多すぎるため、アカウントがロックされました";
-        } else {
-          _errorMessage = e.toString();
-        }
+        _isLoading = false;
       });
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
     }
   }
 
-  String? _validateEmail(String? value) {
-    final l10n = AppLocalizations.of(context);
-    if (value == null || value.isEmpty) {
-      return l10n.requiredField ?? "この項目は必須です";
-    }
-
-    // Allow both email and phone input
-    if (value.contains('@')) {
-      // Validate as email
-      final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-      if (!emailRegExp.hasMatch(value)) {
-        return l10n.invalidEmail ?? "有効なメールアドレスを入力してください";
-      }
-    } else {
-      // Validate as phone
-      final phoneRegExp = RegExp(r'^\d{10,15}$');
-      if (!phoneRegExp.hasMatch(value.replaceAll(RegExp(r'[^0-9]'), ''))) {
-        return l10n.invalidInput ?? "有効な電話番号を入力してください";
-      }
-    }
-
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    final l10n = AppLocalizations.of(context);
-    if (value == null || value.isEmpty) {
-      return l10n.requiredField ?? "この項目は必須です";
-    }
-    if (value.length < 6) {
-      return l10n.passwordTooShort ?? "パスワードは6文字以上で入力してください";
-    }
-    return null;
+  // 添加缺失的方法
+  void _navigateToForgotPassword() {
+    Navigator.of(context).pushNamed('/forgot-password');
   }
 
   void _navigateToRegister() {
-    // 使用直接的路径字符串而非未定义的AppRoutes常量
-    Navigator.of(context).pushNamed('/register');
-  }
-
-  void _navigateToForgotPassword() {
-    // 使用直接的路径字符串而非未定义的AppRoutes常量
-    Navigator.of(context).pushNamed('/forgot-password');
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const SignUpScreen()),
+    );
   }
 
   @override
@@ -244,10 +168,21 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(
+                            color: AppColors.primary.withOpacity(0.2),
+                            width: 1.0,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 8.0,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(6.0),
                           child: Row(
                             children: [
                               _buildRoleOption(
@@ -268,7 +203,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     // Title
                     Text(
-                      l10n.login ?? "ログイン",
+                      l10n.login,
                       style: TextStyles.titleLarge.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 28.0,
@@ -286,11 +221,12 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     // Email/Phone input field
                     AppTextField(
-                      label: l10n.email ?? "メールアドレス/電話番号",
-                      hintText: l10n.emailHint ?? "メールアドレスまたは電話番号を入力してください",
+                      label: l10n.email,
+                      hintText: l10n.emailHint,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      validator: _validateEmail,
+                      validator:
+                          (v) => AuthSignInApi.validateEmailOrPhone(v, context),
                       focusNode: _emailFocusNode,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
@@ -301,54 +237,97 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     // Password input field
                     AppTextField(
-                      label: l10n.password ?? "パスワード",
-                      hintText: l10n.passwordHint ?? '••••••••',
+                      label: l10n.password,
+                      hintText: l10n.passwordHint,
                       controller: _passwordController,
                       obscureText: true,
-                      validator: _validatePassword,
+                      validator:
+                          (v) => AuthSignInApi.validatePassword(v, context),
                       focusNode: _passwordFocusNode,
                       textInputAction: TextInputAction.done,
                       showTogglePasswordVisibility: true,
-                      onFieldSubmitted: (_) => _handleSignIn(),
+                      onFieldSubmitted: (_) => _onClickSignIn(),
                     ),
 
-                    // Remember me and Forgot password row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Remember me checkbox
-                        Row(
+                    // Remember me and Forgot password row - Responsive Layout
+                    isSmallScreen
+                        ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Checkbox(
-                              value: _rememberMe,
-                              onChanged: (value) {
-                                setState(() {
-                                  _rememberMe = value ?? false;
-                                });
-                              },
-                              activeColor: AppColors.primary,
+                            // Remember me checkbox - optimized for small screens
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: _rememberMe,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _rememberMe = value ?? false;
+                                    });
+                                  },
+                                  activeColor: AppColors.primary,
+                                  visualDensity: VisualDensity.compact,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    "ログイン情報を保存",
+                                    style: TextStyles.bodyMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "ログイン情報を保存", // 使用硬编码替代l10n?.welcome
-                              style: TextStyles.bodyMedium,
+
+                            // Forgot password link - aligned for small screens
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: TextButton(
+                                onPressed: _navigateToForgotPassword,
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                  ),
+                                  minimumSize: Size(0, 36),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: Text(l10n.forgotPassword),
+                              ),
+                            ),
+                          ],
+                        )
+                        : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Remember me checkbox
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: _rememberMe,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _rememberMe = value ?? false;
+                                    });
+                                  },
+                                  activeColor: AppColors.primary,
+                                ),
+                                Text("ログイン情報を保存", style: TextStyles.bodyMedium),
+                              ],
+                            ),
+
+                            // Forgot password link
+                            TextButton(
+                              onPressed: _navigateToForgotPassword,
+                              child: Text(l10n.forgotPassword),
                             ),
                           ],
                         ),
-
-                        // Forgot password link
-                        TextButton(
-                          onPressed: _navigateToForgotPassword,
-                          child: Text(l10n.forgotPassword ?? "パスワードをお忘れの方はこちら"),
-                        ),
-                      ],
-                    ),
 
                     const SizedBox(height: 24.0),
 
                     // Login button
                     PrimaryButton(
-                      text: l10n.login ?? "ログイン",
-                      onPressed: _handleSignIn,
+                      text: l10n.login,
+                      onPressed: _onClickSignIn,
                       isLoading: _isLoading,
                     ),
 
@@ -361,7 +340,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
-                            l10n.or ?? "または",
+                            l10n.or,
                             style: TextStyles.bodyMedium.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -377,13 +356,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     Center(
                       child: RichText(
                         text: TextSpan(
-                          text: l10n.createAccount ?? "アカウントをお持ちでないですか？",
+                          text: l10n.createAccount,
                           style: TextStyles.bodyMedium.copyWith(
                             color: AppColors.textPrimary,
                           ),
                           children: [
                             TextSpan(
-                              text: l10n.registerNow ?? "新規登録",
+                              text: l10n.registerNow,
                               style: TextStyles.bodyMedium.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w500,

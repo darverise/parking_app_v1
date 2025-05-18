@@ -3,6 +3,7 @@ import 'package:parking_app/core/api/api_constants.dart';
 import 'package:parking_app/core/api/api_response.dart';
 import 'package:parking_app/core/client/dio_client.dart';
 import 'package:parking_app/core/models/auth_signin_model.dart';
+import 'package:flutter/material.dart';
 
 class AuthSignInApi {
   final DioClient _client;
@@ -10,15 +11,43 @@ class AuthSignInApi {
 
   Future<ApiResponse<AuthUserModel>> signin(SignInRequest request) async {
     try {
+      // Ensure email field is present and not null
+      if (request.email.isEmpty) {
+        return ApiResponse.error("Email is required");
+      }
+
+      // First, try to fetch a CSRF token if we don't have one
+      if (await _client.csrfTokenProvider.getCsrfToken() == null) {
+        try {
+          await _client.get('/api/csrf-token');
+        } catch (_) {
+          // Ignore errors, just trying to get a token
+        }
+      }
+
+      // Log request (avoid logging sensitive data in production)
+      debugPrint('Sending signin request: ${request.toJson()}');
+
       final response = await _client.post(
-        ApiConstants.BASE_URL + ApiConstants.SIGNIN,
+        ApiConstants.SIGNIN,
         data: request.toJson(),
       );
+
+      // Log response (avoid in production)
+      debugPrint('Signin response: ${response.data}');
+
       return ApiResponse.fromJson(
         response.data,
         (data) => AuthUserModel.fromJson(data),
       );
     } catch (e) {
+      debugPrint('Signin error: $e');
+      if (e is DioException && e.response != null) {
+        return ApiResponse.error(
+          'Error: ${e.response!.statusCode} - ${e.response!.statusMessage ?? e.message}',
+          code: e.response!.statusCode,
+        );
+      }
       return ApiResponse.error(e.toString());
     }
   }
@@ -26,7 +55,7 @@ class AuthSignInApi {
   Future<ApiResponse<void>> signout() async {
     try {
       final response = await _client.post(
-        ApiConstants.BASE_URL + ApiConstants.SIGNOUT,
+        ApiConstants.SIGNOUT, // Updated to use just the path
       );
       return ApiResponse.fromJson(response.data, (_) {});
     } catch (e) {
@@ -37,7 +66,7 @@ class AuthSignInApi {
   Future<ApiResponse<AuthUserModel>> refreshToken(String refreshToken) async {
     try {
       final response = await _client.post(
-        ApiConstants.BASE_URL + ApiConstants.REFRESH_TOKEN,
+        ApiConstants.REFRESH_TOKEN, // Updated to use just the path
         data: {'refreshToken': refreshToken},
       );
       return ApiResponse.fromJson(
@@ -52,7 +81,7 @@ class AuthSignInApi {
   Future<ApiResponse<AuthUserModel>> getUserInfo() async {
     try {
       final response = await _client.get(
-        ApiConstants.BASE_URL + ApiConstants.USER_INFO,
+        ApiConstants.USER_INFO, // Updated to use just the path
       );
       return ApiResponse.fromJson(
         response.data,
@@ -68,7 +97,7 @@ class AuthSignInApi {
   ) async {
     try {
       final response = await _client.post(
-        ApiConstants.BASE_URL + ApiConstants.UPDATE_USER,
+        ApiConstants.UPDATE_USER, // Updated to use just the path
         data: request.toJson(),
       );
       return ApiResponse.fromJson(
@@ -85,7 +114,7 @@ class AuthSignInApi {
   ) async {
     try {
       final response = await _client.post(
-        ApiConstants.BASE_URL + ApiConstants.CHANGE_PASSWORD,
+        ApiConstants.CHANGE_PASSWORD, // Updated to use just the path
         data: request.toJson(),
       );
       return ApiResponse.fromJson(response.data, (_) {});
@@ -95,12 +124,10 @@ class AuthSignInApi {
   }
 
   /// Upload user avatar and return the avatar URL
-  ///
-  /// Fixed to handle different response structures
   Future<ApiResponse<String>> uploadAvatar(FormData formData) async {
     try {
       final response = await _client.upload(
-        ApiConstants.BASE_URL + ApiConstants.UPLOAD_AVATAR,
+        ApiConstants.UPLOAD_AVATAR, // Updated to use just the path
         formData: formData,
       );
 
@@ -128,5 +155,35 @@ class AuthSignInApi {
       }
       return ApiResponse.error(e.toString());
     }
+  }
+
+  static String? validateEmailOrPhone(String? value, BuildContext context) {
+    final l10n = Localizations.of(context, dynamic);
+    if (value == null || value.isEmpty) {
+      return l10n.requiredField;
+    }
+    if (value.contains('@')) {
+      final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+      if (!emailRegExp.hasMatch(value)) {
+        return l10n?.invalidEmail ?? 'メールアドレスが正しくありません';
+      }
+    } else {
+      final phoneRegExp = RegExp(r'^\d{10,15}$');
+      if (!phoneRegExp.hasMatch(value.replaceAll(RegExp(r'[^0-9]'), ''))) {
+        return l10n?.invalidInput ?? '入力が正しくありません';
+      }
+    }
+    return null;
+  }
+
+  static String? validatePassword(String? value, BuildContext context) {
+    final l10n = Localizations.of(context, dynamic);
+    if (value == null || value.isEmpty) {
+      return l10n.requiredField;
+    }
+    if (value.length < 6) {
+      return l10n.passwordTooShort;
+    }
+    return null;
   }
 }

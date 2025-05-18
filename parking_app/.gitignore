@@ -16,7 +16,7 @@ migrate_working_dir/
 *.iml
 *.ipr
 *.iws
-.idea/
+#.idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -45,4 +45,4 @@ app.*.map.json
 /android/app/release
 
 # Rust Backend API related
-/app_core_api/target/
+/target
