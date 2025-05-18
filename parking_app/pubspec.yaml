@@ -52,6 +52,7 @@ dependencies:
   # Add the following dependencies for image picker and file picker
   image_picker: ^1.0.4
   path: ^1.8.3
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:

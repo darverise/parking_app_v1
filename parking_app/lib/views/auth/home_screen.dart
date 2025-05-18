@@ -306,8 +306,8 @@ class _HomePageState extends State<HomePage> {
                 radius: 32.0,
                 backgroundColor: AppColors.primary.withOpacity(0.1),
                 child: Text(
-                  user.username.isNotEmpty
-                      ? user.username[0].toUpperCase()
+                  (user.name != null && user.name!.isNotEmpty)
+                      ? user.name![0].toUpperCase()
                       : '?',
                   style: TextStyles.titleLarge.copyWith(
                     color: AppColors.primary,
@@ -322,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.username,
+                      user.name ?? '',
                       style: TextStyles.titleMedium.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -336,7 +336,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 4.0),
                     Text(
-                      user.phone_number,
+                      user.phone_number ?? 'No phone number',
                       style: TextStyles.bodyMedium.copyWith(
                         color: AppColors.textSecondary,
                       ),

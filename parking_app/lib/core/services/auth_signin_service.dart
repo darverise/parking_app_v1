@@ -29,7 +29,7 @@ class AuthSignInService extends ChangeNotifier {
 
     try {
       final response = await _api.signin(
-        SignInRequest(username: username, password: password),
+        SignInRequest(email: username, password: password),
       );
 
       if (response.isSuccess && response.data != null) {
@@ -39,7 +39,7 @@ class AuthSignInService extends ChangeNotifier {
         await _storage.write(key: 'token', value: response.data!.token);
         await _storage.write(
           key: 'refresh_token',
-          value: response.data!.refresh_token,
+          value: response.data!.refreshToken,
         );
         await _storage.write(key: 'user_id', value: response.data!.id);
         await _storage.write(key: 'user_email', value: response.data!.email);
@@ -57,6 +57,36 @@ class AuthSignInService extends ChangeNotifier {
       notifyListeners();
       return ApiResponse.error(e.toString());
     }
+  }
+
+  /// UI调用的统一登录方法，包含校验和业务逻辑
+  Future<AuthUserModel?> signInWithValidation({
+    required BuildContext context,
+    required String username,
+    required String password,
+    required bool rememberMe,
+    required bool isOwnerSelected,
+    required Function(String?) onError,
+  }) async {
+    final response = await signIn(username, password);
+
+    if (!response.isSuccess || response.data == null) {
+      onError(response.message ?? "Login failed");
+      return null;
+    }
+
+    final authUserModel = response.data!;
+    final bool isOwner = authUserModel.is_owner;
+    if ((isOwnerSelected && !isOwner) || (!isOwnerSelected && isOwner)) {
+      onError(
+        // 尽量用本地化
+        Localizations.of(context, dynamic)?.invalidInput ?? "権限が一致しません",
+      );
+      return null;
+    }
+
+    await rememberUserLogin(rememberMe);
+    return authUserModel;
   }
 
   // Sign out
