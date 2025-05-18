@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:parking_app/theme/app_colors.dart';
 import 'package:parking_app/theme/text_styles.dart';
 import 'package:parking_app/core/models/auth_signin_model.dart';
+import 'package:parking_app/core/auth/auth_signin_api.dart';
 
 // Define enum outside the class
 enum UserRole { user, owner }
@@ -75,127 +76,54 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  Future<void> _handleSignIn() async {
-    if (_formKey.currentState?.validate() != true) {
-      return;
-    }
+  void _onClickSignIn() async {
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try {
-      final authService = Provider.of<AuthSignInService>(
-        context,
-        listen: false,
-      );
-
-      // Create sign-in request
-      final signInRequest = SignInRequest(
-        username: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
-
-      // Call API
-      final response = await authService.signIn(
-        signInRequest.username,
-        signInRequest.password,
-      );
-
-      if (!response.isSuccess || response.data == null) {
-        throw Exception(response.message ?? "Login failed");
-      }
-
-      final authUserModel = response.data!;
-
-      // Check if user selected role matches the actual role from the backend
-      final bool isOwner = authUserModel.is_owner;
-      if ((_selectedRole == UserRole.owner && !isOwner) ||
-          (_selectedRole == UserRole.user && isOwner)) {
+    final authService = Provider.of<AuthSignInService>(context, listen: false);
+    final user = await authService.signInWithValidation(
+      context: context,
+      username: _emailController.text.trim(),
+      password: _passwordController.text,
+      rememberMe: _rememberMe,
+      isOwnerSelected: _selectedRole == UserRole.owner,
+      onError: (msg) {
         setState(() {
-          _errorMessage = AppLocalizations.of(context).invalidInput;
+          _errorMessage = msg;
         });
-        return;
-      }
+      },
+    );
 
-      // Save "remember me" preference
-      await authService.rememberUserLogin(_rememberMe);
+    if (user != null && mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder:
+              (context) =>
+                  HomePage(authUserModel: user, isOwner: user.is_owner),
+        ),
+      );
+    }
 
-      if (mounted) {
-        // Navigate to home screen and pass the user data
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder:
-                (context) =>
-                    HomePage(authUserModel: authUserModel, isOwner: isOwner),
-          ),
-        );
-      }
-    } catch (e) {
+    if (mounted) {
       setState(() {
-        // Convert error message to user-friendly format
-        if (e.toString().contains('InvalidCredentials')) {
-          _errorMessage = AppLocalizations.of(context).invalidInput;
-        } else if (e.toString().contains('AccountLocked')) {
-          _errorMessage = AppLocalizations.of(context).invalidInput;
-        } else {
-          _errorMessage = e.toString();
-        }
+        _isLoading = false;
       });
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
     }
   }
 
-  String? _validateEmail(String? value) {
-    final l10n = AppLocalizations.of(context);
-    if (value == null || value.isEmpty) {
-      return l10n.requiredField;
-    }
-
-    // Allow both email and phone input
-    if (value.contains('@')) {
-      // Validate as email
-      final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-      if (!emailRegExp.hasMatch(value)) {
-        return l10n.invalidEmail;
-      }
-    } else {
-      // Validate as phone
-      final phoneRegExp = RegExp(r'^\d{10,15}$');
-      if (!phoneRegExp.hasMatch(value.replaceAll(RegExp(r'[^0-9]'), ''))) {
-        return l10n.invalidInput;
-      }
-    }
-
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    final l10n = AppLocalizations.of(context);
-    if (value == null || value.isEmpty) {
-      return l10n.requiredField;
-    }
-    if (value.length < 6) {
-      return l10n.passwordTooShort;
-    }
-    return null;
+  // 添加缺失的方法
+  void _navigateToForgotPassword() {
+    Navigator.of(context).pushNamed('/forgot-password');
   }
 
   void _navigateToRegister() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
-  }
-
-  void _navigateToForgotPassword() {
-    // 使用直接的路径字符串而非未定义的AppRoutes常量
-    Navigator.of(context).pushNamed('/forgot-password');
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const SignUpScreen()),
+    );
   }
 
   @override
@@ -297,7 +225,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       hintText: l10n.emailHint,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      validator: _validateEmail,
+                      validator:
+                          (v) => AuthSignInApi.validateEmailOrPhone(v, context),
                       focusNode: _emailFocusNode,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
@@ -312,11 +241,12 @@ class _SignInScreenState extends State<SignInScreen> {
                       hintText: l10n.passwordHint,
                       controller: _passwordController,
                       obscureText: true,
-                      validator: _validatePassword,
+                      validator:
+                          (v) => AuthSignInApi.validatePassword(v, context),
                       focusNode: _passwordFocusNode,
                       textInputAction: TextInputAction.done,
                       showTogglePasswordVisibility: true,
-                      onFieldSubmitted: (_) => _handleSignIn(),
+                      onFieldSubmitted: (_) => _onClickSignIn(),
                     ),
 
                     // Remember me and Forgot password row - Responsive Layout
@@ -397,7 +327,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     // Login button
                     PrimaryButton(
                       text: l10n.login,
-                      onPressed: _handleSignIn,
+                      onPressed: _onClickSignIn,
                       isLoading: _isLoading,
                     ),
 
