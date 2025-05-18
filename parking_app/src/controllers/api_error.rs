@@ -1,9 +1,12 @@
 use actix_web::{HttpResponse, ResponseError};
 use derive_more::Display;
 use serde::Serialize;
-use std::fmt;
+use std::fmt::{self, Debug};
 use tracing::{debug, error, warn};
+use uuid::Uuid;
 
+/// API エラー列挙型
+/// アプリケーション全体で使用される統一的なエラータイプ
 #[derive(Debug, Display)]
 pub enum ApiError {
     #[display(fmt = "内部サーバーエラーが発生しました")]
@@ -35,8 +38,15 @@ pub enum ApiError {
     
     #[display(fmt = "サービス利用不可: {}", _0)]
     ServiceUnavailableError(String),
+    
+    #[display(fmt = "セッションエラー: {}", _0)]
+    SessionError(String),
+    
+    #[display(fmt = "トークンエラー: {}", _0)]
+    TokenError(String),
 }
 
+/// エラーレスポンスのJSON構造
 #[derive(Serialize)]
 struct ErrorResponse {
     code: u16,
@@ -51,7 +61,7 @@ impl ResponseError for ApiError {
         let status_code = self.status_code();
         
         // リクエストIDの生成
-        let request_id = uuid::Uuid::new_v4().to_string();
+        let request_id = Uuid::new_v4().to_string();
         
         // エラーの詳細情報（開発環境のみ表示）
         let details = if cfg!(debug_assertions) {
@@ -90,13 +100,19 @@ impl ResponseError for ApiError {
             ApiError::ServiceUnavailableError(msg) => {
                 error!(request_id = %request_id, error = %msg, "Service unavailable");
             },
+            ApiError::SessionError(msg) => {
+                warn!(request_id = %request_id, error = %msg, "Session error");
+            },
+            ApiError::TokenError(msg) => {
+                warn!(request_id = %request_id, error = %msg, "Token error");
+            },
         }
         
         let error_response = ErrorResponse {
             code: status_code.as_u16(),
             message: self.to_string(),
             details,
-            request_id: request_id.clone(), // 修正：ここ用 clone，保证后续还能用 request_id
+            request_id: request_id.clone(),
         };
         
         HttpResponse::build(status_code)
@@ -117,17 +133,34 @@ impl ResponseError for ApiError {
             ApiError::DuplicateError(_) => StatusCode::CONFLICT,
             ApiError::RateLimitError(_) => StatusCode::TOO_MANY_REQUESTS,
             ApiError::ServiceUnavailableError(_) => StatusCode::SERVICE_UNAVAILABLE,
+            ApiError::SessionError(_) => StatusCode::UNAUTHORIZED,
+            ApiError::TokenError(_) => StatusCode::UNAUTHORIZED,
         }
     }
 }
 
+// 共通のエラー型からのコンバージョン
 impl From<sqlx::Error> for ApiError {
     fn from(error: sqlx::Error) -> ApiError {
         match error {
             sqlx::Error::RowNotFound => ApiError::NotFoundError("リソースが見つかりません".into()),
+            sqlx::Error::Database(db_err) => {
+                // 一意性制約違反を検出（PostgreSQL固有）
+                if let Some(code) = db_err.code() {
+                    if code == "23505" {  // 一意性制約違反コード
+                        return ApiError::DuplicateError("この値は既に使用されています".into());
+                    }
+                }
+                error!("Database error: {:?}", db_err);
+                ApiError::DatabaseError(format!("データベースエラー: {}", db_err))
+            },
+            sqlx::Error::PoolClosed | sqlx::Error::PoolTimedOut => {
+                error!("Database connection error: {:?}", error);
+                ApiError::ServiceUnavailableError("サービスが一時的に利用できません。後でお試しください。".into())
+            },
             _ => {
                 error!("Database error: {:?}", error);
-                ApiError::DatabaseError(error.to_string())
+                ApiError::DatabaseError(format!("データベースエラー: {}", error))
             }
         }
     }
@@ -135,8 +168,18 @@ impl From<sqlx::Error> for ApiError {
 
 impl From<jsonwebtoken::errors::Error> for ApiError {
     fn from(error: jsonwebtoken::errors::Error) -> ApiError {
-        error!("JWT error: {:?}", error);
-        ApiError::AuthenticationError("無効なトークンです".into())
+        match error.kind() {
+            jsonwebtoken::errors::ErrorKind::ExpiredSignature => {
+                ApiError::TokenError("トークンの有効期限が切れています".into())
+            },
+            jsonwebtoken::errors::ErrorKind::InvalidToken => {
+                ApiError::TokenError("無効なトークンです".into())
+            },
+            _ => {
+                error!("JWT error: {:?}", error);
+                ApiError::AuthenticationError("認証エラーが発生しました".into())
+            }
+        }
     }
 }
 
@@ -150,6 +193,19 @@ impl From<bcrypt::BcryptError> for ApiError {
 impl From<std::io::Error> for ApiError {
     fn from(error: std::io::Error) -> ApiError {
         error!("IO error: {:?}", error);
+        ApiError::InternalServerError
+    }
+}
+
+impl From<uuid::Error> for ApiError {
+    fn from(error: uuid::Error) -> ApiError {
+        ApiError::ValidationError(format!("無効なUUID: {}", error))
+    }
+}
+
+impl From<anyhow::Error> for ApiError {
+    fn from(error: anyhow::Error) -> ApiError {
+        error!("Anyhow error: {:?}", error);
         ApiError::InternalServerError
     }
 }

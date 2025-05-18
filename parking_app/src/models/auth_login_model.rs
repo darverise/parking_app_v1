@@ -3,24 +3,25 @@ use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use uuid::Uuid;
 
-#[derive(Debug, Serialize, Deserialize, FromRow)]
-pub struct LoginModel {
+/// ログイン情報（m_loginテーブル）のモデル
+#[derive(Debug, Serialize, Deserialize, Clone, FromRow)]
+pub struct Login {
     pub login_id: Uuid,
     pub email: String,
     pub phone_number: String,
     pub pass_word: String,
-    pub is_user_owner: String,
+    pub is_user_owner: String,  // 1: オーナー, 0: 一般ユーザー
     pub login_token: Option<String>,
     pub login_token_expiration: Option<DateTime<Utc>>,
     pub login_token_issued_datetime: Option<DateTime<Utc>>,
     pub login_token_issued_count: i32,
-    pub login_token_issued_flag: String,
-    pub is_login: String,
+    pub login_token_issued_flag: String,  // 1: 発行済み, 0: 未発行
+    pub is_login: String,  // 1: ログイン中, 0: ログインしていない
     pub login_datetime: Option<DateTime<Utc>>,
     pub logout_datetime: Option<DateTime<Utc>>,
     pub login_failed_count: i32,
     pub login_failed_datetime: Option<DateTime<Utc>>,
-    pub login_failed_flag: String,
+    pub login_failed_flag: String,  // 1: ログイン失敗, 0: ログイン成功
     pub login_failed_reason: Option<String>,
     pub login_failed_reason_detail: Option<String>,
     pub login_failed_reset_datetime: Option<DateTime<Utc>>,
@@ -28,153 +29,120 @@ pub struct LoginModel {
     pub updated_datetime: DateTime<Utc>,
 }
 
+/// 新規ログイン作成用のモデル
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NewLogin {
+    pub email: String,
+    pub phone_number: String,
+    pub pass_word: String,
+    pub is_user_owner: String, // 1: オーナー, 0: 一般ユーザー
+}
+
+impl Login {
+    /// アカウントがロックされているかどうかを確認する
+    /// 
+    /// 連続した5回以上のログイン失敗があり、最後の失敗から30分以内の場合、
+    /// アカウントはロックされていると判断します。
+    pub fn is_account_locked(&self) -> bool {
+        // 5回以上のログイン失敗があり、ログイン失敗フラグが設定されている場合
+        if self.login_failed_count >= 5 && self.login_failed_flag == "1" {
+            if let Some(failed_time) = self.login_failed_datetime {
+                let thirty_minutes_ago = Utc::now() - chrono::Duration::minutes(30);
+                return failed_time > thirty_minutes_ago;
+            }
+        }
+        false
+    }
+    
+    /// ユーザータイプを取得する (ownerかuserか)
+    pub fn is_owner(&self) -> bool {
+        self.is_user_owner == "1"
+    }
+}
+
+/// ログインリクエスト（フロントエンドからのリクエスト）
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SignInRequest {
     pub email: String,
     pub password: String,
-    pub is_user_owner: String,
+    #[serde(default)]
+    pub remember_me: bool,
 }
 
+/// ログインレスポンス（フロントエンドへの応答）
 #[derive(Debug, Serialize, Deserialize)]
-pub struct LoginRequest {
+pub struct SignInResponse {
+    pub id: Uuid,
     pub email: String,
-    pub password: String,
-    pub is_user_owner: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct LoginResponse {
-    pub auth_token: String,
-    pub user_id: String,
-    pub email: String,
-    pub username: String,
     pub phone_number: String,
     pub is_owner: bool,
+    pub full_name: String,
+    pub token: String,
+    pub refresh_token: String,
 }
 
+/// リフレッシュトークンリクエスト
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RefreshTokenRequest {
     pub refresh_token: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct RefreshTokenResponse {
-    pub token: String,
-    pub refresh_token: String,
-    pub token_expires_at: DateTime<Utc>,
-}
-
+/// パスワード変更リクエスト
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ChangePasswordRequest {
-    pub current_password: String,
+    pub old_password: String,
     pub new_password: String,
 }
 
-// 新規ログインアカウント用モデル
-#[derive(Debug)]
-pub struct NewLogin {
-    pub email: String,
-    pub phone_number: String,
-    pub pass_word: String,
-    pub is_user_owner: String,
-}
-
+/// 新規ユーザー登録リクエスト
 #[derive(Debug, Serialize, Deserialize)]
-pub struct CreateLoginRequest {
+pub struct RegisterRequest {
     pub email: String,
     pub phone_number: String,
     pub password: String,
-    pub is_user_owner: String,
+    pub full_name: String,
+    pub is_owner: bool,
+    // 共通フィールド
+    pub address: String,
+    // オーナー専用フィールド（オーナーの場合のみ使用）
+    pub postal_code: Option<String>,
+    pub registrant_type: Option<String>,
+    pub full_name_kana: Option<String>,
+    pub remarks: Option<String>,
+    // 追加オプション
+    pub service_email_opt: Option<String>,
+    pub promotional_email_opt: Option<String>,
 }
 
-impl LoginModel {
-    pub fn new(email: String, phone_number: String, password: String, is_owner: bool) -> Self {
-        let now = Utc::now();
-        Self {
-            login_id: Uuid::new_v4(),
-            email,
-            phone_number,
-            pass_word: password, // 実際の保存前にハッシュ化する必要あり
-            is_user_owner: if is_owner { "1".to_string() } else { "0".to_string() },
-            login_token: None,
-            login_token_expiration: None,
-            login_token_issued_datetime: None,
-            login_token_issued_count: 0,
-            login_token_issued_flag: "0".to_string(),
-            is_login: "0".to_string(),
-            login_datetime: None,
-            logout_datetime: None,
-            login_failed_count: 0,
-            login_failed_datetime: None,
-            login_failed_flag: "0".to_string(),
-            login_failed_reason: None,
-            login_failed_reason_detail: None,
-            login_failed_reset_datetime: None,
-            created_datetime: now,
-            updated_datetime: now,
-        }
-    }
+/// 検証コード検証リクエスト
+#[derive(Debug, Serialize, Deserialize)]
+pub struct VerifyCodeRequest {
+    pub email: String,
+    pub code: String,
+    pub verification_type: VerificationType,
+}
 
-    pub fn is_owner(&self) -> bool {
-        self.is_user_owner == "1"
-    }
+/// 検証コード再送リクエスト
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ResendCodeRequest {
+    pub email: String,
+    pub verification_type: VerificationType,
+}
 
-    pub fn update_login_token(&mut self, token: String, expiration: DateTime<Utc>) {
-        let now = Utc::now();
-        self.login_token = Some(token);
-        self.login_token_expiration = Some(expiration);
-        self.login_token_issued_datetime = Some(now);
-        self.login_token_issued_count += 1;
-        self.login_token_issued_flag = "1".to_string();
-        self.updated_datetime = now;
-    }
+/// 検証タイプ
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
+pub enum VerificationType {
+    #[serde(rename = "email")]
+    Email,
+    #[serde(rename = "sms")]
+    SMS,
+}
 
-    pub fn login_success(&mut self) {
-        let now = Utc::now();
-        self.is_login = "1".to_string();
-        self.login_datetime = Some(now);
-        self.login_failed_flag = "0".to_string();
-        self.updated_datetime = now;
-    }
-
-    pub fn login_failure(&mut self, reason: &str, detail: Option<&str>) {
-        let now = Utc::now();
-        self.login_failed_count += 1;
-        self.login_failed_datetime = Some(now);
-        self.login_failed_flag = "1".to_string();
-        self.login_failed_reason = Some(reason.to_string());
-        self.login_failed_reason_detail = detail.map(|s| s.to_string());
-        self.updated_datetime = now;
-    }
-
-    pub fn logout(&mut self) {
-        let now = Utc::now();
-        self.is_login = "0".to_string();
-        self.logout_datetime = Some(now);
-        self.login_token = None;
-        self.updated_datetime = now;
-    }
-
-    pub fn reset_failed_login(&mut self) {
-        let now = Utc::now();
-        self.login_failed_count = 0;
-        self.login_failed_flag = "0".to_string();
-        self.login_failed_reset_datetime = Some(now);
-        self.updated_datetime = now;
-    }
-    
-    pub fn is_account_locked(&self) -> bool {
-        if self.login_failed_flag != "1" {
-            return false;
-        }
-        
-        // 5回以上のログイン失敗かつ30分以内の場合はロック
-        if self.login_failed_count >= 5 {
-            if let Some(failed_time) = self.login_failed_datetime {
-                let thirty_mins_ago = Utc::now() - chrono::Duration::minutes(30);
-                return failed_time > thirty_mins_ago;
-            }
-        }
-        false
-    }
+/// 汎用的なログインモデル（サービス間の受け渡し用）
+#[derive(Debug, Serialize, Deserialize)]
+pub struct LoginModel {
+    pub email: String,
+    pub phone_number: Option<String>,
+    pub password: String,
+    pub is_owner: bool,
 }

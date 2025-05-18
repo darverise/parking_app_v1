@@ -55,6 +55,16 @@ async-trait = "0.1.88"
 bcrypt = "0.17.0"
 derive_more = "0.99.17"
 
+# Validation
+regex = "1.10.3"
+lazy_static = "1.4.0"
+
+# Email
+lettre = "0.11.5"
+
+# HTTP client for SMS, etc.
+reqwest = { version = "0.12.2", features = ["json"] }
+
 [workspace]
 members = [
     ".",

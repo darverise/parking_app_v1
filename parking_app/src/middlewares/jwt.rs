@@ -7,7 +7,7 @@ use uuid::Uuid;
 use crate::controllers::api_error::ApiError;
 
 // JWTトークンのクレーム
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]  // Cloneトレイトを追加
 pub struct TokenClaims {
     pub sub: String,        // Subject (ユーザーID)
     pub iat: usize,         // Issued At (発行時刻)
@@ -16,7 +16,7 @@ pub struct TokenClaims {
 }
 
 // リフレッシュトークンのクレーム
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]  // Cloneトレイトを追加
 pub struct RefreshTokenClaims {
     pub sub: String,  // Subject (ユーザーID)
     pub iat: usize,   // Issued At (発行時刻)
