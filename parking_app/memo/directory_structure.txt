@@ -196,20 +196,57 @@
 │       ├── date_utils.rs
 │       ├── mod.rs
 │       └── token.rs
-├── UI
-│   ├── owner
-│   │   ├──  Owner_Dashboard_UI.html
-│   │   ├──  Owner_Register_add_UI.html
-│   │   ├──  Owner_Suspension_UI.html
-│   │   ├──  Owner_Start_Usage_UI.html
-│   ├── account
-│   │   ├──  Edit_Profile_UI.html
-│   │   ├──  Vehicle_Information_UI.html
-│   │   ├──  Bank_Account_Management_UI.html
-│   ├── revenue
-│   │   ├──  Owner_Revenue_Management_UI.html
-│   ├── user
-│   │   ├──  Home_UI.html
-│   │   ├── History_UI.html
-│   │   ├──  Reservation_Detail_UI.html
-│   │   ├──  Reservation_Cancel_UI.html
+UI
+├── owner
+│   ├── Owner_Dashboard_UI.html           # オーナーホーム
+│   ├── Owner_Register_add_UI.html        # 駐車場新規追加
+│   ├── Owner_Suspension_UI.html          # 駐車場一時停止
+│   ├── Owner_Start_Usage_UI.html         # 駐車場利用開始
+│   ├── Owner_History_Details_UI.html     # 履歴詳細（如有）
+│   ├── Owner_history_UI.html             # 入出庫履歴（如有）
+├── account
+│   ├── Edit_Profile_UI.html              # プロフィール変更
+│   ├── Vehicle_Information_UI.html       # 車両情報
+│   ├── Bank_Account_Management_UI.html   # 口座管理
+├── revenue
+│   ├── Owner_Revenue_Management_UI.html  # 収益管理
+├── user
+│   ├── Home_UI.html                      # ホーム
+│   ├── History_UI.html                   # 入出庫履歴
+│   ├── Reservation_Detail_UI.html        # 履歴詳細
+│   ├── Reservation_Cancel_UI.html        # 予約キャンセル
+│   ├── Parking_Search_UI.html            # 駐車場検索（如有）
+│   ├── Select_Usage_Datetime_UI.html     # 利用日時選択（如有）
+├── reservation
+│   ├── Reservation_Completed_UI.html     # 予約完了
+│   ├── Reservation_Confirmation_UI.html  # 予約確認
+│   ├── Approve_Reservation_UI.html       # 予約承認
+│   ├── Approval_Completed_UI.html        # 承認完了
+│   ├── Reservation_Management_UI.html    # 予約管理
+├── payment
+│   ├── Confirmation_Payment_UI.html      # 支払確認
+├── auth
+│   ├── ログイン.html                     # ログイン
+│   ├── 新規登録.html                     # 新規登録
+│   ├── 登録完了.html                     # 登録完了
+│   ├── 認証コード.html                   # 認証コード
+├── common
+│   ├── script.js
+│   └── styles.css
+
+Owner_Dashboard_UI.html（オーナーホーム） - 李
+Owner_Register_add_UI.html（駐車場新規追加） - 李
+Owner_Suspension_UI.html（駐車場一時停止） - 李
+Owner_Start_Usage_UI.html（駐車場利用開始） - 李
+
+Edit_Profile_UI.html（口座管理） - 杨
+Vehicle_Information_UI.html（車両情報） - 杨
+Bank_Account_Management_UI.html（プロフィール変更） - 杨
+Owner_Revenue_Management_UI.html（収益管理） - 杨
+
+Home_UI.html（ホーム） - 孔
+History_UI.html（入出庫履歴） - 孔
+Reservation_Detail_UI.html（履歴詳細） - 孔
+Reservation_Cancel_UI.html（予約キャンセル） - 孔
+
+https://www.akippa.com/
