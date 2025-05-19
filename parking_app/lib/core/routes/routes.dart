@@ -12,6 +12,7 @@ class AppRoutes {
 
   // 主要页面路由
   static const String HOME = '/home';
+  static const String PARKING_SEARCH = '/parking-search';
   static const String PROFILE = '/profile';
   static const String SETTINGS = '/settings';
 

@@ -14,4 +14,6 @@ class ApiConstants {
   static const String REGISTER = '$AUTH_BASE/register';
   static const String VERIFY_CODE = '$AUTH_BASE/verify-code';
   static const String RESEND_CODE = '$AUTH_BASE/resend-code';
+
+  static const String PARKING_SEARCH = '/parking-search';
 }
