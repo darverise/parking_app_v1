@@ -10,7 +10,6 @@ import 'package:parking_app/views/common/widgets/input_fields.dart';
 import 'package:provider/provider.dart';
 import 'package:parking_app/theme/app_colors.dart';
 import 'package:parking_app/theme/text_styles.dart';
-import 'package:parking_app/core/models/auth_signin_model.dart';
 import 'package:parking_app/core/auth/auth_signin_api.dart';
 
 // Define enum outside the class
@@ -121,9 +120,9 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _navigateToRegister() {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const SignUpScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
   }
 
   @override
