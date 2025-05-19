@@ -1,298 +1,252 @@
-# This file contains the directory structure of the parking_app folder.
-# Generated on: $(date)
-
-# Directory Structure:
-$(find /Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app -type d -not -path "*/\.*" -not -path "*/build*" -not -path "*/.dart_tool*" -not -path "*/.vscode*" -not -path "*/target*" | sort)
-
-# Files:
-$(find /Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app -type f -not -path "*/\.*" -not -path "*/build*" -not -path "*/.dart_tool*" -not -path "*/.vscode*" -not -path "*/target*" | sort)
 /Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/Database
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/UI
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/UI/オーナーUI
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/UI/ユーザーUI
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/UI/予約管理UI
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/UI/マイページUI
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/UI/ログインまたは登録UI
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/debug
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/java
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/java/io
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/java/io/flutter
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/java/io/flutter/plugins
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/kotlin
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/kotlin/jp
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/kotlin/jp/co
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/kotlin/jp/co/parkingapp
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/kotlin/jp/co/parkingapp/parking_app
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/drawable
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/drawable-v21
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/mipmap-hdpi
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/mipmap-mdpi
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/mipmap-xhdpi
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/mipmap-xxhdpi
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/mipmap-xxxhdpi
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/values
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/main/res/values-night
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/app/src/profile
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/gradle
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/android/gradle/wrapper
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api/src
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api/src/config
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api/src/controllers
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api/src/middleware
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api/src/models
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api/src/repositories
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api/src/services
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/app_core_api/src/utils
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/assets
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/assets/fonts
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/assets/icons
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/assets/images
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Flutter
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils/Sources
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils/Sources/GoogleMapsUtils
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils/Sources/GoogleMapsUtils/GeometryUtils
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils/Sources/GoogleMapsUtils/GeometryUtils/Internal
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils/Sources/GoogleMapsUtils/Heatmap
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils/Sources/GoogleMapsUtils/Helper
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils/Sources/GoogleMapsUtilsObjC
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Google-Maps-iOS-Utils/Sources/GoogleMapsUtilsObjC/include
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework/ios-arm64
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework/ios-arm64/GoogleMapsBase.framework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework/ios-arm64/GoogleMapsBase.framework/Headers
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework/ios-arm64/GoogleMapsBase.framework/Modules
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework/ios-arm64_x86_64-simulator
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework/ios-arm64_x86_64-simulator/GoogleMapsBase.framework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework/ios-arm64_x86_64-simulator/GoogleMapsBase.framework/Headers
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework/ios-arm64_x86_64-simulator/GoogleMapsBase.framework/Modules
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Base/Sources
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos.xcodeproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Common
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/MapsDemoAssets.xcassets
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/MapsDemoAssets.xcassets/AppIcon.appiconset
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/Museum-Icons
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/ar.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/ca.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/cs.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/da.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/de.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/el.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/en.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/en_GB.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/es.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/fi.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/fr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/he.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/hr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/hu.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/id.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/it.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/ja.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/ko.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/ms.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/nb.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/nl.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/pl.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/pt.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/pt_PT.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/ro.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/ru.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/sk.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/sv.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/th.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/tr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/uk.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/vi.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/zh_CN.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Resources/zh_TW.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Example/GoogleMapsXCFrameworkDemos/Samples
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64/GoogleMaps.framework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64/GoogleMaps.framework/Headers
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64/GoogleMaps.framework/Modules
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64_x86_64-simulator
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64_x86_64-simulator/GoogleMaps.framework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64_x86_64-simulator/GoogleMaps.framework/Headers
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64_x86_64-simulator/GoogleMaps.framework/Modules
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework/ios-arm64
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework/ios-arm64/GoogleMapsCore.framework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework/ios-arm64/GoogleMapsCore.framework/Headers
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework/ios-arm64/GoogleMapsCore.framework/Modules
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework/ios-arm64_x86_64-simulator
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework/ios-arm64_x86_64-simulator/GoogleMapsCore.framework
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework/ios-arm64_x86_64-simulator/GoogleMapsCore.framework/Headers
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework/ios-arm64_x86_64-simulator/GoogleMapsCore.framework/Modules
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCacheStorage.momd
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/ar.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/az.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/ca.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/cs.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/da.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/de.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/el.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/en.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/en_AU.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/en_GB.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/en_IN.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/es.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/es_419.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/es_MX.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/fi.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/fr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/fr_CA.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/he.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/hi.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/hr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/hu.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/hy.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/id.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/it.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/ja.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/ka.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/ko.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/lt.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/lv.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/ms.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/my.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/nb.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/nl.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/pl.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/pt.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/pt_BR.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/pt_PT.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/ro.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/ru.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/sk.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/sq.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/sr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/sv.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/sw.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/th.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/tr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/uk.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/uz.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/vi.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/zh_CN.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/zh_HK.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Resources/GoogleMapsResources/GoogleMaps.bundle/GMSCoreResources.bundle/zh_TW.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/Maps/Sources
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos.xcodeproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/MapsDemoAssets.xcassets
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/MapsDemoAssets.xcassets/AppIcon.appiconset
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/Museum-Icons
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/ar.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/ca.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/cs.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/da.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/de.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/el.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/en.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/en_GB.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/es.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/fi.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/fr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/he.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/hr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/hu.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/id.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/it.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/ja.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/ko.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/ms.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/nb.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/nl.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/pl.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/pt.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/pt_PT.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/ro.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/ru.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/sk.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/sv.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/th.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/tr.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/uk.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/vi.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/zh_CN.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Resources/zh_TW.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Swift
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/GoogleMaps/SwiftExample/GoogleMapsSwiftXCFrameworkDemos/Swift/Samples
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Headers
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Headers/Private
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Headers/Private/GoogleMaps
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Headers/Public
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Headers/Public/GoogleMaps
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Local Podspecs
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Pods.xcodeproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Pods.xcodeproj/xcuserdata
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Pods.xcodeproj/xcuserdata/darverise.xcuserdatad
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Pods.xcodeproj/xcuserdata/darverise.xcuserdatad/xcschemes
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Target Support Files
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Target Support Files/Flutter
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Target Support Files/Google-Maps-iOS-Utils
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Target Support Files/GoogleMaps
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Target Support Files/Pods-Runner
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Target Support Files/Pods-RunnerTests
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Pods/Target Support Files/google_maps_flutter_ios
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcodeproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcodeproj/project.xcworkspace
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/configuration
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcodeproj/xcshareddata
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcodeproj/xcshareddata/xcschemes
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcworkspace
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcworkspace/xcshareddata
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcworkspace/xcshareddata/swiftpm
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcworkspace/xcshareddata/swiftpm/configuration
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcworkspace/xcuserdata
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner.xcworkspace/xcuserdata/darverise.xcuserdatad
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Assets.xcassets
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Assets.xcassets/AppIcon.appiconset
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Assets.xcassets/LaunchImage.imageset
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/Runner/Base.lproj
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/ios/RunnerTests
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/core
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/core/interceptors
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/generated
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/generated/intl
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/l10n
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/services
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/services/api
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/theme
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/utils
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/views
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/views/auth
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/views/common
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/lib/views/common/widgets
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/test
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/web
-/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app/web/icons
+├── Cargo.lock
+├── Cargo.toml
+├── README.md
+├── android
+│   ├── app
+│   │   ├── build.gradle
+│   │   └── src
+│   │       ├── debug
+│   │       │   └── AndroidManifest.xml
+│   │       ├── main
+│   │       │   ├── AndroidManifest.xml
+│   │       │   ├── kotlin
+│   │       │   │   └── com
+│   │       │   │       └── example
+│   │       │   │           └── parking_app
+│   │       │   │               └── MainActivity.kt
+│   │       │   └── res
+│   │       │       ├── drawable
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── drawable-v21
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── mipmap-hdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-mdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xxhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xxxhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       └── values
+│   │       │           └── styles.xml
+│   │       └── profile
+│   │           └── AndroidManifest.xml
+│   ├── build.gradle
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   └── settings.gradle
+├── assets
+│   ├── fonts
+│   │   └── NotoSansJP-Regular.otf
+│   └── images
+│       ├── car_icon.png
+│       ├── credit_card.png
+│       ├── logo_placeholder.png
+│       ├── map_placeholder.png
+│       ├── parking_placeholder.jpg
+│       └── qr_code_placeholder.png
+├── ios
+│   ├── Flutter
+│   │   ├── AppFrameworkInfo.plist
+│   │   ├── Debug.xcconfig
+│   │   └── Release.xcconfig
+│   ├── Podfile
+│   ├── Runner
+│   │   ├── AppDelegate.swift
+│   │   ├── Assets.xcassets
+│   │   │   ├── AppIcon.appiconset
+│   │   │   │   ├── Contents.json
+│   │   │   │   ├── Icon-App-1024x1024@1x.png
+│   │   │   │   ├── Icon-App-20x20@1x.png
+│   │   │   │   ├── Icon-App-20x20@2x.png
+│   │   │   │   ├── Icon-App-20x20@3x.png
+│   │   │   │   ├── Icon-App-29x29@1x.png
+│   │   │   │   ├── Icon-App-29x29@2x.png
+│   │   │   │   ├── Icon-App-29x29@3x.png
+│   │   │   │   ├── Icon-App-40x40@1x.png
+│   │   │   │   ├── Icon-App-40x40@2x.png
+│   │   │   │   ├── Icon-App-40x40@3x.png
+│   │   │   │   ├── Icon-App-60x60@2x.png
+│   │   │   │   ├── Icon-App-60x60@3x.png
+│   │   │   │   ├── Icon-App-76x76@1x.png
+│   │   │   │   ├── Icon-App-76x76@2x.png
+│   │   │   │   └── Icon-App-83.5x83.5@2x.png
+│   │   │   └── LaunchImage.imageset
+│   │   │       ├── Contents.json
+│   │   │       ├── LaunchImage.png
+│   │   │       ├── LaunchImage@2x.png
+│   │   │       └── LaunchImage@3x.png
+│   │   ├── Base.lproj
+│   │   │   ├── LaunchScreen.storyboard
+│   │   │   └── Main.storyboard
+│   │   ├── Info.plist
+│   │   └── Runner-Bridging-Header.h
+│   ├── Runner.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   │   └── contents.xcworkspacedata
+│   │   └── xcshareddata
+│   │       └── xcschemes
+│   │           └── Runner.xcscheme
+│   └── Runner.xcworkspace
+│       └── contents.xcworkspacedata
+├── lib
+│   ├── main.dart
+│   ├── models
+│   │   ├── car.dart
+│   │   ├── parking.dart
+│   │   ├── payment.dart
+│   │   ├── reservation.dart
+│   │   └── user.dart
+│   ├── services
+│   │   ├── api_service.dart
+│   │   ├── auth_service.dart
+│   │   ├── navigation_service.dart
+│   │   └── notification_service.dart
+│   ├── utils
+│   │   ├── constants.dart
+│   │   ├── date_formatter.dart
+│   │   └── themes.dart
+│   └── views
+│       ├── account
+│       │   ├── bank_account_screen.dart
+│       │   ├── edit_profile_screen.dart
+│       │   ├── login_screen.dart
+│       │   ├── register_screen.dart
+│       │   └── vehicle_info_screen.dart
+│       ├── common
+│       │   ├── bottom_nav_bar.dart
+│       │   ├── error_screen.dart
+│       │   ├── loading_screen.dart
+│       │   └── splash_screen.dart
+│       ├── home
+│       │   ├── home_screen.dart
+│       │   └── notification_screen.dart
+│       ├── owner
+│       │   ├── owner_dashboard_screen.dart
+│       │   ├── owner_manage_parking_screen.dart
+│       │   ├── owner_revenue_screen.dart
+│       │   └── register_parking_screen.dart
+│       ├── parking
+│       │   ├── parking_detail_screen.dart
+│       │   ├── parking_list_screen.dart
+│       │   └── parking_search_screen.dart
+│       ├── payment
+│       │   ├── payment_confirm_screen.dart
+│       │   ├── payment_history_screen.dart
+│       │   └── payment_method_screen.dart
+│       └── reservation
+│           ├── reservation_cancel_screen.dart
+│           ├── reservation_confirm_screen.dart
+│           ├── reservation_detail_screen.dart
+│           └── reservation_history_screen.dart
+├── pubspec.lock
+├── pubspec.yaml
+├── src
+│   ├── controllers
+│   │   ├── auth_controller.rs
+│   │   ├── constants.rs
+│   │   ├── mod.rs
+│   │   ├── parking_controller.rs
+│   │   ├── payment_controller.rs
+│   │   ├── reservation_controller.rs
+│   │   └── user_controller.rs
+│   ├── db
+│   │   ├── mod.rs
+│   │   └── mongo.rs
+│   ├── errors
+│   │   ├── api_error.rs
+│   │   └── mod.rs
+│   ├── lib.rs
+│   ├── main.rs
+│   ├── middleware
+│   │   ├── auth_middleware.rs
+│   │   ├── cors.rs
+│   │   └── mod.rs
+│   ├── models
+│   │   ├── mod.rs
+│   │   ├── parking.rs
+│   │   ├── payment.rs
+│   │   ├── reservation.rs
+│   │   └── user.rs
+│   ├── routes
+│   │   ├── auth_routes.rs
+│   │   ├── mod.rs
+│   │   ├── parking_routes.rs
+│   │   ├── payment_routes.rs
+│   │   ├── reservation_routes.rs
+│   │   └── user_routes.rs
+│   ├── services
+│   │   ├── auth_service.rs
+│   │   ├── mod.rs
+│   │   ├── parking_service.rs
+│   │   ├── payment_service.rs
+│   │   ├── reservation_service.rs
+│   │   └── user_service.rs
+│   └── utils
+│       ├── config.rs
+│       ├── date_utils.rs
+│       ├── mod.rs
+│       └── token.rs
+UI
+├── owner
+│   ├── Owner_Dashboard_UI.html           # オーナーホーム
+│   ├── Owner_Register_add_UI.html        # 駐車場新規追加
+│   ├── Owner_Suspension_UI.html          # 駐車場一時停止
+│   ├── Owner_Start_Usage_UI.html         # 駐車場利用開始
+│   ├── Owner_History_Details_UI.html     # 履歴詳細（如有）
+│   ├── Owner_history_UI.html             # 入出庫履歴（如有）
+├── account
+│   ├── Edit_Profile_UI.html              # プロフィール変更
+│   ├── Vehicle_Information_UI.html       # 車両情報
+│   ├── Bank_Account_Management_UI.html   # 口座管理
+├── revenue
+│   ├── Owner_Revenue_Management_UI.html  # 収益管理
+├── user
+│   ├── Home_UI.html                      # ホーム
+│   ├── History_UI.html                   # 入出庫履歴
+│   ├── Reservation_Detail_UI.html        # 履歴詳細
+│   ├── Reservation_Cancel_UI.html        # 予約キャンセル
+│   ├── Parking_Search_UI.html            # 駐車場検索（如有）
+│   ├── Select_Usage_Datetime_UI.html     # 利用日時選択（如有）
+├── reservation
+│   ├── Reservation_Completed_UI.html     # 予約完了
+│   ├── Reservation_Confirmation_UI.html  # 予約確認
+│   ├── Approve_Reservation_UI.html       # 予約承認
+│   ├── Approval_Completed_UI.html        # 承認完了
+│   ├── Reservation_Management_UI.html    # 予約管理
+├── payment
+│   ├── Confirmation_Payment_UI.html      # 支払確認
+├── auth
+│   ├── ログイン.html                     # ログイン
+│   ├── 新規登録.html                     # 新規登録
+│   ├── 登録完了.html                     # 登録完了
+│   ├── 認証コード.html                   # 認証コード
+├── common
+│   ├── script.js
+│   └── styles.css
+
+Owner_Dashboard_UI.html（オーナーホーム） - 李
+Owner_Register_add_UI.html（駐車場新規追加） - 李
+Owner_Suspension_UI.html（駐車場一時停止） - 李
+Owner_Start_Usage_UI.html（駐車場利用開始） - 李
+
+Edit_Profile_UI.html（口座管理） - 杨
+Vehicle_Information_UI.html（車両情報） - 杨
+Bank_Account_Management_UI.html（プロフィール変更） - 杨
+Owner_Revenue_Management_UI.html（収益管理） - 杨
+
+Home_UI.html（ホーム） - 孔
+History_UI.html（入出庫履歴） - 孔
+Reservation_Detail_UI.html（履歴詳細） - 孔
+Reservation_Cancel_UI.html（予約キャンセル） - 孔
+
+https://www.akippa.com/
