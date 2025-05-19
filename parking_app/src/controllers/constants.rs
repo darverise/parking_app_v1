@@ -20,6 +20,15 @@ pub mod health {
     pub const HEALTH_DETAILS: &str = "/health/details";
 }
 
+pub mod parking {
+    pub const LIST: &str = "/api/parking";
+    pub const DETAIL: &str = "/api/parking/{id}";
+    pub const CREATE: &str = "/api/parking";
+    pub const UPDATE: &str = "/api/parking/{id}";
+    pub const DELETE: &str = "/api/parking/{id}";
+    pub const SEARCH: &str = "/api/parking/search";
+}
+
 /// 駐車場関連のルート
 pub mod parking {
     pub const LIST: &str = "/api/parking";
