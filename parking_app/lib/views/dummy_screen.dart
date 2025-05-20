@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:parking_app/views/parking/parking_search_screen.dart';
 import 'package:parking_app/views/auth/home_screen.dart';
 import 'package:parking_app/core/models/auth_signin_model.dart';
+import 'package:parking_app/views/reservation/reservation_detail_screen.dart';
+import 'package:parking_app/views/reservation/reservation_confirmation_screen.dart'
+    as confirmation;
+import 'package:parking_app/views/reservation/reservation_usage_datetime_screen.dart';
+import 'package:parking_app/views/auth/signin_screen.dart';
 
 class DummyScreen extends StatelessWidget {
   const DummyScreen({super.key});
@@ -94,6 +99,52 @@ class DummyScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
               child: const Text('オーナーホーム画面へ'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ReservationDetailScreen(),
+                  ),
+                );
+              },
+              child: const Text('予約「詳細」画面へ'),
+            ),
+
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder:
+                        (context) => const ReservationUsageDatetimeScreen(),
+                  ),
+                );
+              },
+              child: const Text('利用日時選択画面へ'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder:
+                        (context) =>
+                            const confirmation.ReservationConfirmationScreen(),
+                  ),
+                );
+              },
+              child: const Text('予約「確認」画面へ'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SignInScreen()),
+                );
+              },
+              child: const Text('サインイン画面へ'),
             ),
           ],
         ),

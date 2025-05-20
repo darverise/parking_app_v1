@@ -31,7 +31,7 @@ class _ReservationUsageDatetimeScreenState
   // Updated for TableCalendar
   DateTime _focusedDay = DateTime(2025, 5, 29);
   DateTime _selectedDay = DateTime(2025, 5, 29);
-  CalendarFormat _calendarFormat = CalendarFormat.month; // Keep as month
+  final CalendarFormat _calendarFormat = CalendarFormat.month; // Keep as month
 
   // 入出庫時間（15分単位予約の場合）
   String _entryTime = '13:00';
@@ -46,21 +46,77 @@ class _ReservationUsageDatetimeScreenState
 
   // カレンダーデータ（実際のアプリではAPIから取得）
   // This data is assumed to apply to the day number of ANY month.
+  // Added eventColor and spotsAvailable
   final Map<int, Map<String, dynamic>> _calendarData = {
-    1: {'price': 500, 'available': false, 'notice': 'キャンセル通知'},
-    2: {'price': 500, 'available': false, 'notice': 'キャンセル通知'},
-    3: {'price': 500, 'available': false, 'notice': 'キャンセル通知'},
-    4: {'price': 500, 'available': true},
-    5: {'price': 500, 'available': false, 'notice': 'キャンセル通知'},
-    6: {'price': 500, 'available': false, 'notice': 'キャンセル通知'},
-    7: {'price': 500, 'available': true},
-    8: {'price': 500, 'available': true},
+    1: {
+      'price': 500,
+      'available': false, // Technically not available for booking
+      'notice': 'キャンセル多数あり', // Main notice
+      'eventColor': Colors.orange, // For dot and styling notice
+      'spotsAvailable': 0, // No spots, but notice implies potential
+    },
+    2: {
+      'price': 500,
+      'available': false, // Not available
+      'notice': 'システムメンテナンス',
+      'eventColor': Colors.red,
+      'spotsAvailable': 0,
+    },
+    3: {
+      'price': 500,
+      'available': false, // Not available
+      'notice': '予約不可日',
+      'eventColor': Colors.red,
+      'spotsAvailable': 0,
+    },
+    4: {
+      'price': 600,
+      'available': true,
+      'notice': '特別割引日実施中！',
+      'eventColor': Colors.green,
+      'spotsAvailable': 5,
+    },
+    5: {
+      'price': 500,
+      'available': true, // Available for waitlist / notification
+      'notice': '現在満車・キャンセル待ち受付',
+      'eventColor': Colors.orange,
+      'spotsAvailable': 0, // Explicitly 0, but can be on waitlist
+    },
+    6: {
+      'price': 500,
+      'available': false, // Not available
+      'notice': '満車',
+      'eventColor': Colors.red, // Could be grey if just informational full
+      'spotsAvailable': 0,
+    },
+    7: {
+      'price': 550,
+      'available': true,
+      'spotsAvailable': 2,
+      'notice': '残りわずか', // General notice
+      // No eventColor means no dot, but notice and spots can still be shown in details
+    },
+    8: {'price': 500, 'available': true, 'spotsAvailable': 8, 'notice': '通常営業'},
     29: {
       'price': 500,
       'available': true,
-    }, // Corresponds to initial _selectedDay
-    30: {'price': 500, 'available': true},
-    31: {'price': 500, 'available': true},
+      'spotsAvailable': 3,
+      'notice': '予約受付中',
+    },
+    30: {
+      'price': 700,
+      'available': true,
+      'notice': '週末特別料金',
+      'eventColor': Colors.purple, // Custom event color
+      'spotsAvailable': 6,
+    },
+    31: {
+      'price': 500,
+      'available': true,
+      'spotsAvailable': 10,
+      'notice': '予約枠多数あり',
+    },
   };
 
   // 利用可能時間枠（実際のアプリではAPIから取得）
@@ -146,19 +202,35 @@ class _ReservationUsageDatetimeScreenState
 
   // 日付選択ダイアログを表示 (for 15-min unit)
   void _showDatePickerDialog() {
+    final DateTime datePickerFirstDate = DateTime.now().subtract(
+      const Duration(days: 30),
+    );
+    final DateTime datePickerLastDate = DateTime.now().add(
+      const Duration(days: 365),
+    );
+
+    DateTime effectiveInitialDate = _selectedDay;
+
+    // Ensure initialDate is not before firstDate
+    if (effectiveInitialDate.isBefore(datePickerFirstDate)) {
+      effectiveInitialDate = datePickerFirstDate;
+    }
+    // Ensure initialDate is not after lastDate
+    if (effectiveInitialDate.isAfter(datePickerLastDate)) {
+      effectiveInitialDate = datePickerLastDate;
+    }
+
     showDatePicker(
       context: context,
-      initialDate: _selectedDay,
-      firstDate: DateTime.now().subtract(
-        const Duration(days: 30),
-      ), // Allow picking recent past for flexibility
-      lastDate: DateTime.now().add(const Duration(days: 365)),
+      initialDate: effectiveInitialDate,
+      firstDate: datePickerFirstDate,
+      lastDate: datePickerLastDate,
       locale: const Locale('ja'),
     ).then((picked) {
       if (picked != null) {
         setState(() {
           _selectedDay = picked;
-          _focusedDay = picked;
+          _focusedDay = picked; // Keep focusedDay in sync
         });
       }
     });
@@ -398,6 +470,8 @@ class _ReservationUsageDatetimeScreenState
                                 : null,
                         textColor: textColor,
                         isAvailable: isAvailable,
+                        eventColor: dayData?['eventColor'] as Color?,
+                        spotsAvailable: dayData?['spotsAvailable'] as int?,
                       );
                     },
                     selectedBuilder: (context, day, focusedDay) {
@@ -410,6 +484,8 @@ class _ReservationUsageDatetimeScreenState
                         backgroundColor: Colors.blue,
                         isBold: true,
                         isAvailable: true, // Selected day must be available
+                        eventColor: dayData?['eventColor'] as Color?,
+                        spotsAvailable: dayData?['spotsAvailable'] as int?,
                       );
                     },
                     todayBuilder: (context, day, focusedDay) {
@@ -442,6 +518,8 @@ class _ReservationUsageDatetimeScreenState
                         isBold: true, // Make today's number bold
                         isAvailable: isAvailable,
                         isToday: true,
+                        eventColor: dayData?['eventColor'] as Color?,
+                        spotsAvailable: dayData?['spotsAvailable'] as int?,
                       );
                     },
                     disabledBuilder: (context, day, focusedDay) {
@@ -453,12 +531,13 @@ class _ReservationUsageDatetimeScreenState
                       }
                       return _buildCalendarCell(
                         day: day.day,
-                        price:
-                            _getCalendarDayData(
-                              day,
-                            )?['price'], // Show price even if disabled
+                        price: _getCalendarDayData(day)?['price'],
                         textColor: textColor,
                         isAvailable: false,
+                        eventColor:
+                            _getCalendarDayData(day)?['eventColor'] as Color?,
+                        spotsAvailable:
+                            _getCalendarDayData(day)?['spotsAvailable'] as int?,
                       );
                     },
                   ),
@@ -697,6 +776,9 @@ class _ReservationUsageDatetimeScreenState
                 ),
               ),
 
+            // Event Details Section (New)
+            if (_isDayUnit) _buildEventDetailsSection(),
+
             // 利用日時と料金の確認
             Container(
               margin: const EdgeInsets.only(bottom: 16),
@@ -763,8 +845,38 @@ class _ReservationUsageDatetimeScreenState
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(
+              height: 30,
+            ), // This SizedBox might need adjustment or removal depending on final layout with bottomSheet
           ],
+        ),
+      ),
+      bottomSheet: Container(
+        padding: const EdgeInsets.fromLTRB(
+          16,
+          8,
+          16,
+          16,
+        ), // Adjust padding as needed
+        color: Colors.white, // Ensure background color to hide content behind
+        child: SizedBox(
+          width: double.infinity,
+          height: 52,
+          child: ElevatedButton(
+            onPressed: _proceedToReservation,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange, // Or your AppColors.accent
+              foregroundColor: Colors.white,
+              textStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text('予約に進む'),
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -791,31 +903,46 @@ class _ReservationUsageDatetimeScreenState
   Widget _buildCalendarCell({
     required int day,
     int? price,
-    String? notice,
+    String?
+    notice, // Notice here is more for cell display if needed, main notice in _calendarData
     required Color textColor,
     Color? backgroundColor,
     bool isBold = false,
     required bool isAvailable,
     bool isToday = false,
+    Color? eventColor,
+    int? spotsAvailable,
   }) {
+    Border? cellBorder;
+    if (isToday && backgroundColor == null) {
+      // Special border for today if not selected
+      cellBorder = Border.all(
+        color: Colors.blueAccent.withOpacity(0.7),
+        width: 1.0, // Reduced width for today's border
+      );
+    } else if (backgroundColor == null) {
+      // Apply default border only if no specific background (e.g. not selected)
+      // Default subtle border for all other cells
+      cellBorder = Border.all(
+        color: Colors.grey.shade200, // Lighter border color
+        width: 0.5, // Thinner border
+      );
+    }
+    // If backgroundColor is present (e.g., for selected day), no explicit border is drawn here,
+    // relying on the BoxDecoration of the selection.
+
     return Container(
-      margin: const EdgeInsets.all(1.0),
+      margin: const EdgeInsets.all(0.5), // Minimal margin
+      padding: EdgeInsets.zero, // No internal padding for the container itself
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(6.0),
-        border:
-            isToday &&
-                    backgroundColor ==
-                        null // Add border for today if not selected
-                ? Border.all(
-                  color: Colors.blueAccent.withOpacity(0.7),
-                  width: 1.5,
-                )
-                : null,
+        borderRadius: BorderRadius.circular(4.0), // Slightly smaller radius
+        border: cellBorder,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
             '$day',
@@ -833,22 +960,238 @@ class _ReservationUsageDatetimeScreenState
                 color: textColor.withOpacity(isAvailable ? 1.0 : 0.7),
               ),
             ),
-          if (notice != null && isAvailable) // Only show notice if available
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                notice,
-                style: TextStyle(
-                  fontSize: 7.5, // Slightly larger for readability
-                  color:
-                      backgroundColor == Colors.blue
-                          ? Colors.white70
-                          : Colors.orange.shade700,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+          // Removed SizedBox(height: 1) to allow MainAxisAlignment.spaceBetween to manage space
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 2.0,
+            ), // Reduced horizontal padding
+            child:
+                (eventColor == null &&
+                        isAvailable &&
+                        spotsAvailable != null &&
+                        spotsAvailable > 0)
+                    // Case 1: No dot, but spots available -> Center spots text
+                    ? Center(
+                      child: Text(
+                        '空$spotsAvailable',
+                        style: TextStyle(
+                          fontSize: 7.5, // Reduced font size
+                          color: textColor.withOpacity(isAvailable ? 0.9 : 0.5),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                    // Case 2: Dot present, or no spots to show in this row, or not available
+                    : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Left: Event Dot
+                        if (eventColor != null && isAvailable)
+                          CircleAvatar(
+                            radius: 3,
+                            backgroundColor: eventColor,
+                          ) // Reduced radius
+                        else
+                          const SizedBox(
+                            width: 6,
+                          ), // Adjusted placeholder size (radius*2)
+                        // Right: Spots Available (only if dot is also present)
+                        if (eventColor != null &&
+                            spotsAvailable != null &&
+                            spotsAvailable > 0 &&
+                            isAvailable)
+                          Text(
+                            '空$spotsAvailable',
+                            style: TextStyle(
+                              fontSize: 7.5, // Reduced font size
+                              color: textColor.withOpacity(
+                                isAvailable ? 0.9 : 0.5,
+                              ),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        else
+                          const SizedBox(width: 6), // Adjusted placeholder size
+                      ],
+                    ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // New widget to display event details for the selected day
+  Widget _buildEventDetailsSection() {
+    final dayData = _getCalendarDayData(_selectedDay);
+
+    // If day is not available for booking, or no specific data, show minimal or no info.
+    // We show details even if not 'available' in _calendarData if there's a notice (e.g. "System Maintenance")
+    if (dayData == null) {
+      return const SizedBox.shrink();
+    }
+
+    final String? notice = dayData['notice'] as String?;
+    final int? spots = dayData['spotsAvailable'] as int?;
+    final Color? eventColor = dayData['eventColor'] as Color?;
+    final bool isActuallyAvailableForBooking =
+        dayData['available'] as bool? ?? false;
+
+    List<Widget> eventItems = [];
+
+    // Line 1: Primary Notice
+    if (notice != null && notice.isNotEmpty) {
+      eventItems.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6.0),
+          child: Text(
+            notice,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color:
+                  eventColor ??
+                  (isActuallyAvailableForBooking
+                      ? Colors.black87
+                      : Colors.red.shade700),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    // Line 2: Availability Status
+    if (isActuallyAvailableForBooking) {
+      if (spots != null && spots > 0) {
+        eventItems.add(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: Text(
+              '空き車位数: $spots台',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.green.shade700,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      } else if (spots == 0 && notice != null && notice.contains("満車")) {
+        // Already covered by primary notice if it says "満車"
+      } else if (spots == 0 && isActuallyAvailableForBooking) {
+        // E.g. available for waitlist, but 0 spots now
+        eventItems.add(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: Text(
+              '現在空き枠なし (キャンセル待ち可能)', // Or similar text
+              style: TextStyle(fontSize: 13, color: Colors.orange.shade800),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    }
+
+    // Line 3: Actionable Event (Cancellation Notification)
+    if (isActuallyAvailableForBooking &&
+        eventColor == Colors.orange &&
+        notice != null &&
+        (notice.contains('キャンセル') || notice.contains('満車'))) {
+      eventItems.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 4.0, bottom: 6.0),
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.notification_add_outlined, size: 18),
+            label: const Text('空き通知を受け取る'),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('空き通知の登録機能を実装予定です。')),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange.shade700,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              textStyle: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
               ),
             ),
+          ),
+        ),
+      );
+    }
+
+    // Line 4: Critical Information (Maintenance/Unavailable)
+    if (!isActuallyAvailableForBooking &&
+        eventColor == Colors.red &&
+        notice != null &&
+        (notice.contains('メンテナンス') || notice.contains('予約不可'))) {
+      eventItems.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 4.0, bottom: 6.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, color: Colors.red.shade700, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                notice, // Or a more specific message like 'この日は予約できません'
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.red.shade700,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (eventItems.isEmpty) {
+      // If the day is selected but no specific events, show a generic message or nothing
+      if (isActuallyAvailableForBooking) {
+        eventItems.add(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: Text(
+              '詳細情報はありません。', // No specific events for this day
+              style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      } else {
+        return const SizedBox.shrink(); // Truly nothing to show
+      }
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16, top: 4),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            '選択日のイベント情報',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue.shade700,
+            ),
+          ),
+          const Divider(height: 16),
+          ...eventItems,
         ],
       ),
     );

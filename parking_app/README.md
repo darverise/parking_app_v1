@@ -96,6 +96,7 @@ cd ios
 pod install --repo-update
 flutter run -d ios
 flutter run -d android
+运行 flutter pub outdated 查看是否有过时的依赖，并考虑更新。
 
 Flutter run key commands.
 r Hot reload. 🔥🔥🔥

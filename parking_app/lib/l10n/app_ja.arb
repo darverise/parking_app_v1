@@ -271,5 +271,29 @@
     "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
     "@alreadyHaveAccount": {
         "description": "Already have account prompt"
+    },
+    "registrantType": "登録者種別",
+    "@registrantType": {
+        "description": "Registrant type label"
+    },
+    "registrantTypeHint": "登録者種別を選択してください",
+    "@registrantTypeHint": {
+        "description": "Registrant type select hint"
+    },
+    "registrantTypeIndividual": "個人",
+    "@registrantTypeIndividual": {
+        "description": "Individual registrant type"
+    },
+    "registrantTypeCorporation": "法人",
+    "@registrantTypeCorporation": {
+        "description": "Corporation registrant type"
+    },
+    "registrantTypeSoleProprietor": "個人事業主",
+    "@registrantTypeSoleProprietor": {
+        "description": "Sole proprietor registrant type"
+    },
+    "registrantTypeVoluntaryOrganization": "任意団体",
+    "@registrantTypeVoluntaryOrganization": {
+        "description": "Voluntary organization registrant type"
     }
 }

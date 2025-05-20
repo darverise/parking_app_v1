@@ -172,7 +172,7 @@ class AppInterceptors extends Interceptor {
   }
 
   /// 检查网络连接
-  Future<ConnectivityResult> _checkConnectivity() async {
+  Future<List<ConnectivityResult>> _checkConnectivity() async {
     return await Connectivity().checkConnectivity();
   }
 

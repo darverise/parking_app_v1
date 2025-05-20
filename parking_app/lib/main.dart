@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:parking_app/core/services/auth_signin_service.dart';
 import 'package:parking_app/core/utils/auth_providers.dart';
-import 'package:parking_app/views/auth/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:parking_app/views/auth/signin_screen.dart';
 import 'package:parking_app/views/dummy_screen.dart';
@@ -141,7 +139,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   // Add state variables for loading feedback
-  String _loadingText = "ログイン情報を確認中...";
+  final String _loadingText = "ログイン情報を確認中...";
 
   @override
   Widget build(BuildContext context) {

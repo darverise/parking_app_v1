@@ -41,7 +41,13 @@
     "verifyWithEmail",
     "receiveCodeViaEmail",
     "switchedToEmailVerification",
-    "alreadyHaveAccount"
+    "alreadyHaveAccount",
+    "registrantType",
+    "registrantTypeHint",
+    "registrantTypeIndividual",
+    "registrantTypeCorporation",
+    "registrantTypeSoleProprietor",
+    "registrantTypeVoluntaryOrganization"
   ],
 
   "zh": [
@@ -86,6 +92,12 @@
     "verifyWithEmail",
     "receiveCodeViaEmail",
     "switchedToEmailVerification",
-    "alreadyHaveAccount"
+    "alreadyHaveAccount",
+    "registrantType",
+    "registrantTypeHint",
+    "registrantTypeIndividual",
+    "registrantTypeCorporation",
+    "registrantTypeSoleProprietor",
+    "registrantTypeVoluntaryOrganization"
   ]
 }

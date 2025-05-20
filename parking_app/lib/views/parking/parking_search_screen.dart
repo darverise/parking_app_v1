@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:parking_app/theme/app_colors.dart';
 import 'package:parking_app/theme/text_styles.dart';
+import 'package:parking_app/views/reservation/reservation_detail_screen.dart';
 
 class ParkingSearchScreen extends StatefulWidget {
   const ParkingSearchScreen({super.key});
@@ -257,8 +258,9 @@ class _ParkingSearchScreenState extends State<ParkingSearchScreen> {
                                     )
                                     .toList(),
                             onChanged: (v) {
-                              if (v != null)
+                              if (v != null) {
                                 setState(() => _selectedCarType = v);
+                              }
                             },
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
@@ -293,8 +295,9 @@ class _ParkingSearchScreenState extends State<ParkingSearchScreen> {
                                     )
                                     .toList(),
                             onChanged: (v) {
-                              if (v != null)
+                              if (v != null) {
                                 setState(() => _selectedReserveType = v);
+                              }
                             },
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
@@ -418,8 +421,9 @@ class _ParkingSearchScreenState extends State<ParkingSearchScreen> {
                                 )
                                 .toList(),
                         onChanged: (v) {
-                          if (v != null)
+                          if (v != null) {
                             setState(() => _selectedReserveType = v);
+                          }
                         },
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
@@ -664,7 +668,15 @@ class _ParkingSearchScreenState extends State<ParkingSearchScreen> {
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) =>
+                                                  const ReservationDetailScreen(),
+                                        ),
+                                      );
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.primary,
                                       foregroundColor: Colors.white,
