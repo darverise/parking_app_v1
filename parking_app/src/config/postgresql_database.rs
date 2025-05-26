@@ -81,6 +81,8 @@ impl DatabaseConfig {
     }
 }
 
+/// PostgreSQL database connection pool
+#[derive(Debug, Clone)]
 pub struct PostgresDatabase {
     pool: PgPool,
 }

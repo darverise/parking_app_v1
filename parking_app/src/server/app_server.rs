@@ -12,53 +12,70 @@ use crate::middlewares::{
     session_middleware::SessionMiddleware,
 };
 use crate::routes::route_config;
+use crate::services::auth_signup_service::AuthSignupService;
 
 use std::io::{self, ErrorKind};
 use std::net::TcpListener;
 use log::{info, error, warn};
 
+/// アプリケーションサーバーを起動
 pub async fn start_server() -> std::io::Result<()> {
-    // .envファイルから環境変数を読み込む
+    // 環境変数ファイル(.env)を読み込み
     dotenv::dotenv().ok();
 
-    // ロギングの初期化
+    // ロギングシステムの初期化
     let log_config = LogConfig::from_env();
     let _guard = init_logger(log_config).map_err(|e| {
         error!("ロガーの初期化に失敗しました: {}", e);
         io::Error::new(io::ErrorKind::Other, e.to_string())
     })?;
 
-    info!("サーバーを初期化しています...");
+    info!("アプリケーションサーバーを初期化しています...");
 
-    // データベース接続のセットアップ
+    // データベース設定の読み込みと接続確立
     let db_config = DatabaseConfig::from_env().map_err(|e| {
         error!("データベース設定の読み込みに失敗しました: {}", e);
         io::Error::new(io::ErrorKind::Other, e.to_string())
     })?;
     
     info!("データベースに接続中...");
-    let db = web::Data::new(
-        PostgresDatabase::connect(&db_config)
-            .await
-            .map_err(|e| {
-                error!("データベースへの接続に失敗しました: {}", e);
-                io::Error::new(io::ErrorKind::Other, e.to_string())
-            })?,
-    );
+    let database = PostgresDatabase::connect(&db_config)
+        .await
+        .map_err(|e| {
+            error!("データベースへの接続に失敗しました: {}", e);
+            io::Error::new(io::ErrorKind::Other, e.to_string())
+        })?;
+    
+    let db = web::Data::new(database.clone());
     info!("データベース接続が正常に確立されました");
 
-    // 環境変数からサーバーのアドレスとポートを設定
-    let host = std::env::var("SERVER_HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
+    // 認証サインアップサービスの初期化（同一のデータベース接続を使用）
+    let auth_signup_service = web::Data::new(AuthSignupService::new(database));
+    info!("認証サービスが初期化されました");
+
+    // サーバーのホストとポート設定を環境変数から取得
+    let host = std::env::var("SERVER_HOST").unwrap_or_else(|_| {
+        warn!("SERVER_HOSTが設定されていません。デフォルト値 '0.0.0.0' を使用します");
+        "0.0.0.0".to_string()
+    });
+    
     let port = std::env::var("SERVER_PORT")
-        .unwrap_or_else(|_| "8080".to_string())
+        .unwrap_or_else(|_| {
+            warn!("SERVER_PORTが設定されていません。デフォルト値 '3000' を使用します");
+            "3000".to_string()
+        })
         .parse::<u16>()
-        .unwrap_or(8080);
+        .map_err(|e| {
+            error!("SERVER_PORTの値が無効です: {}", e);
+            io::Error::new(io::ErrorKind::InvalidInput, "無効なポート番号")
+        })?;
+    
     let address = format!("{}:{}", host, port);
     
-    // ポートが既に使用されているか確認
+    // ポートの利用可能性を事前確認
     match TcpListener::bind(&address) {
         Ok(listener) => {
-            // ポートが利用可能、一時リスナーを破棄
+            // ポートが利用可能、テスト用リスナーを破棄
             drop(listener);
             info!("ポート{}は利用可能です", port);
         },
@@ -71,44 +88,82 @@ pub async fn start_server() -> std::io::Result<()> {
                 ));
             } else {
                 warn!("ポートの利用可否確認中にエラーが発生しました: {}", e);
-                // サーバー起動を継続
+                // サーバー起動を継続（一時的なネットワーク問題の可能性）
             }
         }
     }
     
-    info!("サーバーを http://{} で起動します...", address);
+    // ワーカースレッド数の設定
+    let workers = std::env::var("SERVER_WORKERS")
+        .unwrap_or_else(|_| {
+            info!("SERVER_WORKERSが設定されていません。デフォルト値 '4' を使用します");
+            "4".to_string()
+        })
+        .parse::<usize>()
+        .unwrap_or_else(|e| {
+            warn!("SERVER_WORKERSの値が無効です: {}。デフォルト値 '4' を使用します", e);
+            4
+        });
+    
+    info!("サーバーを http://{} で起動します（ワーカー数: {}）...", address, workers);
 
-    // サーバーの構成と起動
+    // HTTPサーバーの構成と起動
     HttpServer::new(move || {
         App::new()
-            .wrap(Logger::default()) // リクエストログ
-            .wrap(configure_cors()) // CORS設定
-            .wrap(CsrfMiddleware) // CSRF対策
-            .wrap(IdentityMiddleware::new()) // アイデンティティ管理
-            .wrap(SessionMiddleware::new()) // セッション管理
-            .wrap(DefaultHeadersMiddleware) // デフォルトレスポンスヘッダー
-            .wrap(ErrorHandlersMiddleware) // エラーハンドリング
-            .app_data(db.clone()) // データベース接続プールを共有
-            .configure(route_config::init_routes) // ルート登録
+            // アプリケーションデータの登録（最優先）
+            .app_data(db.clone())
+            .app_data(auth_signup_service.clone())
+
+            // ミドルウェアの適用（適用順序が重要）
+            // 1. エラーハンドリング（最外層）
+            .wrap(ErrorHandlersMiddleware)
+            
+            // 2. ロギング（リクエスト/レスポンスの記録）
+            .wrap(Logger::default())
+            
+            // 3. デフォルトヘッダー（セキュリティヘッダー等）
+            .wrap(DefaultHeadersMiddleware)
+            
+            // 4. CORS設定（クロスオリジンリクエスト制御）
+            .wrap(configure_cors())
+            
+            // 5. セッション管理（認証の前提）
+            .wrap(SessionMiddleware::new())
+            
+            // 6. アイデンティティ管理（ユーザー認証）
+            .wrap(IdentityMiddleware::new())
+            
+            // 7. CSRF保護（認証後のセキュリティ層）
+            // ログインエンドポイントを除外
+            // サインアップエンドポイントを除外
+            // ヘルスチェックエンドポイントを除外
+            .wrap(CsrfMiddleware::new()
+                .exempt("/v1/api/auth/signin")
+                .exempt("/v1/api/auth/signup/user")
+                .exempt("/health")
+            )
+
+            // ルート設定の適用
+            .configure(route_config::init_routes)
     })
-    .workers(
-        std::env::var("SERVER_WORKERS")
-            .unwrap_or_else(|_| "4".to_string())
-            .parse::<usize>()
-            .unwrap_or(4)
-    ) // ワーカースレッド数（環境変数から取得）
+    .workers(workers)
     .bind(&address)
     .map_err(|e| {
         error!("アドレス{}へのバインドに失敗しました: {}", address, e);
         if e.kind() == ErrorKind::AddrInUse {
-            error!("ポート{}は既に使用されているようです。他のアプリケーションがこのポートを使用していないか確認するか、.envのSERVER_PORTを変更してください。", port);
+            error!("ポート{}は既に使用されています。他のアプリケーションがこのポートを使用していないか確認するか、.envのSERVER_PORTを変更してください。", port);
+        } else if e.kind() == ErrorKind::PermissionDenied {
+            error!("ポート{}へのバインドが拒否されました。管理者権限が必要な可能性があります（1024番未満のポート）。", port);
         }
         e
     })?
     .run()
     .await
-    .map(|_| {
-        info!("サーバーが停止しました");
-        ()
-    })
+    .map_err(|e| {
+        error!("サーバーの実行中にエラーが発生しました: {}", e);
+        e
+    })?;
+    
+    info!("サーバーが正常に停止しました");
+    Ok(())
 }

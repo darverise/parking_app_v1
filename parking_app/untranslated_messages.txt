@@ -47,7 +47,15 @@
     "registrantTypeIndividual",
     "registrantTypeCorporation",
     "registrantTypeSoleProprietor",
-    "registrantTypeVoluntaryOrganization"
+    "registrantTypeVoluntaryOrganization",
+    "anUnknownErrorOccurred",
+    "failedToSignUp",
+    "errorOccurred",
+    "retry",
+    "backToHomeScreen",
+    "contactSupportIfPersists",
+    "networkErrorMessage",
+    "unauthorizedMessage"
   ],
 
   "zh": [
@@ -98,6 +106,14 @@
     "registrantTypeIndividual",
     "registrantTypeCorporation",
     "registrantTypeSoleProprietor",
-    "registrantTypeVoluntaryOrganization"
+    "registrantTypeVoluntaryOrganization",
+    "anUnknownErrorOccurred",
+    "failedToSignUp",
+    "errorOccurred",
+    "retry",
+    "backToHomeScreen",
+    "contactSupportIfPersists",
+    "networkErrorMessage",
+    "unauthorizedMessage"
   ]
 }

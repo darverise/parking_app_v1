@@ -295,5 +295,43 @@
     "registrantTypeVoluntaryOrganization": "任意団体",
     "@registrantTypeVoluntaryOrganization": {
         "description": "Voluntary organization registrant type"
+    },
+    "anUnknownErrorOccurred": "不明なエラーが発生しました",
+    "@anUnknownErrorOccurred": {
+        "description": "Generic error message for unknown errors"
+    },
+    "failedToSignUp": "サインアップに失敗しました: {errorDetails}",
+    "@failedToSignUp": {
+        "description": "Error message when signup fails",
+        "placeholders": {
+            "errorDetails": {
+                "type": "String",
+                "example": "Network error"
+            }
+        }
+    },
+    "errorOccurred": "エラーが発生しました",
+    "@errorOccurred": {
+        "description": "Generic error message shown on error screens"
+    },
+    "retry": "再試行",
+    "@retry": {
+        "description": "Retry button text on error screens"
+    },
+    "backToHomeScreen": "ホームへ戻る",
+    "@backToHomeScreen": {
+        "description": "Button to return to home screen from error screens"
+    },
+    "contactSupportIfPersists": "問題が解決しない場合は、サポートまでお問い合わせください。",
+    "@contactSupportIfPersists": {
+        "description": "Message suggesting to contact support if error persists"
+    },
+    "networkErrorMessage": "サーバーに接続できません。インターネット接続を確認し、もう一度お試しください。",
+    "@networkErrorMessage": {
+        "description": "Error message for network connectivity issues"
+    },
+    "unauthorizedMessage": "このリソースにアクセスする権限がありません。再度ログインしてください。",
+    "@unauthorizedMessage": {
+        "description": "Error message for unauthorized access"
     }
 }

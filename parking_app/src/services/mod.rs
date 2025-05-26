@@ -7,11 +7,13 @@
 // services/mod.rs - サービスモジュール
 
 pub mod auth_service;
+pub mod auth_signup_service; // Added auth_signup_service
 pub mod email_service;
 pub mod sms_service;
 
 // 共通で使用するサービスの再エクスポート
 pub use auth_service::AuthService;
+pub use auth_signup_service::AuthSignupService; // Added re-export for AuthSignupService
 pub use email_service::EmailService;
 pub use sms_service::SmsService;
 

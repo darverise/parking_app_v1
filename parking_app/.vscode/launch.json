@@ -1,30 +1,51 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Flutter Parking App (debug)",
-            "request": "launch",
-            "type": "dart",
-            // Ensure this path points to your app's main entry file.
-            "program": "lib/main.dart",
-            // "flutterMode": "debug" is the default for "type": "dart" in Flutter projects,
-            // but explicitly stating it can be useful for clarity.
-            // This mode enables hot reload and hot restart.
-            "flutterMode": "debug"
-        },
-        {
-            "name": "Flutter Parking App (profile)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile",
-            "program": "lib/main.dart"
-        },
-        {
-            "name": "Flutter Parking App (release)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release",
-            "program": "lib/main.dart"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter Parking App (debug)",
+      "request": "launch",
+      "type": "dart",
+      // Ensure this path points to your app's main entry file.
+      "program": "lib/main.dart",
+      // "flutterMode": "debug" is the default for "type": "dart" in Flutter projects,
+      // but explicitly stating it can be useful for clarity.
+      // This mode enables hot reload and hot restart.
+      "flutterMode": "debug"
+    },
+    {
+      "name": "Flutter Parking App (profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "Flutter Parking App (release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "Rust Parking App Server (debug)",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/target/debug/parking_app_server",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "cargo build",
+      "console": "externalTerminal",
+      "sourceLanguages": ["rust"],
+      "env": {
+        "RUST_LOG": "debug",
+        "RUST_BACKTRACE": "full",
+        "LOG_LEVEL": "debug",
+        "ENABLE_CONSOLE_LOGGING": "true",
+        "ENABLE_FILE_LOGGING": "true",
+        "ENABLE_SQL_LOGGING": "true"
+      },
+      "stopOnEntry": false,
+      "stdio": [null, null, null]
+    }
+  ]
 }

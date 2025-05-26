@@ -6,6 +6,8 @@
 pub mod api_error;
 pub mod api_response;
 pub mod auth_controller;
+pub mod auth_signup_controller; // 追加: サインアップ用コントローラー
+pub mod api_base; // 追加: CSRFトークン用コントローラー
 pub mod health_controller;
 pub mod validation;  // バリデーション機能をコントローラーモジュール内に移動
 
