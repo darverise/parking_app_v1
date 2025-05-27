@@ -30,6 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _confirmPasswordController = TextEditingController();
   String? _selectedGender;
   UserRole _selectedRole = UserRole.user;
+  String? _selectedRegistrantType; // Added for registrant type
   bool _isLoading = false;
   String? _errorMessage;
   DateTime _selectedDate = DateTime(2000, 1, 1);
@@ -181,6 +182,75 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
+
+                    // Conditionally display Registrant Type Dropdown
+                    if (_selectedRole == UserRole.owner) ...[
+                      const SizedBox(height: 16.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: Colors.grey[300]!,
+                            width: 1.0,
+                          ),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.03),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          value: _selectedRegistrantType,
+                          decoration: InputDecoration(
+                            labelText: null, // Using hint as label
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                            hintText: l10n.registrantTypeHint,
+                            hintStyle: TextStyles.bodyMedium.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          items: [
+                            DropdownMenuItem(
+                              value: 'individual',
+                              child: Text(l10n.registrantTypeIndividual),
+                            ),
+                            DropdownMenuItem(
+                              value: 'corporation',
+                              child: Text(l10n.registrantTypeCorporation),
+                            ),
+                            DropdownMenuItem(
+                              value: 'sole_proprietor',
+                              child: Text(l10n.registrantTypeSoleProprietor),
+                            ),
+                            DropdownMenuItem(
+                              value: 'voluntary_organization',
+                              child: Text(
+                                l10n.registrantTypeVoluntaryOrganization,
+                              ),
+                            ),
+                          ],
+                          onChanged:
+                              (v) =>
+                                  setState(() => _selectedRegistrantType = v),
+                          validator: (v) {
+                            if (_selectedRole == UserRole.owner &&
+                                (v == null || v.isEmpty)) {
+                              return l10n.requiredField;
+                            }
+                            return null;
+                          },
+                          // Use l10n.registrantType as a general label if needed, or rely on hint
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 16.0),
 
                     // 输入框区域
                     _buildFloatingLabelTextField(

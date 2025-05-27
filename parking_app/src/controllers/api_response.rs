@@ -10,6 +10,11 @@ pub mod headers {
     pub const AUTHORIZATION: &str = "Authorization";
     pub const X_API_KEY: &str = "X-Api-Key";
 
+    // セキュリティ関連
+    pub const X_CSRF_TOKEN: &str = "X-CSRF-Token";
+    pub const X_FRAME_OPTIONS: &str = "X-Frame-Options";
+    pub const X_CONTENT_TYPE_OPTIONS: &str = "X-Content-Type-Options";
+
     // コンテンツタイプ関連
     pub const CONTENT_TYPE: &str = "Content-Type";
     pub const CONTENT_TYPE_JSON: &str = "application/json";

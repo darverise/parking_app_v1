@@ -41,7 +41,21 @@
     "verifyWithEmail",
     "receiveCodeViaEmail",
     "switchedToEmailVerification",
-    "alreadyHaveAccount"
+    "alreadyHaveAccount",
+    "registrantType",
+    "registrantTypeHint",
+    "registrantTypeIndividual",
+    "registrantTypeCorporation",
+    "registrantTypeSoleProprietor",
+    "registrantTypeVoluntaryOrganization",
+    "anUnknownErrorOccurred",
+    "failedToSignUp",
+    "errorOccurred",
+    "retry",
+    "backToHomeScreen",
+    "contactSupportIfPersists",
+    "networkErrorMessage",
+    "unauthorizedMessage"
   ],
 
   "zh": [
@@ -86,6 +100,20 @@
     "verifyWithEmail",
     "receiveCodeViaEmail",
     "switchedToEmailVerification",
-    "alreadyHaveAccount"
+    "alreadyHaveAccount",
+    "registrantType",
+    "registrantTypeHint",
+    "registrantTypeIndividual",
+    "registrantTypeCorporation",
+    "registrantTypeSoleProprietor",
+    "registrantTypeVoluntaryOrganization",
+    "anUnknownErrorOccurred",
+    "failedToSignUp",
+    "errorOccurred",
+    "retry",
+    "backToHomeScreen",
+    "contactSupportIfPersists",
+    "networkErrorMessage",
+    "unauthorizedMessage"
   ]
 }

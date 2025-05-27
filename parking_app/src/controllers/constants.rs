@@ -1,17 +1,19 @@
 /// ルート定数を管理するモジュール
 
 /// APIバージョンプレフィックス
-pub const API_V1_PREFIX: &str = "/api/v1";
+pub const API_V1_PREFIX: &str = "/v1/api/";
 
 /// 認証関連のルート
 pub mod auth {
-    pub const LOGIN: &str = "/api/auth/signin";
-    pub const LOGOUT: &str = "/api/auth/signout";
-    pub const REGISTER_USER: &str = "/api/auth/register/user";
-    pub const REGISTER_OWNER: &str = "/api/auth/register/owner";
-    pub const USER_INFO: &str = "/api/auth/user";
-    pub const CHANGE_PASSWORD: &str = "/api/auth/user/change-password";
-    pub const REFRESH_TOKEN: &str = "/api/auth/refresh-token";
+    pub const LOGIN: &str = "/v1/api/auth/signin";
+    pub const LOGOUT: &str = "/v1/api/auth/signout";
+    pub const REGISTER: &str = "/v1/api/auth/signup";
+    pub const REGISTER_USER: &str = "/v1/api/auth/signup/user";
+    pub const REGISTER_OWNER: &str = "/v1/api/auth/signup/owner";
+    pub const USER_INFO: &str = "/v1/api/auth/user";
+    pub const CHANGE_PASSWORD: &str = "/v1/api/auth/user/change-password";
+    pub const REFRESH_TOKEN: &str = "/v1/api/auth/refresh-token";
+    pub const CSRF_TOKEN: &str = "/v1/api/auth/csrf-token";
 }
 
 /// ヘルスチェック関連のルート

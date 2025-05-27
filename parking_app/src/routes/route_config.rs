@@ -1,8 +1,10 @@
 use actix_web::web;
+use crate::controllers::auth_controller::signin;
+use crate::controllers::api_base::get_csrf_token;
 use crate::controllers::health_controller::{health_check, health_details};
-use crate::controllers::auth_controller::{
-    signin, signout, refresh_token, get_user_info, update_user, change_password
-};
+
+// Import BOTH controller functions
+use crate::controllers::auth_signup_controller::{register_user_controller, register_owner_controller};
 
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
     // Health check endpoints
@@ -11,13 +13,19 @@ pub fn init_routes(cfg: &mut web::ServiceConfig) {
 
     // Auth routes with common prefix
     cfg.service(
-        web::scope("/api/auth")
+        web::scope("/v1/api/auth")
             .service(signin)
-            .service(signout)
-            .service(refresh_token)
-            .service(get_user_info)
-            .service(update_user)
-            .service(change_password)
+            // .service(signout)
+            // .service(refresh_token)
+            // .service(get_user_info)
+            // .service(update_user)
+            // .service(change_password)
+            .service(get_csrf_token)
+            .service(
+                web::scope("/signup")
+                    .service(register_user_controller)
+                    .service(register_owner_controller)  // Add this line!
+            )
     );
 
     // 示例：带参数的 resource 路由

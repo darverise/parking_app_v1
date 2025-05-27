@@ -31,6 +31,8 @@ pub struct LogConfig {
     pub app_name: String,
     pub enable_file_logging: bool,
     pub enable_console: bool,
+    pub enable_sql_logging: bool,
+    pub format_sql: bool,
 }
 
 impl LogConfig {
@@ -43,6 +45,12 @@ impl LogConfig {
                 .map(|v| v.to_lowercase() == "true")
                 .unwrap_or(true),
             enable_console: env::var("ENABLE_CONSOLE_LOGGING")
+                .map(|v| v.to_lowercase() == "true")
+                .unwrap_or(true),
+            enable_sql_logging: env::var("ENABLE_SQL_LOGGING")
+                .map(|v| v.to_lowercase() == "true")
+                .unwrap_or(true),
+            format_sql: env::var("FORMAT_SQL")
                 .map(|v| v.to_lowercase() == "true")
                 .unwrap_or(true),
         }
@@ -186,4 +194,221 @@ pub fn set_module_log_level(module: &str, level: Level) {
         tracing::subscriber::set_global_default(tracing_subscriber::registry().with(filter))
             .expect("Failed to set global default subscriber");
     }
+}
+
+/// SQL parameter value for logging
+#[derive(Debug, Clone)]
+pub enum SqlParam {
+    String(String),
+    Integer(i64),
+    Float(f64),
+    Boolean(bool),
+    Null,
+}
+
+impl std::fmt::Display for SqlParam {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            SqlParam::String(s) => write!(f, "'{}'", s.replace('\'', "''")),
+            SqlParam::Integer(i) => write!(f, "{}", i),
+            SqlParam::Float(fl) => write!(f, "{}", fl),
+            SqlParam::Boolean(b) => write!(f, "{}", b),
+            SqlParam::Null => write!(f, "NULL"),
+        }
+    }
+}
+
+/// Format SQL query with parameter substitution
+pub fn format_sql_query(query: &str, params: &[SqlParam]) -> String {
+    let mut formatted_query = query.to_string();
+
+    // Replace PostgreSQL placeholders ($1, $2, etc.)
+    // Sort by placeholder number in descending order to avoid conflicts ($10 before $1)
+    for index in (0..params.len()).rev() {
+        let placeholder = format!("${}", index + 1);
+        if let Some(param) = params.get(index) {
+            formatted_query = formatted_query.replace(&placeholder, &param.to_string());
+        }
+    }
+
+    if formatted_query.contains("SELECT") || formatted_query.contains("select") {
+        format_select_query(&formatted_query)
+    } else if formatted_query.contains("INSERT") || formatted_query.contains("insert") {
+        format_insert_query(&formatted_query)
+    } else if formatted_query.contains("UPDATE") || formatted_query.contains("update") {
+        format_update_query(&formatted_query)
+    } else if formatted_query.contains("DELETE") || formatted_query.contains("delete") {
+        format_delete_query(&formatted_query)
+    } else {
+        formatted_query
+    }
+}
+
+/// Format SELECT queries with proper indentation
+fn format_select_query(query: &str) -> String {
+    let mut formatted = String::new();
+    let parts: Vec<&str> = query.split_whitespace().collect();
+    let mut i = 0;
+
+    while i < parts.len() {
+        let word = parts[i].to_uppercase();
+        match word.as_str() {
+            "SELECT" => {
+                formatted.push_str("SELECT ");
+                i += 1;
+                // Add fields
+                while i < parts.len()
+                    && !["FROM", "WHERE", "GROUP", "HAVING", "ORDER", "LIMIT"]
+                        .contains(&parts[i].to_uppercase().as_str())
+                {
+                    if parts[i].ends_with(',') {
+                        formatted.push_str(&format!("{}\n       ", parts[i]));
+                    } else {
+                        formatted.push_str(&format!("{} ", parts[i]));
+                    }
+                    i += 1;
+                }
+            }
+            "FROM" => {
+                formatted.push_str("\nFROM ");
+                i += 1;
+                while i < parts.len()
+                    && !["WHERE", "GROUP", "HAVING", "ORDER", "LIMIT"]
+                        .contains(&parts[i].to_uppercase().as_str())
+                {
+                    formatted.push_str(&format!("{} ", parts[i]));
+                    i += 1;
+                }
+            }
+            "WHERE" => {
+                formatted.push_str("\nWHERE ");
+                i += 1;
+                while i < parts.len()
+                    && !["GROUP", "HAVING", "ORDER", "LIMIT"]
+                        .contains(&parts[i].to_uppercase().as_str())
+                {
+                    formatted.push_str(&format!("{} ", parts[i]));
+                    i += 1;
+                }
+            }
+            "GROUP" => {
+                if i + 1 < parts.len() && parts[i + 1].to_uppercase() == "BY" {
+                    formatted.push_str("\nGROUP BY ");
+                    i += 2;
+                    while i < parts.len()
+                        && !["HAVING", "ORDER", "LIMIT"].contains(&parts[i].to_uppercase().as_str())
+                    {
+                        formatted.push_str(&format!("{} ", parts[i]));
+                        i += 1;
+                    }
+                } else {
+                    formatted.push_str(&format!("{} ", parts[i]));
+                    i += 1;
+                }
+            }
+            "ORDER" => {
+                if i + 1 < parts.len() && parts[i + 1].to_uppercase() == "BY" {
+                    formatted.push_str("\nORDER BY ");
+                    i += 2;
+                    while i < parts.len() && !["LIMIT"].contains(&parts[i].to_uppercase().as_str())
+                    {
+                        formatted.push_str(&format!("{} ", parts[i]));
+                        i += 1;
+                    }
+                } else {
+                    formatted.push_str(&format!("{} ", parts[i]));
+                    i += 1;
+                }
+            }
+            "LIMIT" => {
+                formatted.push_str("\nLIMIT ");
+                i += 1;
+                while i < parts.len() {
+                    formatted.push_str(&format!("{} ", parts[i]));
+                    i += 1;
+                }
+            }
+            _ => {
+                formatted.push_str(&format!("{} ", parts[i]));
+                i += 1;
+            }
+        }
+    }
+
+    formatted.trim().to_string()
+}
+
+/// Format INSERT queries
+fn format_insert_query(query: &str) -> String {
+    query
+        .replace(" VALUES ", "\nVALUES ")
+        .replace(" INTO ", "\nINTO ")
+}
+
+/// Format UPDATE queries  
+fn format_update_query(query: &str) -> String {
+    query
+        .replace(" SET ", "\nSET ")
+        .replace(" WHERE ", "\nWHERE ")
+}
+
+/// Format DELETE queries
+fn format_delete_query(query: &str) -> String {
+    query
+        .replace(" FROM ", "\nFROM ")
+        .replace(" WHERE ", "\nWHERE ")
+}
+
+/// Log SQL query with parameters
+pub fn log_sql_query(query: &str, params: &[SqlParam], execution_time_ms: Option<u128>) {
+    let formatted_sql = format_sql_query(query, params);
+
+    match execution_time_ms {
+        Some(time) => {
+            info!(
+                target: "sql",
+                execution_time_ms = time,
+                "SQL Query executed:\n{}",
+                formatted_sql
+            );
+        }
+        None => {
+            info!(
+                target: "sql",
+                "SQL Query:\n{}",
+                formatted_sql
+            );
+        }
+    }
+}
+
+/// Log SQL query error
+pub fn log_sql_error(query: &str, params: &[SqlParam], error: &str) {
+    let formatted_sql = format_sql_query(query, params);
+
+    tracing::error!(
+        target: "sql",
+        error = error,
+        "SQL Query failed:\n{}",
+        formatted_sql
+    );
+}
+
+/// Macro for easy SQL logging with parameter substitution
+#[macro_export]
+macro_rules! log_sql {
+    ($query:expr, $params:expr) => {
+        $crate::config::logging::log_sql_query($query, $params, None)
+    };
+    ($query:expr, $params:expr, $execution_time:expr) => {
+        $crate::config::logging::log_sql_query($query, $params, Some($execution_time))
+    };
+}
+
+/// Macro for SQL error logging
+#[macro_export]
+macro_rules! log_sql_error {
+    ($query:expr, $params:expr, $error:expr) => {
+        $crate::config::logging::log_sql_error($query, $params, $error)
+    };
 }

@@ -18,6 +18,9 @@ pub enum ApiError {
     #[display(fmt = "アクセス権限エラー: {}", _0)]
     AuthorizationError(String),
 
+    #[display(fmt = "CSRFトークンエラー: {}", _0)]
+    CsrfValidationError(String),
+
     #[display(fmt = "データベースエラー: {}", _0)]
     DatabaseError(String),
 
@@ -29,6 +32,9 @@ pub enum ApiError {
 
     #[display(fmt = "リクエストエラー: {}", _0)]
     BadRequestError(String),
+    
+    #[display(fmt = "リクエストエラー: {}", _0)]
+    BadRequest(String),
 
     #[display(fmt = "重複エラー: {}", _0)]
     DuplicateError(String),
@@ -85,7 +91,8 @@ impl ResponseError for ApiError {
                 warn!(request_id = %request_id, error = %msg, "Authorization error");
             },
             ApiError::ValidationError(msg) | 
-            ApiError::BadRequestError(msg) => {
+            ApiError::BadRequestError(msg) |
+            ApiError::BadRequest(msg) => {
                 debug!(request_id = %request_id, error = %msg, "Client error");
             },
             ApiError::NotFoundError(msg) => {
@@ -105,6 +112,9 @@ impl ResponseError for ApiError {
             },
             ApiError::TokenError(msg) => {
                 warn!(request_id = %request_id, error = %msg, "Token error");
+            },
+            ApiError::CsrfValidationError(msg) => {
+                warn!(request_id = %request_id, error = %msg, "CSRF validation error");
             },
         }
         
@@ -130,11 +140,13 @@ impl ResponseError for ApiError {
             ApiError::ValidationError(_) => StatusCode::BAD_REQUEST,
             ApiError::NotFoundError(_) => StatusCode::NOT_FOUND,
             ApiError::BadRequestError(_) => StatusCode::BAD_REQUEST,
+            ApiError::BadRequest(_) => StatusCode::BAD_REQUEST,
             ApiError::DuplicateError(_) => StatusCode::CONFLICT,
             ApiError::RateLimitError(_) => StatusCode::TOO_MANY_REQUESTS,
             ApiError::ServiceUnavailableError(_) => StatusCode::SERVICE_UNAVAILABLE,
             ApiError::SessionError(_) => StatusCode::UNAUTHORIZED,
             ApiError::TokenError(_) => StatusCode::UNAUTHORIZED,
+            ApiError::CsrfValidationError(_) => StatusCode::FORBIDDEN,
         }
     }
 }

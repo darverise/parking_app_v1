@@ -13,6 +13,8 @@ use sqlx::PgPool;
 // Re-export repository structs for easier access
 pub mod auth_repository;
 pub use auth_repository::AuthRepository;
+pub mod auth_signup_repository; // Added auth_signup_repository
+pub use auth_signup_repository::AuthSignupRepository; // Added re-export for AuthSignupRepository
 
 // Additional repositories will be added here
 // pub mod parking_repository;
