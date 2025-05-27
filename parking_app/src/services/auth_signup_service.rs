@@ -1,5 +1,5 @@
 use bcrypt::{hash, DEFAULT_COST};
-use tracing::{debug, error, instrument};
+use tracing::{error, instrument, info};
 
 use crate::{
     config::postgresql_database::{DatabaseError, PostgresDatabase},
@@ -22,132 +22,40 @@ impl AuthSignupService {
         Self { repository }
     }
 
-    // 入力値の検証を行う
-    fn validate_user_input(&self, req: &UserSignupRequest) -> Result<(), ApiError> {
-        // メールアドレスの長さチェック (通常は254文字まで)
-        if req.email.len() > 254 {
-            return Err(ApiError::ValidationError(
-                "メールアドレスが長すぎます（254文字以内で入力してください）".to_string()
-            ));
-        }
-
-        // 電話番号の長さチェック (通常は20文字まで)
-        if req.phone_number.len() > 20 {
-            return Err(ApiError::ValidationError(
-                "電話番号が長すぎます（20文字以内で入力してください）".to_string()
-            ));
-        }
-
-        // フルネームの長さチェック (通常は100文字まで)
-        if req.full_name.len() > 100 {
-            return Err(ApiError::ValidationError(
-                "氏名が長すぎます（100文字以内で入力してください）".to_string()
-            ));
-        }
-
-        // パスワードの長さチェック (最大255文字)
-        if req.password.len() > 255 {
-            return Err(ApiError::ValidationError(
-                "パスワードが長すぎます（255文字以内で入力してください）".to_string()
-            ));
-        }
-
-        Ok(())
-    }
-
-    // オーナー用入力値の検証を行う
-    fn validate_owner_input(&self, req: &OwnerSignupRequest) -> Result<(), ApiError> {
-        // メールアドレスの長さチェック
-        if req.email.len() > 254 {
-            return Err(ApiError::ValidationError(
-                "メールアドレスが長すぎます（254文字以内で入力してください）".to_string()
-            ));
-        }
-
-        // 電話番号の長さチェック
-        if req.phone_number.len() > 20 {
-            return Err(ApiError::ValidationError(
-                "電話番号が長すぎます（20文字以内で入力してください）".to_string()
-            ));
-        }
-
-        // フルネームの長さチェック
-        if req.full_name.len() > 100 {
-            return Err(ApiError::ValidationError(
-                "氏名が長すぎます（100文字以内で入力してください）".to_string()
-            ));
-        }
-
-        // パスワードの長さチェック
-        if req.password.len() > 255 {
-            return Err(ApiError::ValidationError(
-                "パスワードが長すぎます（255文字以内で入力してください）".to_string()
-            ));
-        }
-
-        // 登録者タイプの長さチェック
-        if req.registrant_type.len() > 50 {
-            return Err(ApiError::ValidationError(
-                "登録者タイプが長すぎます（50文字以内で入力してください）".to_string()
-            ));
-        }
-
-        Ok(())
-    }
-
     #[instrument(skip(self, req), fields(email = %req.email, phone_number = %req.phone_number))]
     pub async fn register_user(&self, req: UserSignupRequest) -> Result<SignupResponse, ApiError> {
-        debug!("ユーザー登録を開始します: {}", req.email);
+        info!("ユーザー登録を開始します: {}", req.email);
 
-        // 0. 入力値の検証
-        self.validate_user_input(&req)?;
+        // モデルの検証メソッドを使用
+        req.validate().map_err(ApiError::ValidationError)?;
 
-        // 1. メールアドレスの重複チェック
-        if self.repository.email_exists(&req.email).await.map_err(|e| {
-            error!("メールアドレス存在確認中にデータベースエラーが発生しました: {}", e);
-            ApiError::InternalServerError
-        })? {
+        // メールアドレスの重複チェック
+        if self.check_email_duplicate(&req.email).await? {
             return Err(ApiError::DuplicateError(
                 "このメールアドレスは既に登録されています".to_string()
             ));
         }
 
-        // 2. 電話番号の重複チェック
-        if self.repository.phone_exists(&req.phone_number).await.map_err(|e| {
-            error!("電話番号存在確認中にデータベースエラーが発生しました: {}", e);
-            ApiError::InternalServerError
-        })? {
+        // 電話番号の重複チェック
+        if self.check_phone_duplicate(&req.phone_number).await? {
             return Err(ApiError::DuplicateError(
                 "この電話番号は既に登録されています".to_string()
             ));
         }
 
-        // 3. パスワードのハッシュ化
-        let hashed_password = hash(&req.password, DEFAULT_COST).map_err(|e| {
-            error!("パスワードのハッシュ化に失敗しました: {}", e);
-            ApiError::InternalServerError
-        })?;
+        // パスワードのハッシュ化
+        let hashed_password = self.hash_password(&req.password)?;
 
-        // 4. データベースへのユーザー作成
-        let (_login_id, user_id) = self.repository.create_user(&req, &hashed_password).await
-            .map_err(|db_err| {
-                error!("ユーザー作成中にデータベースエラーが発生しました {}: {}", req.email, db_err);
-                match db_err {
-                    DatabaseError::QueryError(s) if s.contains("duplicate key") => {
-                        ApiError::DuplicateError("このメールアドレスまたは電話番号は既に使用されています".into())
-                    }
-                    DatabaseError::QueryError(s) if s.contains("値太长了") || s.contains("too long") => {
-                        ApiError::ValidationError("入力された値が長すぎます。各項目の文字数制限を確認してください".into())
-                    }
-                    _ => ApiError::InternalServerError,
-                }
-            })?;
+        // データベースへのユーザー作成
+        let (_login_id, user_id) = self.repository
+            .create_user(&req, &hashed_password)
+            .await
+            .map_err(|db_err| self.handle_database_error(db_err, &req.email))?;
 
-        // 5. JWTトークンの生成
-        let access_token = generate_jwt(&user_id, "user")?;
-        let refresh_token = generate_refresh_token(&user_id)?;
+        // JWTトークンの生成
+        let (access_token, refresh_token) = self.generate_tokens(&user_id, "user")?;
 
-        debug!("ユーザー登録が正常に完了しました: {}", req.email);
+        info!("ユーザー登録が正常に完了しました: {}", req.email);
         
         Ok(SignupResponse {
             id: user_id,
@@ -165,57 +73,38 @@ impl AuthSignupService {
 
     #[instrument(skip(self, req), fields(email = %req.email, phone_number = %req.phone_number, registrant_type = %req.registrant_type))]
     pub async fn register_owner(&self, req: OwnerSignupRequest) -> Result<SignupResponse, ApiError> {
-        debug!("オーナー登録を開始します: {} (タイプ: {})", req.email, req.registrant_type);
+        info!("オーナー登録を開始します: {} (タイプ: {})", req.email, req.registrant_type);
 
-        // 0. 入力値の検証
-        self.validate_owner_input(&req)?;
+        // モデルの検証メソッドを使用
+        req.validate().map_err(ApiError::ValidationError)?;
 
-        // 1. メールアドレスの重複チェック
-        if self.repository.email_exists(&req.email).await.map_err(|e| {
-            error!("メールアドレス存在確認中にデータベースエラーが発生しました: {}", e);
-            ApiError::InternalServerError
-        })? {
+        // メールアドレスの重複チェック
+        if self.check_email_duplicate(&req.email).await? {
             return Err(ApiError::DuplicateError(
                 "このメールアドレスは既に登録されています".to_string()
             ));
         }
 
-        // 2. 電話番号の重複チェック
-        if self.repository.phone_exists(&req.phone_number).await.map_err(|e| {
-            error!("電話番号存在確認中にデータベースエラーが発生しました: {}", e);
-            ApiError::InternalServerError
-        })? {
+        // 電話番号の重複チェック
+        if self.check_phone_duplicate(&req.phone_number).await? {
             return Err(ApiError::DuplicateError(
                 "この電話番号は既に登録されています".to_string()
             ));
         }
 
-        // 3. パスワードのハッシュ化
-        let hashed_password = hash(&req.password, DEFAULT_COST).map_err(|e| {
-            error!("パスワードのハッシュ化に失敗しました: {}", e);
-            ApiError::InternalServerError
-        })?;
+        // パスワードのハッシュ化
+        let hashed_password = self.hash_password(&req.password)?;
 
-        // 4. データベースへのオーナー作成
-        let (_login_id, owner_id) = self.repository.create_owner(&req, &hashed_password).await
-            .map_err(|db_err| {
-                error!("オーナー作成中にデータベースエラーが発生しました {}: {}", req.email, db_err);
-                match db_err {
-                    DatabaseError::QueryError(s) if s.contains("duplicate key") => {
-                        ApiError::DuplicateError("このメールアドレスまたは電話番号は既に使用されています".into())
-                    }
-                    DatabaseError::QueryError(s) if s.contains("値太长了") || s.contains("too long") => {
-                        ApiError::ValidationError("入力された値が長すぎます。各項目の文字数制限を確認してください".into())
-                    }
-                    _ => ApiError::InternalServerError,
-                }
-            })?;
+        // データベースへのオーナー作成
+        let (_login_id, owner_id) = self.repository
+            .create_owner(&req, &hashed_password)
+            .await
+            .map_err(|db_err| self.handle_database_error(db_err, &req.email))?;
 
-        // 5. JWTトークンの生成
-        let access_token = generate_jwt(&owner_id, "owner")?;
-        let refresh_token = generate_refresh_token(&owner_id)?;
+        // JWTトークンの生成
+        let (access_token, refresh_token) = self.generate_tokens(&owner_id, "owner")?;
 
-        debug!("オーナー登録が正常に完了しました: {}", req.email);
+        info!("オーナー登録が正常に完了しました: {}", req.email);
         
         Ok(SignupResponse {
             id: owner_id,
@@ -229,5 +118,61 @@ impl AuthSignupService {
             refresh_token: Some(refresh_token),
             created_at: chrono::Utc::now(),
         })
+    }
+
+    // 共通ヘルパーメソッド
+
+    /// メールアドレスの重複チェック
+    async fn check_email_duplicate(&self, email: &str) -> Result<bool, ApiError> {
+        self.repository.email_exists(email).await.map_err(|e| {
+            error!("メールアドレス存在確認中にデータベースエラーが発生しました: {}", e);
+            ApiError::InternalServerError
+        })
+    }
+
+    /// 電話番号の重複チェック
+    async fn check_phone_duplicate(&self, phone_number: &str) -> Result<bool, ApiError> {
+        self.repository.phone_exists(phone_number).await.map_err(|e| {
+            error!("電話番号存在確認中にデータベースエラーが発生しました: {}", e);
+            ApiError::InternalServerError
+        })
+    }
+
+    /// パスワードのハッシュ化
+    fn hash_password(&self, password: &str) -> Result<String, ApiError> {
+        hash(password, DEFAULT_COST).map_err(|e| {
+            error!("パスワードのハッシュ化に失敗しました: {}", e);
+            ApiError::InternalServerError
+        })
+    }
+
+    /// JWTトークンの生成
+    fn generate_tokens(&self, user_id: &str, user_type: &str) -> Result<(String, String), ApiError> {
+        let access_token = generate_jwt(user_id, user_type)?;
+        let refresh_token = generate_refresh_token(user_id)?;
+        Ok((access_token, refresh_token))
+    }
+
+    /// データベースエラーの処理
+    fn handle_database_error(&self, db_err: DatabaseError, email: &str) -> ApiError {
+        error!("ユーザー作成中にデータベースエラーが発生しました {}: {}", email, db_err);
+        
+        match db_err {
+            DatabaseError::QueryError(ref s) if s.contains("duplicate key") => {
+                ApiError::DuplicateError(
+                    "このメールアドレスまたは電話番号は既に使用されています".to_string()
+                )
+            }
+            DatabaseError::QueryError(ref s) if s.contains("value too long") || s.contains("値太长了") => {
+                ApiError::ValidationError(
+                    "入力された値が長すぎます。各項目の文字数制限を確認してください".to_string()
+                )
+            }
+            DatabaseError::TransactionError(_) => {
+                error!("トランザクションエラーが発生しました");
+                ApiError::InternalServerError
+            }
+            _ => ApiError::InternalServerError,
+        }
     }
 }

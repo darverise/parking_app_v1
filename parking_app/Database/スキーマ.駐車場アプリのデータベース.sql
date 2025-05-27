@@ -168,7 +168,7 @@ CREATE TABLE m_login (
     email VARCHAR(255) NOT NULL,
     -- 論理名: 電話番号
     -- 物理名: phone_number
-    phone_number VARCHAR(20) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
     -- 論理名: パスワード
     -- 物理名: pass_word
     -- 暗号化されたパスワード
@@ -177,7 +177,7 @@ CREATE TABLE m_login (
     -- 論理名: オーナー区分
     -- 物理名: is_user_owner
     -- 1: オーナー, 0: 一般ユーザー
-    is_user_owner VARCHAR(2) NOT NULL DEFAULT '0',
+    is_user_owner VARCHAR(1) NOT NULL,
     -- 論理名: ログインtoken
     -- 物理名: login_token
     login_token TEXT,
@@ -193,11 +193,11 @@ CREATE TABLE m_login (
     -- 論理名: ログインtoken発行フラグ
     -- 物理名: login_token_issued_flag
     -- 1: 発行済み, 0: 未発行
-    login_token_issued_flag VARCHAR(2) NOT NULL DEFAULT '0',
+    login_token_issued_flag VARCHAR(1) NOT NULL,
     -- 論理名: ログイン状態
     -- 物理名: is_login
     -- 1: ログイン中, 0: ログインしていない
-    is_login VARCHAR(2) NOT NULL DEFAULT '0',
+    is_login VARCHAR(1) NOT NULL,
     -- 論理名: ログイン日時
     -- 物理名: login_datetime
     login_datetime TIMESTAMP WITH TIME ZONE,
@@ -213,11 +213,11 @@ CREATE TABLE m_login (
     -- 論理名: ログイン失敗フラグ
     -- 物理名: login_failed_flag
     -- 1: ログイン失敗, 0: ログイン成功
-    login_failed_flag VARCHAR(2) NOT NULL DEFAULT '0',
+    login_failed_flag VARCHAR(1) NOT NULL,
     -- 論理名: ログイン失敗理由
     -- 物理名: login_failed_reason
     -- 例: パスワード不一致, アカウントロック
-    login_failed_reason VARCHAR(50),
+    login_failed_reason VARCHAR(255),
     -- 論理名: ログイン失敗理由詳細
     -- 物理名: login_failed_reason_detail
     -- 例: パスワード不一致, アカウントロック
@@ -270,7 +270,7 @@ CREATE INDEX idx_m_login_phone_number ON m_login(phone_number);
 CREATE TABLE m_users (
     -- 論理名: ユーザーID
     -- 物理名: user_id
-    user_id VARCHAR(37) NOT NULL,
+    user_id VARCHAR(37) NOT NULL DEFAULT generate_user_id(),
     -- 論理名: ログインID
     -- 物理名: login_id
     -- 修正：login_idを追加
@@ -278,20 +278,26 @@ CREATE TABLE m_users (
     -- 論理名: 氏名
     -- 物理名: full_name
     full_name VARCHAR(100) NOT NULL,
+    -- 論理名: 生年月日
+    -- 物理名: birthday
+    birthday DATE,
+    -- 論理名: 性別
+    -- 物理名: gender
+    gender VARCHAR(10),
     -- 論理名: 電話番号
     -- 物理名: phone_number
-    phone_number VARCHAR(20),
+    phone_number VARCHAR(50) NOT NULL,
     -- 論理名: 住所
     -- 物理名: address
     address TEXT NOT NULL,
     -- 論理名: プロモーションメール受信設定
     -- 物理名: promotional_email_opt
     -- 1: 受け取る, 0: 受け取らない
-    promotional_email_opt VARCHAR(2) NOT NULL DEFAULT '0',
+    promotional_email_opt VARCHAR(1) NOT NULL DEFAULT '0',
     -- 論理名: サービスメール受信設定
     -- 物理名: service_email_opt
     -- 1: 受け取る, 0: 受け取らない
-    service_email_opt VARCHAR(2) NOT NULL DEFAULT '1',
+    service_email_opt VARCHAR(1) NOT NULL DEFAULT '1',
     -- 論理名: 作成日時
     -- 物理名: created_datetime
     created_datetime TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -321,7 +327,9 @@ COMMENT ON COLUMN m_users.updated_datetime IS 'レコードの最終更新日時
 -- インデックス作成
 CREATE INDEX idx_m_users_login_id ON m_users(login_id);
 CREATE INDEX idx_m_users_phone_number ON m_users(phone_number);
-
+-- 修正：user_idのデフォルト値を設定
+ALTER TABLE m_users 
+ALTER COLUMN user_id SET DEFAULT generate_user_id();
 
 -- 3. オーナー情報テーブル
 -- 論理名: 駐車場オーナー情報テーブル
@@ -329,7 +337,7 @@ CREATE INDEX idx_m_users_phone_number ON m_users(phone_number);
 CREATE TABLE m_owners (
     -- 論理名: オーナーID
     -- 物理名: owner_id
-    owner_id VARCHAR(37) NOT NULL,
+    owner_id VARCHAR(37) NOT NULL DEFAULT generate_owner_id(),
     -- 論理名: ログインID
     -- 物理名: login_id
     login_id UUID NOT NULL,
@@ -343,16 +351,22 @@ CREATE TABLE m_owners (
     -- 論理名: 氏名（カナ）
     -- 物理名: full_name_kana
     full_name_kana VARCHAR(100),
+    -- 論理名: 生年月日
+    -- 物理名: birthday
+    birthday DATE,
+    -- 論理名: 性別
+    -- 物理名: gender
+    gender VARCHAR(10),
     -- 論理名: 郵便番号
     -- 物理名: postal_code
     -- 例: 123-4567
-    postal_code VARCHAR(8) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
     -- 論理名: 住所
     -- 物理名: address
     address TEXT NOT NULL,
     -- 論理名: 電話番号
     -- 物理名: phone_number
-    phone_number VARCHAR(20) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
     -- 論理名: 備考
     -- 物理名: remarks
     remarks TEXT,
@@ -449,7 +463,7 @@ CREATE TABLE t_parking_lots (
     parking_lot_name VARCHAR(100) NOT NULL,
     -- 論理名: 郵便番号
     -- 物理名: postal_code
-    postal_code VARCHAR(8) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
     -- 論理名: 都道府県
     -- 物理名: prefecture
     prefecture VARCHAR(10) NOT NULL,
@@ -461,7 +475,7 @@ CREATE TABLE t_parking_lots (
     address_detail TEXT NOT NULL,
     -- 論理名: 電話番号
     -- 物理名: phone_number
-    phone_number VARCHAR(20) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
     -- 論理名: 収容台数
     -- 物理名: capacity
     capacity INTEGER NOT NULL,

@@ -15,7 +15,7 @@ use tracing_subscriber::{
 pub struct LocalTimer;
 
 impl FormatTime for LocalTimer {
-    // 修复：使用 Writer<'_> 替换 &mut dyn std::fmt::Write
+    // 時刻フォーマッターの実装：Writer<'_>を使用
     fn format_time(&self, w: &mut Writer<'_>) -> std::fmt::Result {
         write!(w, "{}", Local::now().format("%Y-%m-%d %H:%M:%S%.3f"))
     }
@@ -64,7 +64,7 @@ pub fn init_logger(config: LogConfig) -> io::Result<LoggerGuard> {
 
     let mut layers = Vec::new();
 
-    // Console logger
+    // コンソールロガー
     if config.enable_console {
         let (console_writer, console_guard) = tracing_appender::non_blocking(io::stdout());
         guards.push(console_guard);
@@ -82,12 +82,12 @@ pub fn init_logger(config: LogConfig) -> io::Result<LoggerGuard> {
         layers.push(console_layer);
     }
 
-    // File logger
+    // ファイルロガー
     if config.enable_file_logging {
-        // Create log directory if it doesn't exist
+        // ログディレクトリの作成
         std::fs::create_dir_all(&config.log_dir)?;
 
-        // Application logs
+        // アプリケーションログ
         let app_file = RollingFileAppender::new(
             Rotation::DAILY,
             &config.log_dir,
@@ -107,7 +107,7 @@ pub fn init_logger(config: LogConfig) -> io::Result<LoggerGuard> {
 
         layers.push(app_layer);
 
-        // Error logs - separate file for errors
+        // エラーログ - エラー用の別ファイル
         let error_file = RollingFileAppender::new(
             Rotation::DAILY,
             &config.log_dir,
@@ -135,14 +135,14 @@ pub fn init_logger(config: LogConfig) -> io::Result<LoggerGuard> {
         .init();
 
     info!(
-        "Logging initialized: level={}, file_logging={}, console={}",
+        "ログシステムが正常に初期化されました: レベル={}, ファイル出力={}, コンソール出力={}",
         config.log_level, config.enable_file_logging, config.enable_console
     );
 
     Ok(LoggerGuard { _guards: guards })
 }
 
-/// Create an additional logger for specific module or component
+/// 特定のモジュールやコンポーネント用の専用ログ作成
 pub fn create_component_logger(
     config: &LogConfig,
     component_name: &str,
@@ -150,7 +150,7 @@ pub fn create_component_logger(
     if !config.enable_file_logging {
         return Err(io::Error::new(
             io::ErrorKind::Other,
-            "File logging is disabled in configuration",
+            "設定でファイルログ出力が無効になっています",
         ));
     }
 
@@ -185,18 +185,18 @@ pub fn create_component_logger(
     Ok(guard)
 }
 
-/// Set log level for specific module
+/// 特定モジュールのログレベル設定
 pub fn set_module_log_level(module: &str, level: Level) {
-    // This is a simplification as dynamically changing log levels requires more complex implementation
-    // In a real application, you might use a more sophisticated approach with atomic/mutex-protected state
+    // 動的なログレベル変更には、より複雑な実装が必要
+    // 実際のアプリケーションでは、atomic/mutexで保護された状態を使用することを推奨
     let filter = format!("{}={}", module, level.as_str());
     if let Ok(filter) = EnvFilter::try_new(&filter) {
         tracing::subscriber::set_global_default(tracing_subscriber::registry().with(filter))
-            .expect("Failed to set global default subscriber");
+            .expect("グローバルデフォルト購読者の設定に失敗しました");
     }
 }
 
-/// SQL parameter value for logging
+/// SQLログ出力用のパラメータ値
 #[derive(Debug, Clone)]
 pub enum SqlParam {
     String(String),
@@ -218,12 +218,12 @@ impl std::fmt::Display for SqlParam {
     }
 }
 
-/// Format SQL query with parameter substitution
+/// SQLクエリをパラメータ置換でフォーマット
 pub fn format_sql_query(query: &str, params: &[SqlParam]) -> String {
     let mut formatted_query = query.to_string();
 
-    // Replace PostgreSQL placeholders ($1, $2, etc.)
-    // Sort by placeholder number in descending order to avoid conflicts ($10 before $1)
+    // PostgreSQLプレースホルダー（$1, $2等）を置換
+    // 競合を避けるため、プレースホルダー番号の降順でソート（$10を$1より先に処理）
     for index in (0..params.len()).rev() {
         let placeholder = format!("${}", index + 1);
         if let Some(param) = params.get(index) {
@@ -244,7 +244,7 @@ pub fn format_sql_query(query: &str, params: &[SqlParam]) -> String {
     }
 }
 
-/// Format SELECT queries with proper indentation
+/// SELECT文を適切なインデントでフォーマット
 fn format_select_query(query: &str) -> String {
     let mut formatted = String::new();
     let parts: Vec<&str> = query.split_whitespace().collect();
@@ -256,7 +256,7 @@ fn format_select_query(query: &str) -> String {
             "SELECT" => {
                 formatted.push_str("SELECT ");
                 i += 1;
-                // Add fields
+                // フィールドを追加
                 while i < parts.len()
                     && !["FROM", "WHERE", "GROUP", "HAVING", "ORDER", "LIMIT"]
                         .contains(&parts[i].to_uppercase().as_str())
@@ -338,28 +338,28 @@ fn format_select_query(query: &str) -> String {
     formatted.trim().to_string()
 }
 
-/// Format INSERT queries
+/// INSERT文をフォーマット
 fn format_insert_query(query: &str) -> String {
     query
         .replace(" VALUES ", "\nVALUES ")
         .replace(" INTO ", "\nINTO ")
 }
 
-/// Format UPDATE queries  
+/// UPDATE文をフォーマット
 fn format_update_query(query: &str) -> String {
     query
         .replace(" SET ", "\nSET ")
         .replace(" WHERE ", "\nWHERE ")
 }
 
-/// Format DELETE queries
+/// DELETE文をフォーマット
 fn format_delete_query(query: &str) -> String {
     query
         .replace(" FROM ", "\nFROM ")
         .replace(" WHERE ", "\nWHERE ")
 }
 
-/// Log SQL query with parameters
+/// SQLクエリとパラメータをログ出力
 pub fn log_sql_query(query: &str, params: &[SqlParam], execution_time_ms: Option<u128>) {
     let formatted_sql = format_sql_query(query, params);
 
@@ -368,33 +368,35 @@ pub fn log_sql_query(query: &str, params: &[SqlParam], execution_time_ms: Option
             info!(
                 target: "sql",
                 execution_time_ms = time,
-                "SQL Query executed:\n{}",
+                "SQLクエリが実行されました（実行時間: {}ms）:\n{}",
+                time,
                 formatted_sql
             );
         }
         None => {
             info!(
                 target: "sql",
-                "SQL Query:\n{}",
+                "SQLクエリ:\n{}",
                 formatted_sql
             );
         }
     }
 }
 
-/// Log SQL query error
+/// SQLクエリエラーをログ出力
 pub fn log_sql_error(query: &str, params: &[SqlParam], error: &str) {
     let formatted_sql = format_sql_query(query, params);
 
     tracing::error!(
         target: "sql",
         error = error,
-        "SQL Query failed:\n{}",
+        "SQLクエリの実行でエラーが発生しました:\nエラー: {}\nクエリ:\n{}",
+        error,
         formatted_sql
     );
 }
 
-/// Macro for easy SQL logging with parameter substitution
+/// パラメータ置換を使用したSQLログ出力の簡易マクロ
 #[macro_export]
 macro_rules! log_sql {
     ($query:expr, $params:expr) => {
@@ -405,7 +407,7 @@ macro_rules! log_sql {
     };
 }
 
-/// Macro for SQL error logging
+/// SQLエラーログ出力マクロ
 #[macro_export]
 macro_rules! log_sql_error {
     ($query:expr, $params:expr, $error:expr) => {
