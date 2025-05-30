@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ja="パーキングアプリ - 予約完了" data-en="Parking App - Reservation Completed">パーキングアプリ - 予約完了</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F8FAFD;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 8px;
+            color: #3366CC;
+            font-size: 18px;
+        }
+        
+        /* Progress Steps */
+        .progress-container {
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        .progress-steps::before {
+            content: "";
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            right: 15px;
+            height: 2px;
+            background-color: #E0E0E0;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            width: 25%;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .step-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #E0E0E0;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .step-text {
+            font-size: 11px;
+            color: #999999;
+            text-align: center;
+        }
+        
+        .progress-step.completed .step-circle {
+            background-color: #3366CC;
+            border-color: #3366CC;
+            color: white;
+        }
+        
+        .progress-step.completed .step-text {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .progress-step.active .step-circle {
+            border-color: #3366CC;
+            border-width: 2px;
+            color: #3366CC;
+            font-weight: 600;
+        }
+        
+        .progress-step.active .step-text {
+            color: #3366CC;
+            font-weight: 600;
+        }
+        
+        /* Success Message */
+        .success-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3366CC, #5E8AE0);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 40px;
+            box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+        }
+        
+        .success-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #3366CC;
+        }
+        
+        .success-message {
+            font-size: 15px;
+            color: #666666;
+            text-align: center;
+            line-height: 1.4;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        /* Reservation Info */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-label {
+            font-size: 14px;
+            color: #666666;
+            width: 40%;
+        }
+        
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: right;
+            width: 60%;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #EEEEEE;
+            margin: 15px 0;
+        }
+        
+        /* Parking Info */
+        .parking-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+        
+        .parking-address {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .address-icon {
+            margin-right: 5px;
+            min-width: 14px;
+        }
+        
+        /* QR Code */
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            border: 1px solid #EEEEEE;
+            border-radius: 10px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .qr-text {
+            font-size: 13px;
+            color: #666666;
+            text-align: center;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .primary-button {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(135deg, #3366CC, #5E8AE0);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(51, 102, 204, 0.4);
+        }
+        
+        .secondary-button {
+            width: 100%;
+            height: 50px;
+            background-color: white;
+            color: #3366CC;
+            border: 1px solid #3366CC;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .secondary-button:hover {
+            background-color: rgba(51, 102, 204, 0.05);
+        }
+        
+        /* Support Section */
+        .support-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .support-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #666666;
+        }
+        
+        .support-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .support-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .support-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(51, 102, 204, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            color: #3366CC;
+            font-size: 20px;
+        }
+        
+        .support-label {
+            font-size: 12px;
+            color: #666666;
+        }
+        
+        .support-note {
+            font-size: 12px;
+            color: #999999;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="progress-container">
+        <div class="progress-steps">
+            <div class="progress-step completed">
+                <div class="step-circle">✓</div>
+                <div class="step-text" data-ja="検索" data-en="Search">検索</div>
+            </div>
+            <div class="progress-step completed">
+                <div class="step-circle">✓</div>
+                <div class="step-text" data-ja="予約" data-en="Reservation">予約</div>
+            </div>
+            <div class="progress-step completed">
+                <div class="step-circle">✓</div>
+                <div class="step-text" data-ja="確認・支払い" data-en="Confirmation & Payment">確認・支払い</div>
+            </div>
+            <div class="progress-step active">
+                <div class="step-circle">4</div>
+                <div class="step-text" data-ja="完了" data-en="Completed">完了</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h1 class="success-title" data-ja="予約が完了しました！" data-en="Reservation Completed!">予約が完了しました！</h1>
+        <p class="success-message" data-ja="予約詳細が登録されたメールアドレスに送信されました。" data-en="Reservation details have been sent to your registered email address.">予約詳細が登録されたメールアドレスに送信されました。</p>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title" data-ja="予約詳細" data-en="Reservation Details">
+            <span class="section-icon">📋</span>
+            <span>予約詳細</span>
+        </h2>
+        <div class="info-row">
+            <div class="info-label" data-ja="予約ID" data-en="Reservation ID">予約ID</div>
+            <div class="info-value">P202504290015</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label" data-ja="利用日時" data-en="Usage Date & Time">利用日時</div>
+            <div class="info-value" data-ja="2025/04/29 15:00〜20:00" data-en="04/29/2025 15:00-20:00">2025/04/29 15:00〜20:00</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label" data-ja="利用時間" data-en="Duration">利用時間</div>
+            <div class="info-value">5時間</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label" data-ja="支払金額" data-en="Payment Amount">支払金額</div>
+            <div class="info-value">¥1,350</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label" data-ja="支払方法" data-en="Payment Method">支払方法</div>
+            <div class="info-value" data-ja="クレジットカード" data-en="Credit Card">クレジットカード</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title" data-ja="駐車場情報" data-en="Parking Information">
+            <span class="section-icon">📍</span>
+            <span>駐車場情報</span>
+        </h2>
+        <div class="parking-name" data-ja="東京中央パーキング" data-en="Tokyo Central Parking">東京中央パーキング</div>
+        <div class="parking-address">
+            <span class="address-icon">📍</span>
+            <span data-ja="東京都中央区1-2-3" data-en="1-2-3 Chuo-ku, Tokyo">東京都中央区1-2-3</span>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="qr-container">
+            <div class="qr-code">
+                <img src="/api/placeholder/150/150" alt="QRコード">
+            </div>
+            <div class="qr-text" data-ja="このQRコードを駐車場入口で読み取ってご利用ください" data-en="Scan this QR code at the parking entrance to use.">このQRコードを駐車場入口で読み取ってご利用ください</div>
+        </div>
+    </div>
+    
+    <div class="action-buttons">
+        <button class="primary-button" data-ja="予約詳細を見る" data-en="View Reservation Details">予約詳細を見る</button>
+        <button class="secondary-button" data-ja="ホームに戻る" data-en="Return to Home">ホームに戻る</button>
+    </div>
+    
+    <div class="support-section">
+        <div class="support-title" data-ja="サポート" data-en="Support">サポート</div>
+        <div class="support-options">
+            <a href="#" class="support-option">
+                <div class="support-icon">📞</div>
+                <div class="support-label" data-ja="電話" data-en="Phone">電話</div>
+            </a>
+            <a href="#" class="support-option">
+                <div class="support-icon">✉️</div>
+                <div class="support-label" data-ja="メール" data-en="Email">メール</div>
+            </a>
+            <a href="#" class="support-option">
+                <div class="support-icon">❓</div>
+                <div class="support-label" data-ja="FAQ" data-en="FAQ">FAQ</div>
+            </a>
+        </div>
+        <div class="support-note" data-ja="ご利用に関するお問い合わせは、上記の連絡先またはアプリ内の「お問い合わせ」からお願いします。" data-en="For inquiries regarding usage, please contact us via the above or the 'Contact' section in the app.">ご利用に関するお問い合わせは、上記の連絡先またはアプリ内の「お問い合わせ」からお願いします。</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            function updateLanguage() {
+                // Update page title
+                document.title = document.querySelector('title').getAttribute(`data-${currentLanguage}`);
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            }
+            
+            languageToggle.addEventListener('click', function() {
+                currentLanguage = currentLanguage === 'ja' ? 'en' : 'ja';
+                languageToggle.classList.toggle('en-active', currentLanguage === 'en');
+                document.documentElement.lang = currentLanguage;
+                updateLanguage();
+            });
+            
+            // Initial language update
+            updateLanguage();
+            
+            // Primary button - View reservation details
+            const primaryButton = document.querySelector('.primary-button');
+            primaryButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ?
+                    '予約詳細画面に移動します' :
+                    'Navigating to reservation details');
+            });
+            
+            // Secondary button - Return to home
+            const secondaryButton = document.querySelector('.secondary-button');
+            secondaryButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ?
+                    'ホーム画面に移動します' :
+                    'Navigating to home screen');
+            });
+            
+            // Support options
+            const supportOptions = document.querySelectorAll('.support-option');
+            supportOptions.forEach(function(option) {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const supportType = this.querySelector('.support-label').getAttribute(`data-${currentLanguage}`);
+                    alert(currentLanguage === 'ja' ?
+                        `${supportType}サポートに接続します` :
+                        `Connecting to ${supportType} support`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

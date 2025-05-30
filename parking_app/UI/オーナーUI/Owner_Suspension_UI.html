@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>駐車場停止画面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .modal {
+            background-color: #FFFFFF;
+            border-radius: 15px;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            background-color: #FF4D4D;
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .language-selector {
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #FF4D4D;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #FF4D4D;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .reason-section {
+            margin-bottom: 20px;
+        }
+        
+        .reason-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .reason-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .reason-options label {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .reason-options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #FF4D4D;
+        }
+        
+        .custom-reason {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #CCCCCC;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .warning {
+            background-color: #FFF3E0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #FF6F00;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .cancel-button, .confirm-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .cancel-button {
+            background-color: #CCCCCC;
+            color: #333333;
+        }
+        
+        .confirm-button {
+            background-color: #FF4D4D;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal">
+        <div class="header">
+            <span data-ja="駐車場を停止" data-en="Suspend Parking Lot">駐車場を停止</span>
+            <div class="language-selector" id="language-toggle">
+                <span class="jp">日本語</span>
+                <span class="en">/ EN</span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="reason-section">
+                <div class="reason-title" data-ja="停止理由を選択してください" data-en="Select Suspension Reason">停止理由を選択してください</div>
+                <div class="reason-options">
+                    <label>
+                        <input type="radio" name="reason" value="maintenance" checked>
+                        <span data-ja="メンテナンス・維持" data-en="Maintenance">メンテナンス・維持</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" value="renovation">
+                        <span data-ja="改装・重建" data-en="Renovation">改装・重建</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" value="personal">
+                        <span data-ja="個人使用" data-en="Personal Use">個人使用</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" value="other">
+                        <span data-ja="その他" data-en="Other">その他</span>
+                    </label>
+                    <textarea class="custom-reason" placeholder="理由を入力してください" data-ja-placeholder="理由を入力してください" data-en-placeholder="Enter reason"></textarea>
+                </div>
+            </div>
+            <div class="warning">
+                <span data-ja="注意: 停止期間中は予約を受け付けません。" data-en="Notice: Reservations are not accepted during suspension.">注意: 停止期間中は予約を受け付けません。</span>
+            </div>
+            <div class="actions">
+                <button class="cancel-button" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+                <button class="confirm-button" data-ja="確定停止" data-en="Confirm Suspension">利用停止</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentLanguage = 'ja'; // Default language is Japanese
+            const languageToggle = document.getElementById('language-toggle');
+            const reasonOptions = document.querySelectorAll('input[name="reason"]');
+            const customReason = document.querySelector('.custom-reason');
+            const confirmButton = document.querySelector('.confirm-button');
+            
+            // Language toggle functionality
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                    document.title = 'Parking Lot Suspension';
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                    document.title = '駐車場停止画面';
+                }
+                
+                // Update all elements with data-ja and data-en attributes
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update placeholder for custom reason textarea
+                customReason.placeholder = customReason.getAttribute(`data-${currentLanguage}-placeholder`);
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#FF4D4D';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#FF4D4D';
+                }
+            });
+            
+            // Show/hide custom reason textarea
+            reasonOptions.forEach(option => {
+                option.addEventListener('change', function() {
+                    customReason.style.display = this.value === 'other' ? 'block' : 'none';
+                });
+            });
+            
+            // Confirm button functionality
+            confirmButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ? '駐車場の利用を停止しました。' : 'Parking lot suspended.');
+                // Redirect to dashboard
+                window.location.href = 'Owner_Dashboard_UI.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パーキングアプリ - 履歴詳細</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F5F7FA;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .signal-icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .battery-icon {
+            margin-left: 5px;
+        }
+        
+        .header {
+            background-color: #3366CC;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .back-button {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .language-selector {
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .container {
+            padding: 20px;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+        
+        .detail-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .detail-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333333;
+        }
+        
+        .detail-item {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: #333333;
+            text-align: right;
+        }
+        
+        .return-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3366CC;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="signal-icon">📶</span>
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span class="battery-icon">🔋 100%</span>
+        </div>
+    </div>
+    
+    <div class="language-selector" id="language-toggle" style="z-index: 1000; position: fixed; top: 10px; right: 15px;">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="header">
+        <div class="back-button">←</div>
+        <div class="header-title" data-ja="履歴詳細" data-en="History Details">履歴詳細</div>
+        <div style="width: 36px;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="detail-card">
+            <div class="detail-title" data-ja="予約情報" data-en="Reservation Information">予約情報</div>
+            <div class="detail-item">
+                <span class="detail-label" data-ja="ユーザー" data-en="User">ユーザー</span>
+                <span class="detail-value" data-ja="山田 花子" data-en="Hanako Yamada">山田 花子</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label" data-ja="駐車場" data-en="Parking Lot">駐車場</span>
+                <span class="detail-value" data-ja="東京駅前パーキング" data-en="Tokyo Station Parking">東京駅前パーキング</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label" data-ja="予約時間" data-en="Reservation Time">予約時間</span>
+                <span class="detail-value" data-ja="2025/04/30 10:00 - 12:00" data-en="2025/04/30 10:00 - 12:00">2025/04/30 10:00 - 12:00</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label" data-ja="時長" data-en="Duration">時長</span>
+                <span class="detail-value" data-ja="2時間" data-en="2 hours">2時間</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label" data-ja="費用" data-en="Fee">費用</span>
+                <span class="detail-value" data-ja="¥1,000" data-en="¥1,000">¥1,000</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label" data-ja="支払い状態" data-en="Payment Status">支払い状態</span>
+                <span class="detail-value" data-ja="已支付" data-en="Paid">已支付</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label" data-ja="備考" data-en="Notes">備考</span>
+                <span class="detail-value" data-ja="なし" data-en="None">なし</span>
+            </div>
+        </div>
+        
+        <button class="return-button" data-ja="履歴に戻る" data-en="Return to History">履歴に戻る</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                    document.title = 'Parking App - History Details';
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                    document.title = 'パーキングアプリ - 履歴詳細';
+                }
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            });
+            
+            // Back button functionality
+            const backButton = document.querySelector('.back-button');
+            backButton.addEventListener('click', function() {
+                window.location.href = 'Owner_history_UI.html';
+            });
+
+            // Return button
+            const returnButton = document.querySelector('.return-button');
+            returnButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ? '履歴画面に戻ります。' : 'Returning to History screen.');
+                window.location.href = 'Owner_history_UI.html';
+            });
+        });
+    </script>
+</body>
+</html>

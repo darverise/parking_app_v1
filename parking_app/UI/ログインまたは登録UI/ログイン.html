@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パーキングアプリ - ログイン</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #F5F7FA;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-bar {
+            height: 44px;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .signal-icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .battery-icon {
+            margin-left: 5px;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+
+        .screen {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 44px);
+            top: 0;
+            left: 0;
+            padding-bottom: 30px;
+            overflow-y: auto;
+        }
+
+        .app-logo {
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-circle {
+            width: 110px;
+            height: 110px;
+            background-color: #3366CC;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+        }
+
+        .logo-inner-circle {
+            width: 90px;
+            height: 90px;
+            background-color: #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-letter {
+            color: #3366CC;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .app-title {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .app-name {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .app-tagline {
+            margin-top: 8px;
+            font-size: 15px;
+            color: #666666;
+        }
+
+        .form-container {
+            margin-top: 50px;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            height: 65px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 20px;
+            padding: 12px 20px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .input-field.active {
+            border: 2px solid #3366CC;
+        }
+
+        .input-label {
+            font-size: 13px;
+            color: #999999;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .input-value {
+            font-size: 16px;
+            margin-top: 5px;
+            width: 100%;
+            border: none;
+            background: transparent;
+            outline: none;
+        }
+
+        .input-value::placeholder {
+            color: #BBBBBB;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #F5F7FA;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            color: #666666;
+            cursor: pointer;
+        }
+
+        .primary-button {
+            height: 56px;
+            background-color: #3366CC;
+            border: none;
+            border-radius: 28px;
+            color: #FFFFFF;
+            font-size: 17px;
+            font-weight: bold;
+            margin-top: 30px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+        }
+
+        .ripple {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .forgot-password a {
+            color: #3366CC;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            margin: 35px 0;
+        }
+
+        .separator-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #DDDDDD;
+        }
+
+        .separator-text {
+            padding: 0 15px;
+            color: #888888;
+            font-size: 14px;
+        }
+
+        .social-login {
+            margin-bottom: 20px;
+        }
+
+        .social-button {
+            width: 100%;
+            height: 56px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .social-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .google-icon {
+            background-color: white;
+            color: #4285F4;
+            border: 1px solid #EEEEEE;
+        }
+
+        .apple-icon {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+        .line-icon {
+            background-color: #06C755;
+            color: #FFFFFF;
+        }
+
+        .social-text {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .account-toggle {
+            margin-top: 40px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .account-toggle-text {
+            color: #666666;
+            font-size: 14px;
+        }
+
+        .account-toggle-link {
+            margin-left: 10px;
+            color: #3366CC;
+            font-weight: bold;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* User/Owner Selection Styles */
+        .toggle-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .toggle-label {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .toggle-button {
+            flex: 1;
+            height: 44px;
+            border: 1px solid #EEEEEE;
+            border-radius: 22px;
+            background-color: #FFFFFF;
+            color: #666666;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .toggle-button.active {
+            background-color: #3366CC;
+            color: #FFFFFF;
+            border-color: #3366CC;
+            box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+        }
+
+        .toggle-button:hover {
+            background-color: #F0F7FF;
+        }
+
+        /* For the ripple effect */
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .ripple {
+            animation: ripple 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+<div class="status-bar">
+    <div class="status-left">
+        <span class="signal-icon">📶</span>
+        <span>9:41</span>
+    </div>
+    <div class="status-right">
+        <span class="battery-icon">🔋 100%</span>
+    </div>
+</div>
+
+<div class="language-selector" id="language-toggle">
+    <span class="jp">日本語</span>
+    <span class="en">/ EN</span>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="screen">
+    <div class="app-logo">
+        <div class="logo-circle">
+            <div class="logo-inner-circle">
+                <div class="logo-letter">P</div>
+            </div>
+        </div>
+        <div class="app-title">
+            <div class="app-name" data-ja="パーキング" data-en="Parking">パーキング</div>
+            <div class="app-tagline" data-ja="簡単に駐車場を予約" data-en="Easy Parking Reservation">簡単に駐車場を予約</div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <!-- User/Owner selection -->
+        <div class="form-group">
+            <div class="toggle-container">
+                <label class="toggle-label" data-ja="登録タイプ" data-en="Registration Type">登録タイプ</label>
+                <div class="toggle-buttons">
+                    <div class="toggle-button user active" data-type="user" data-ja="ユーザー" data-en="User">ユーザー</div>
+                    <div class="toggle-button owner" data-type="owner" data-ja="オーナー" data-en="Owner">オーナー</div>
+                </div>
+                <input type="hidden" id="is_user_owner" name="is_user_owner" value="0" />
+            </div>
+        </div>
+
+        <!-- Login fields -->
+        <div class="form-group">
+            <div class="input-field">
+                <div class="input-label" data-ja="メールアドレス" data-en="Email">メールアドレス</div>
+                <input type="email" class="input-value" name="email" placeholder="例: example@domain.com" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-field active">
+                <div class="input-label" data-ja="パスワード" data-en="Password">パスワード</div>
+                <input type="password" class="input-value" name="pass_word" placeholder="••••••••" />
+                <div class="password-toggle">👁</div>
+            </div>
+        </div>
+
+        <button class="primary-button login-button" data-ja="ログイン" data-en="Log in">
+            ログイン
+            <div class="ripple"></div>
+        </button>
+
+        <div class="forgot-password">
+            <a href="#" data-ja="パスワードをお忘れですか？" data-en="Forgot Password?">パスワードをお忘れですか？</a>
+        </div>
+
+        <div class="separator">
+            <div class="separator-line"></div>
+            <div class="separator-text" data-ja="または" data-en="Or">または</div>
+            <div class="separator-line"></div>
+        </div>
+
+        <div class="social-login">
+            <button class="social-button">
+                <div class="social-icon google-icon">G</div>
+                <div class="social-text" data-ja="Googleでログイン" data-en="Sign in with Google">Googleでログイン</div>
+            </button>
+        </div>
+
+        <div class="social-login">
+            <button class="social-button">
+                <div class="social-icon apple-icon">A</div>
+                <div class="social-text" data-ja="Appleでログイン" data-en="Sign in with Apple">Appleでログイン</div>
+            </button>
+        </div>
+
+        <div class="social-login">
+            <button class="social-button">
+                <div class="social-icon line-icon">L</div>
+                <div class="social-text" data-ja="LINEでログイン" data-en="Sign in with LINE">LINEでログイン</div>
+            </button>
+        </div>
+
+        <div class="account-toggle">
+            <div class="account-toggle-text" data-ja="アカウントをお持ちでないですか？" data-en="Don't have an account?">アカウントをお持ちでないですか？</div>
+            <a class="account-toggle-link" id="show-register" data-ja="新規登録" data-en="Sign up">新規登録</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Language settings
+        let currentLanguage = 'ja';
+        const languageToggle = document.getElementById('language-toggle');
+
+        languageToggle.addEventListener('click', function() {
+            if (currentLanguage === 'ja') {
+                currentLanguage = 'en';
+                languageToggle.classList.add('en-active');
+                document.documentElement.lang = 'en';
+                document.title = document.title.replace('パーキングアプリ', 'Parking App');
+            } else {
+                currentLanguage = 'ja';
+                languageToggle.classList.remove('en-active');
+                document.documentElement.lang = 'ja';
+                document.title = document.title.replace('Parking App', 'パーキングアプリ');
+            }
+
+            const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+            elementsToUpdate.forEach(function(element) {
+                element.textContent = element.getAttribute(`data-${currentLanguage}`);
+            });
+
+            if (currentLanguage === 'en') {
+                document.querySelector('.jp').style.color = '#3366CC';
+                document.querySelector('.en').style.color = '#333333';
+            } else {
+                document.querySelector('.jp').style.color = '#333333';
+                document.querySelector('.en').style.color = '#3366CC';
+            }
+        });
+
+        // Handle User/Owner selection
+        const toggleButtons = document.querySelectorAll('.toggle-button');
+        const isUserOwnerInput = document.getElementById('is_user_owner');
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                toggleButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                const type = this.getAttribute('data-type');
+                isUserOwnerInput.value = type === 'owner' ? '1' : '0';
+            });
+        });
+
+        // Add ripple effect to buttons
+        const buttons = document.querySelectorAll('.primary-button');
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                const ripple = this.querySelector('.ripple');
+                if (ripple) {
+                    ripple.style.animation = 'none';
+                    setTimeout(() => {
+                        ripple.style.animation = 'ripple 1s ease-out';
+                    }, 10);
+                }
+            });
+        });
+
+        // Add click animation to other buttons
+        const socialButtons = document.querySelectorAll('.social-button');
+        socialButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Make input fields active on click
+        const inputFields = document.querySelectorAll('.input-field');
+        inputFields.forEach(function(field) {
+            field.addEventListener('click', function() {
+                inputFields.forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Handle screen navigation
+        setupScreenNavigation();
+    });

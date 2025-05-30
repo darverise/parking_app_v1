@@ -1,0 +1,69 @@
+字段类型和格式：
+user_id：
+            表 m_users, m_profiles, t_reservations, t_favorites 中的 user_id 改为 VARCHAR(37)。
+            更新 user_id 列注释，明确格式为 user_XXXXXX，并提供补 0 示例（如 user_000007）。
+            m_users.user_id 使用触发器 trigger_set_user_id 调用 generate_user_id() 生成 user_XXXXXX。
+            其他表的 user_id（m_profiles, t_reservations, t_favorites）作为外键，引用 m_users.user_id，不自动生成。
+        owner_id：
+            表 m_owners, m_profiles, t_parking_lots 中的 owner_id 改为 VARCHAR(37)。
+            更新 owner_id 列注释，明确格式为 owner_XXXXXX，并提供补 0 示例（如 owner_000007）。
+            m_owners.owner_id 使用触发器 trigger_set_owner_id 调用 generate_owner_id() 生成 owner_XXXXXX。
+            其他表的 owner_id（m_profiles, t_parking_lots）作为外键，引用 m_owners.owner_id，不自动生成。
+    生成函数和触发器：
+        generate_user_id()：
+            生成 user_XXXXXX 格式，6 位数字随机且不重复（检查 m_users 表）。
+            使用 LPAD(num::TEXT, 6, '0') 确保补 0（例如 user_000007）。
+            当记录数达到 100 万（user_000000 到 user_999999），返回 user_999999。
+        generate_owner_id()：
+            生成 owner_XXXXXX 格式，6 位数字随机且不重复（检查 m_owners 表）。
+            使用 LPAD(num::TEXT, 6, '0') 确保补 0（例如 owner_000007）。
+            当记录数达到 100 万（owner_000000 到 owner_999999），返回 owner_999999。
+        触发器：
+            为 m_users 添加 trigger_set_user_id，调用 set_user_id_trigger 函数，仅在 user_id IS NULL 时生成。
+            为 m_owners 添加 trigger_set_owner_id，调用 set_owner_id_trigger 函数，仅在 owner_id IS NULL 时生成。
+            其他表的 user_id 和 owner_id 不需要触发器，因为它们是外键，值由主表提供。
+    外键约束：
+        更新外键约束，确保类型一致：
+            fk_m_profiles_user_id：引用 m_users.user_id（VARCHAR(37)）。
+            fk_m_profiles_owner_id：引用 m_owners.owner_id（VARCHAR(37)）。
+            fk_t_reservations_user_id：引用 m_users.user_id（VARCHAR(37)）。
+            fk_t_favorites_user_id：引用 m_users.user_id（VARCHAR(37)）。
+            fk_t_parking_lots_owner_id：引用 m_owners.owner_id（VARCHAR(37)）。
+        外键约束保持注释状态（-- CONSTRAINT），如需启用，请取消注释。
+    约束顺序：
+        所有表的约束顺序保持为：check_, fk_, unique_, pk_。
+        例如，m_users 表的约束顺序：
+            -- CONSTRAINT check_promotional_email_opt
+            -- CONSTRAINT check_service_email_opt
+            -- CONSTRAINT check_user_not_owner
+            -- CONSTRAINT fk_m_users_login_id
+            CONSTRAINT unique_m_users_phone_number
+            CONSTRAINT pk_m_users
+    注释和格式：
+        保留所有原始注释，未修改任何内容。
+        更新 user_id 和 owner_id 的列注释，明确格式和补 0 示例：
+            user_id：'ユーザーの一意識別子（形式: user_XXXXXX, XXXXXXは6桁のランダムかつ一意な数字、例: user_000007）'（m_users）。
+            user_id：'関連するユーザーID（形式: user_XXXXXX）'（m_profiles, t_reservations, t_favorites）。
+            owner_id：'オーナーの一意識別子（形式: owner_XXXXXX, XXXXXXは6桁のランダムかつ一意な数字、例: owner_000007）'（m_owners）。
+            owner_id：'関連するオーナーID（形式: owner_XXXXXX）'（m_profiles, t_parking_lots）。
+        确保列和约束定义以逗号分隔，最后一个定义无逗号。
+    其他保留的修改：
+        表注释保持为 m_users（已修正 m_usersNorth）。
+        索引定义放在表注释和列注释之后。
+        所有列定义和约束定义符合 PostgreSQL 语法。
+
+检查要点
+
+请审阅以下内容以确认是否符合您的预期：
+
+    user_id 和 owner_id 类型：所有表的 user_id 和 owner_id 是否正确定义为 VARCHAR(37)。
+    格式和补 0：
+        generate_user_id() 和 generate_owner_id() 是否生成正确的 user_XXXXXX 和 owner_XXXXXX 格式，6 位数字补 0（例如 user_000007, owner_000007）。
+        溢出逻辑是否正确返回 user_999999 或 owner_999999。
+    触发器：
+        m_users 的 trigger_set_user_id 和 m_owners 的 trigger_set_owner_id 是否在插入时正确触发（当字段为 NULL 时生成 ID）。
+        其他表的 user_id 和 owner_id 是否无需触发器（作为外键）。
+    外键约束：外键约束（如 fk_m_profiles_user_id, fk_t_parking_lots_owner_id）的类型是否与主表一致。
+    约束顺序：所有表是否按 check_, fk_, unique_, pk_ 排列。
+    注释完整性：所有原始注释是否保留，user_id 和 owner_id 注释是否清晰描述了格式和补 0 示例。
+    语法正确性：表定义、函数和触发器是否符合 PostgreSQL 语法，无多余逗号。

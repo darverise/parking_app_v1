@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用開始</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            max-width: 430px;
+            margin: 0 auto;
+        }
+        
+        .modal {
+            background-color: #FFFFFF;
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 390px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            background-color: #3366CC;
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .language-selector {
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .parking-list {
+            margin-bottom: 20px;
+        }
+        
+        .parking-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+        
+        .radio-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #DDDDDD;
+            margin-right: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .parking-option.selected .radio-circle {
+            border-color: #3366CC;
+        }
+        
+        .parking-option.selected .radio-circle::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #3366CC;
+        }
+        
+        .parking-label {
+            font-size: 14px;
+            color: #333333;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .cancel-button, .start-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .cancel-button {
+            background-color: #CCCCCC;
+            color: #333333;
+        }
+        
+        .start-button {
+            background-color: #3366CC;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal">
+        <div class="header">
+            <span data-ja="利用開始" data-en="Start Usage">利用開始</span>
+            <div class="language-selector" id="language-toggle">
+                <span class="jp">日本語</span>
+                <span class="en">/ EN</span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="parking-list">
+                <div class="parking-option selected">
+                    <div class="radio-circle"></div>
+                    <div class="parking-label" data-ja="東京駅前パーキング" data-en="Tokyo Station Parking">東京駅前パーキング</div>
+                </div>
+                <div class="parking-option">
+                    <div class="radio-circle"></div>
+                    <div class="parking-label" data-ja="渋谷センター駐車場" data-en="Shibuya Center Parking">渋谷センター駐車場</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="cancel-button" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+                <button class="start-button" data-ja="利用開始" data-en="Start Usage">利用開始</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                    document.title = 'Start Usage';
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                    document.title = '利用開始';
+                }
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            });
+            
+            // Radio button functionality
+            const parkingOptions = document.querySelectorAll('.parking-option');
+            parkingOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    parkingOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Cancel button
+            const cancelButton = document.querySelector('.cancel-button');
+            cancelButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ? 'キャンセルしました。' : 'Cancelled.');
+                // Simulate closing modal
+                window.location.href = 'owner_dashboard.html';
+            });
+            
+            // Start button
+            const startButton = document.querySelector('.start-button');
+            startButton.addEventListener('click', function() {
+                const selectedParking = document.querySelector('.parking-option.selected .parking-label').getAttribute(`data-${currentLanguage}`);
+                alert(currentLanguage === 'ja' ? `${selectedParking} の利用を開始しました。` : `Started usage for ${selectedParking}.`);
+                // Navigate to completion screen
+                window.location.href = 'Owner_Dashboard_UI.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ja="パーキングアプリ - 車両情報" data-en="Parking App - Vehicle Information">パーキングアプリ - 車両情報</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F5F7FA;
+            color: #333333;
+            max-width: 430px; /* iPhone 15 Pro Max width */
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .signal-icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .battery-icon {
+            margin-left: 5px;
+        }
+        
+        .header {
+            background-color: #3366CC;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .back-button {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .container {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+        
+        .info-text {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .radio-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #DDDDDD;
+            margin-right: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+        
+        .radio-option.selected .radio-circle {
+            border-color: #4BD964;
+        }
+        
+        .radio-option.selected .radio-circle::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4BD964;
+        }
+        
+        .radio-label {
+            font-size: 16px;
+            color: #333333;
+        }
+        
+        .model-section {
+            margin-bottom: 30px;
+        }
+        
+        .model-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .model-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .model-value {
+            font-size: 16px;
+            color: #999999;
+        }
+        
+        .model-button {
+            padding: 10px 20px;
+            background-color: white;
+            border: 1px solid #3366CC;
+            border-radius: 5px;
+            color: #3366CC;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .vehicle-type-section {
+            margin-bottom: 30px;
+        }
+        
+        .vehicle-type-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .vehicle-type-select {
+            width: 100%;
+            height: 50px;
+            border: 1px solid #DDDDDD;
+            border-radius: 5px;
+            padding: 0 15px;
+            font-size: 16px;
+            background-color: white;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6' viewBox='0 0 12 6'%3E%3Cpath fill='%23666666' d='M6 6L0 0h12z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            cursor: pointer;
+        }
+        
+        .license-plate-section {
+            margin-bottom: 30px;
+        }
+        
+        .license-plate-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .license-plate-container {
+            background-color: white;
+            border: 1px solid #DDDDDD;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .license-plate-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .license-plate-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .license-plate-input {
+            width: 80px;
+            height: 50px;
+            border: 1px solid #DDDDDD;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            padding: 0 5px;
+        }
+        
+        .license-plate-input.small {
+            width: 60px;
+        }
+        
+        .license-plate-input.large {
+            width: 120px;
+            flex-grow: 1;
+            max-width: 200px;
+        }
+        
+        .update-button {
+            width: 100%;
+            height: 56px;
+            background-color: #4BD964;
+            border: none;
+            border-radius: 28px;
+            color: #FFFFFF;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(75, 217, 100, 0.3);
+            margin-top: 20px;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            display: none;
+        }
+        
+        .modal-container {
+            width: 90%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #EEEEEE;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        
+        .modal-search {
+            padding: 15px 20px;
+            border-bottom: 1px solid #EEEEEE;
+        }
+        
+        .search-input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #DDDDDD;
+            border-radius: 20px;
+            padding: 0 15px;
+            font-size: 14px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23999999' d='M15.7 14.3l-4.2-4.2c.9-1.1 1.4-2.5 1.4-4.1 0-3.6-2.9-6.5-6.5-6.5S0 2.4 0 6s2.9 6.5 6.5 6.5c1.6 0 3-.5 4.1-1.4l4.2 4.2c.2.2.5.3.7.3s.5-.1.7-.3c.4-.4.4-1 0-1.4zM6.5 11C3.9 11 1.8 8.9 1.8 6.3s2.1-4.7 4.7-4.7 4.7 2.1 4.7 4.7-2.1 4.7-4.7 4.7z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+        }
+        
+        .modal-body {
+            padding: 0;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        
+        .vehicle-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .vehicle-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #EEEEEE;
+            cursor: pointer;
+        }
+        
+        .vehicle-item:hover {
+            background-color: #F5F7FA;
+        }
+        
+        .vehicle-make {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .vehicle-model {
+            font-size: 14px;
+            color: #666666;
+        }
+        
+        .error-message {
+            color: #FF3B30;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="signal-icon">📶</span>
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span class="battery-icon">🔋 100%</span>
+        </div>
+    </div>
+    
+    <div class="header">
+        <div class="back-button">←</div>
+        <div class="header-title" data-ja="車両情報" data-en="Vehicle Information">車両情報</div>
+        <div style="width: 36px;"></div> <!-- Empty space for balance -->
+    </div>
+    
+    <div class="container">
+        <div class="info-text" data-ja="予約した駐車場のオーナーにのみ公開される情報です。" data-en="This information is only shared with the owner of the reserved parking.">予約した駐車場のオーナーにのみ公開される情報です。</div>
+        
+        <div class="form-section">
+            <label class="form-label" data-ja="利用車両" data-en="Vehicle Status">利用車両</label>
+            <div class="radio-group">
+                <div class="radio-option selected" data-value="confirmed">
+                    <div class="radio-circle"></div>
+                    <div class="radio-label" data-ja="決まっている" data-en="Confirmed">決まっている</div>
+                </div>
+                <div class="radio-option" data-value="not-confirmed">
+                    <div class="radio-circle"></div>
+                    <div class="radio-label" data-ja="決まっていない" data-en="Not Confirmed">決まっていない</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="model-section">
+            <label class="model-label" data-ja="車種名" data-en="Car Model">車種名</label>
+            <div class="model-display">
+                <div class="model-value" id="selected-model" data-ja="未設定" data-en="Not Set">未設定</div>
+                <button class="model-button" id="model-search-button" data-ja="車種名を設定" data-en="Set Car Model">車種名を設定</button>
+            </div>
+            <div class="error-message" id="model-error" data-ja="車種名を入力してください" data-en="Please enter a car model">車種名を入力してください</div>
+        </div>
+        
+        <div class="vehicle-type-section">
+            <label class="vehicle-type-label" data-ja="車種タイプ" data-en="Car Type">車種タイプ</label>
+            <select class="vehicle-type-select" id="vehicle-type">
+                <option value="" disabled selected data-ja="車種を選択" data-en="Select car type">車種を選択</option>
+                <option value="kei" data-ja="軽自動車" data-en="Kei Car">軽自動車</option>
+                <option value="normal" data-ja="普通車" data-en="Standard Car">普通車</option>
+                <option value="large" data-ja="大型車" data-en="Large Car">大型車</option>
+                <option value="bike" data-ja="バイク" data-en="Motorcycle">バイク</option>
+            </select>
+            <div class="error-message" id="type-error" data-ja="車種タイプを選択してください" data-en="Please select a car type">車種タイプを選択してください</div>
+        </div>
+        
+        <div class="license-plate-section">
+            <label class="license-plate-label" data-ja="車両ナンバー" data-en="License Plate">車両ナンバー</label>
+            <div class="license-plate-container">
+                <div class="license-plate-row">
+                    <input type="text" class="license-plate-input" id="region" placeholder="品川" maxlength="4" data-ja-placeholder="品川" data-en-placeholder="Shinagawa">
+                    <input type="text" class="license-plate-input" id="class" placeholder="300" maxlength="3" data-ja-placeholder="300" data-en-placeholder="300">
+                </div>
+                <div class="license-plate-row">
+                    <input type="text" class="license-plate-input small" id="hiragana" placeholder="お" maxlength="1" data-ja-placeholder="お" data-en-placeholder="O">
+                    <input type="text" class="license-plate-input large" id="number" placeholder="0000" maxlength="4" data-ja-placeholder="0000" data-en-placeholder="0000">
+                </div>
+            </div>
+            <div class="error-message" id="plate-error" data-ja="正しい形式で車両ナンバーを入力してください" data-en="Please enter the license plate in the correct format">正しい形式で車両ナンバーを入力してください</div>
+        </div>
+        
+        <button class="update-button" data-ja="更新する" data-en="Update">更新する</button>
+    </div>
+    
+    <!-- Vehicle Model Search Modal -->
+    <div class="modal-overlay" id="vehicle-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title" data-ja="車種検索" data-en="Car Model Search">車種検索</div>
+                <div class="modal-close">×</div>
+            </div>
+            <div class="modal-search">
+                <input type="text" class="search-input" id="vehicle-search" data-ja-placeholder="メーカー名や車種名で検索" data-en-placeholder="Search by make or model">メーカー名や車種名で検索</input>
+            </div>
+            <div class="modal-body">
+                <ul class="vehicle-list" id="vehicle-list">
+                    <li class="vehicle-item" data-model-ja="トヨタ プリウス" data-model-en="Toyota Prius">
+                        <div class="vehicle-make" data-ja="トヨタ" data-en="Toyota">トヨタ</div>
+                        <div class="vehicle-model" data-ja="プリウス" data-en="Prius">プリウス</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="トヨタ カローラ" data-model-en="Toyota Corolla">
+                        <div class="vehicle-make" data-ja="トヨタ" data-en="Toyota">トヨタ</div>
+                        <div class="vehicle-model" data-ja="カローラ" data-en="Corolla">カローラ</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="ホンダ フィット" data-model-en="Honda Fit">
+                        <div class="vehicle-make" data-ja="ホンダ" data-en="Honda">ホンダ</div>
+                        <div class="vehicle-model" data-ja="フィット" data-en="Fit">フィット</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="ホンダ N-BOX" data-model-en="Honda N-BOX">
+                        <div class="vehicle-make" data-ja="ホンダ" data-en="Honda">ホンダ</div>
+                        <div class="vehicle-model" data-ja="N-BOX" data-en="N-BOX">N-BOX</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="日産 セレナ" data-model-en="Nissan Serena">
+                        <div class="vehicle-make" data-ja="日産" data-en="Nissan">日産</div>
+                        <div class="vehicle-model" data-ja="セレナ" data-en="Serena">セレナ</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="日産 ノート" data-model-en="Nissan Note">
+                        <div class="vehicle-make" data-ja="日産" data-en="Nissan">日産</div>
+                        <div class="vehicle-model" data-ja="ノート" data-en="Note">ノート</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="スズキ ワゴンR" data-model-en="Suzuki Wagon R">
+                        <div class="vehicle-make" data-ja="スズキ" data-en="Suzuki">スズキ</div>
+                        <div class="vehicle-model" data-ja="ワゴンR" data-en="Wagon R">ワゴンR</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="マツダ CX-5" data-model-en="Mazda CX-5">
+                        <div class="vehicle-make" data-ja="マツダ" data-en="Mazda">マツダ</div>
+                        <div class="vehicle-model" data-ja="CX-5" data-en="CX-5">CX-5</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="スバル インプレッサ" data-model-en="Subaru Impreza">
+                        <div class="vehicle-make" data-ja="スバル" data-en="Subaru">スバル</div>
+                        <div class="vehicle-model" data-ja="インプレッサ" data-en="Impreza">インプレッサ</div>
+                    </li>
+                    <li class="vehicle-item" data-model-ja="ダイハツ タント" data-model-en="Daihatsu Tanto">
+                        <div class="vehicle-make" data-ja="ダイハツ" data-en="Daihatsu">ダイハツ</div>
+                        <div class="vehicle-model" data-ja="タント" data-en="Tanto">タント</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                }
+                
+                // Update page title
+                document.title = document.querySelector('title').getAttribute(`data-${currentLanguage}`);
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update placeholders
+                const placeholdersToUpdate = document.querySelectorAll('[data-ja-placeholder][data-en-placeholder]');
+                placeholdersToUpdate.forEach(function(element) {
+                    element.placeholder = element.getAttribute(`data-${currentLanguage}-placeholder`);
+                });
+                
+                // Update select options
+                const selectOptions = document.querySelectorAll('.vehicle-type-select option');
+                selectOptions.forEach(option => {
+                    option.textContent = option.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update error messages
+                const errorMessages = document.querySelectorAll('.error-message');
+                errorMessages.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update vehicle list for modal
+                const vehicleItems = document.querySelectorAll('.vehicle-item');
+                vehicleItems.forEach(item => {
+                    const make = item.querySelector('.vehicle-make');
+                    const model = item.querySelector('.vehicle-model');
+                    make.textContent = make.getAttribute(`data-${currentLanguage}`);
+                    model.textContent = model.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update selected model if not default
+                const selectedModel = document.getElementById('selected-model');
+                if (selectedModel.textContent !== '未設定' && selectedModel.textContent !== 'Not Set') {
+                    const selectedItem = Array.from(vehicleItems).find(item => 
+                        item.getAttribute(`data-model-${currentLanguage}`) === selectedModel.textContent
+                    );
+                    if (selectedItem) {
+                        selectedModel.textContent = selectedItem.getAttribute(`data-model-${currentLanguage}`);
+                    }
+                } else {
+                    selectedModel.textContent = currentLanguage === 'ja' ? '未設定' : 'Not Set';
+                }
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            });
+            
+            // Back button functionality
+            const backButton = document.querySelector('.back-button');
+            backButton.addEventListener('click', function() {
+                alert(currentLanguage === 'ja' ? 'オーナーダッシュボードに戻ります。' : 'Returning to Owner Dashboard.');
+                window.location.href = 'owner_dashboard.html';
+            });
+            
+            // Radio button functionality
+            const radioOptions = document.querySelectorAll('.radio-option');
+            radioOptions.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    radioOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // If "Not confirmed" is selected, disable other fields
+                    const isConfirmed = this.dataset.value === 'confirmed';
+                    document.getElementById('model-search-button').disabled = !isConfirmed;
+                    document.getElementById('vehicle-type').disabled = !isConfirmed;
+                    document.getElementById('region').disabled = !isConfirmed;
+                    document.getElementById('class').disabled = !isConfirmed;
+                    document.getElementById('hiragana').disabled = !isConfirmed;
+                    document.getElementById('number').disabled = !isConfirmed;
+                });
+            });
+            
+            // Vehicle model search modal functionality
+            const modelButton = document.getElementById('model-search-button');
+            const vehicleModal = document.getElementById('vehicle-modal');
+            const modalClose = document.querySelector('.modal-close');
+            
+            modelButton.addEventListener('click', function() {
+                vehicleModal.style.display = 'flex';
+            });
+            
+            modalClose.addEventListener('click', function() {
+                vehicleModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside of it
+            vehicleModal.addEventListener('click', function(e) {
+                if (e.target === vehicleModal) {
+                    vehicleModal.style.display = 'none';
+                }
+            });
+            
+            // Vehicle selection from list
+            const vehicleItems = document.querySelectorAll('.vehicle-item');
+            const selectedModel = document.getElementById('selected-model');
+            
+            vehicleItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const model = item.getAttribute(`data-model-${currentLanguage}`);
+                    selectedModel.textContent = model;
+                    vehicleModal.style.display = 'none';
+                    
+                    // Remove error message if it exists
+                    document.getElementById('model-error').style.display = 'none';
+                });
+            });
+            
+            // Vehicle search functionality
+            const vehicleSearch = document.getElementById('vehicle-search');
+            const vehicleList = document.getElementById('vehicle-list');
+            
+            vehicleSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const items = vehicleList.querySelectorAll('.vehicle-item');
+                
+                items.forEach(function(item) {
+                    const model = item.getAttribute(`data-model-${currentLanguage}`).toLowerCase();
+                    if (model.includes(searchTerm)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Form validation and submission
+            const updateButton = document.querySelector('.update-button');
+            
+            updateButton.addEventListener('click', function() {
+                let isValid = true;
+                
+                // Only validate if "Confirmed" is selected
+                const isConfirmed = document.querySelector('.radio-option.selected').dataset.value === 'confirmed';
+                
+                if (isConfirmed) {
+                    // Validate model
+                    if (selectedModel.textContent === '未設定' || selectedModel.textContent === 'Not Set') {
+                        document.getElementById('model-error').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('model-error').style.display = 'none';
+                    }
+                    
+                    // Validate vehicle type
+                    if (document.getElementById('vehicle-type').value === '') {
+                        document.getElementById('type-error').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('type-error').style.display = 'none';
+                    }
+                    
+                    // Validate license plate
+                    const region = document.getElementById('region').value;
+                    const classNum = document.getElementById('class').value;
+                    const hiragana = document.getElementById('hiragana').value;
+                    const number = document.getElementById('number').value;
+                    
+                    if (!region || !classNum || !hiragana || !number) {
+                        document.getElementById('plate-error').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        // Additional validation for license plate format
+                        const regionPattern = /^[\u4E00-\u9FFF]{1,4}$/;
+                        const classPattern = /^\d{1,3}$/;
+                        const hiraganaPattern = /^[\u3040-\u309F]$/;
+                        const numberPattern = /^\d{2,4}$/;
+                        
+                        if (!regionPattern.test(region) || !classPattern.test(classNum) || 
+                            !hiraganaPattern.test(hiragana) || !numberPattern.test(number)) {
+                            document.getElementById('plate-error').style.display = 'block';
+                            isValid = false;
+                        } else {
+                            document.getElementById('plate-error').style.display = 'none';
+                        }
+                    }
+                }
+                
+                if (isValid) {
+                    alert(currentLanguage === 'ja' ? '車両情報が正常に更新されました' : 'Vehicle information updated successfully');
+                    window.location.href = 'owner_dashboard.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

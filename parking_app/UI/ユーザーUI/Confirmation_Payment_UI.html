@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ja="パーキングアプリ - 確認・お支払い" data-en="Parking App - Confirmation & Payment">パーキングアプリ - 確認・お支払い</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F8FAFD;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            padding: 20px 20px 80px 20px;
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 8px;
+            color: #3366CC;
+            font-size: 18px;
+        }
+        
+        /* Progress Steps */
+        .progress-container {
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        .progress-steps::before {
+            content: "";
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            right: 15px;
+            height: 2px;
+            background-color: #E0E0E0;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            width: 25%;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .step-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #E0E0E0;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .step-text {
+            font-size: 11px;
+            color: #999999;
+            text-align: center;
+        }
+        
+        .progress-step.completed .step-circle {
+            background-color: #3366CC;
+            border-color: #3366CC;
+            color: white;
+        }
+        
+        .progress-step.completed .step-text {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .progress-step.active .step-circle {
+            border-color: #3366CC;
+            border-width: 2px;
+            color: #3366CC;
+            font-weight: 600;
+        }
+        
+        .progress-step.active .step-text {
+            color: #3366CC;
+            font-weight: 600;
+        }
+        
+        /* Parking Info */
+        .parking-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+        
+        .parking-address {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .address-icon {
+            margin-right: 5px;
+            min-width: 14px;
+        }
+        
+        .parking-distance {
+            font-size: 14px;
+            color: #3366CC;
+            margin-bottom: 10px;
+        }
+        
+        .reservation-id {
+            font-size: 13px;
+            color: #999999;
+            margin-top: 10px;
+        }
+        
+        /* Reservation Details */
+        .reservation-time {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 5px;
+            color: #333333;
+        }
+        
+        .time-icon {
+            margin-right: 8px;
+            color: #3366CC;
+        }
+        
+        /* Payment Methods */
+        .payment-options {
+            margin-top: 10px;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            border-radius: 8px;
+            border: 1px solid #E0E0E0;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .payment-option:last-child {
+            margin-bottom: 0;
+        }
+        
+        .payment-option.selected {
+            border-color: #3366CC;
+            background-color: rgba(51, 102, 204, 0.05);
+        }
+        
+        .payment-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #DDDDDD;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .payment-option.selected .payment-radio {
+            border-color: #3366CC;
+        }
+        
+        .payment-option.selected .payment-radio::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #3366CC;
+        }
+        
+        .payment-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: #333333;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .payment-info {
+            flex-grow: 1;
+        }
+        
+        .payment-name {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .payment-description {
+            font-size: 12px;
+            color: #999999;
+            margin-top: 2px;
+        }
+        
+        /* Price Breakdown */
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .price-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            color: #666666;
+        }
+        
+        .price-value {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: right;
+        }
+        
+        .subtotal-row {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #EEEEEE;
+        }
+        
+        .total-row {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .discount-value {
+            color: #FF3B30;
+        }
+        
+        /* Terms Agreement */
+        .terms-container {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 10px;
+        }
+        
+        .terms-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #3366CC;
+            background-color: #3366CC;
+            margin-right: 10px;
+            margin-top: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .terms-checkbox-icon {
+            color: white;
+            font-size: 12px;
+        }
+        
+        .terms-text {
+            font-size: 14px;
+            color: #666666;
+            line-height: 1.4;
+        }
+        
+        .terms-link {
+            color: #3366CC;
+            text-decoration: none;
+        }
+        
+        /* Confirmation Button */
+        .confirm-button {
+            width: 100%;
+            height: 56px;
+            background: linear-gradient(135deg, #3366CC, #5E8AE0);
+            color: white;
+            border: none;
+            border-radius: 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .confirm-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(51, 102, 204, 0.4);
+        }
+        
+        .support-text {
+            text-align: center;
+            font-size: 13px;
+            color: #999999;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .support-link {
+            color: #3366CC;
+            text-decoration: none;
+        }
+        
+        .security-icon {
+            font-size: 14px;
+            margin-right: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="progress-container">
+        <div class="progress-steps">
+            <div class="progress-step completed">
+                <div class="step-circle">✓</div>
+                <div class="step-text" data-ja="検索" data-en="Search">検索</div>
+            </div>
+            <div class="progress-step completed">
+                <div class="step-circle">✓</div>
+                <div class="step-text" data-ja="予約" data-en="Reservation">予約</div>
+            </div>
+            <div class="progress-step active">
+                <div class="step-circle">3</div>
+                <div class="step-text" data-ja="確認・支払い" data-en="Confirmation & Payment">確認・支払い</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">4</div>
+                <div class="step-text" data-ja="完了" data-en="Completed">完了</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title" data-ja="駐車場情報" data-en="Parking Information">
+            <span class="section-icon">📍</span>
+            <span>駐車場情報</span>
+        </h2>
+        <div class="parking-name" data-ja="東京中央パーキング" data-en="Tokyo Central Parking">東京中央パーキング</div>
+        <div class="parking-address">
+            <span class="address-icon">📍</span>
+            <span data-ja="東京都中央区1-2-3" data-en="1-2-3 Chuo-ku, Tokyo">東京都中央区1-2-3</span>
+        </div>
+        <div class="parking-distance" data-ja="駅から徒歩3分" data-en="3 min walk from station">駅から徒歩3分</div>
+        <div class="reservation-id" data-ja="予約ID: P202504290015" data-en="Reservation ID: P202504290015">予約ID: P202504290015</div>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title" data-ja="ご利用日時" data-en="Usage Date & Time">
+            <span class="section-icon">🕒</span>
+            <span>ご利用日時</span>
+        </h2>
+        <div class="reservation-time">
+            <span class="time-icon">🗓️</span>
+            <span data-ja="2025/04/29 15:00〜20:00" data-en="04/29/2025 15:00-20:00">2025/04/29 15:00〜20:00</span>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title" data-ja="お支払い方法" data-en="Payment Method">
+            <span class="section-icon">💳</span>
+            <span>お支払い方法</span>
+        </h2>
+        
+        <div class="payment-options">
+            <div class="payment-option selected">
+                <div class="payment-radio"></div>
+                <div class="payment-icon">💳</div>
+                <div class="payment-info">
+                    <div class="payment-name" data-ja="クレジットカード" data-en="Credit Card">クレジットカード</div>
+                    <div class="payment-description" data-ja="VISA・Mastercard・JCB・AMEX" data-en="VISA, Mastercard, JCB, AMEX">VISA・Mastercard・JCB・AMEX</div>
+                </div>
+            </div>
+            
+            <div class="payment-option">
+                <div class="payment-radio"></div>
+                <div class="payment-icon">💴</div>
+                <div class="payment-info">
+                    <div class="payment-name" data-ja="現地払い（現金）" data-en="On-site Payment (Cash)">現地払い（現金）</div>
+                    <div class="payment-description" data-ja="ご利用時に駐車場で直接お支払い" data-en="Pay directly at the parking lot">ご利用時に駐車場で直接お支払い</div>
+                </div>
+            </div>
+            
+            <div class="payment-option">
+                <div class="payment-radio"></div>
+                <div class="payment-icon">📱</div>
+                <div class="payment-info">
+                    <div class="payment-name" data-ja="PayPay" data-en="PayPay">PayPay</div>
+                    <div class="payment-description" data-ja="QRコードでお支払い" data-en="Pay with QR code">QRコードでお支払い</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title" data-ja="料金内訳" data-en="Price Breakdown">
+            <span class="section-icon">📝</span>
+            <span>料金内訳</span>
+        </h2>
+        
+        <div class="price-row">
+            <div class="price-label" data-ja="基本料金（5時間）" data-en="Base Fee (5 hours)">基本料金（5時間）</div>
+            <div class="price-value">¥1,500</div>
+        </div>
+        
+        <div class="price-row">
+            <div class="price-label" data-ja="キャンセル保証（オプション）" data-en="Cancellation Guarantee (Optional)">キャンセル保証（オプション）</div>
+            <div class="price-value">¥150</div>
+        </div>
+        
+        <div class="price-row">
+            <div class="price-label" data-ja="予約手数料" data-en="Reservation Fee">予約手数料</div>
+            <div class="price-value">¥200</div>
+        </div>
+        
+        <div class="price-row">
+            <div class="price-label" data-ja="初回利用割引" data-en="First-time Use Discount">初回利用割引</div>
+            <div class="price-value discount-value">-¥500</div>
+        </div>
+        
+        <div class="price-row subtotal-row total-row">
+            <div class="price-label" data-ja="合計金額（税込）" data-en="Total Amount (Tax Incl.)">合計金額（税込）</div>
+            <div class="price-value">¥1,350</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="terms-container">
+            <div class="terms-checkbox">
+                <span class="terms-checkbox-icon">✓</span>
+            </div>
+            <div class="terms-text">
+                <a href="#" class="terms-link" data-ja="利用規約" data-en="Terms of Use">利用規約</a>および
+                <a href="#" class="terms-link" data-ja="プライバシーポリシー" data-en="Privacy Policy">プライバシーポリシー</a>
+                <span data-ja="に同意します。また、キャンセル料金に関する規定について確認しました。" data-en="I agree to and have reviewed the cancellation fee policy.">に同意します。また、キャンセル料金に関する規定について確認しました。</span>
+            </div>
+        </div>
+    </div>
+    
+    <button class="confirm-button" data-ja="予約を確定する" data-en="Confirm Reservation">予約を確定する</button>
+    
+    <div class="support-text">
+        <div>
+            <a href="#" class="support-link" data-ja="ご利用方法について" data-en="How to Use">ご利用方法について</a> | 
+            <a href="#" class="support-link" data-ja="サポートセンター" data-en="Support Center">サポートセンター</a>
+        </div>
+        <div>
+            <span class="security-icon">🔒</span>
+            <span data-ja="安全なお支払いシステムを使用しています" data-en="Using a secure payment system">安全なお支払いシステムを使用しています</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            function updateLanguage() {
+                // Update page title
+                document.title = document.querySelector('title').getAttribute(`data-${currentLanguage}`);
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            }
+            
+            languageToggle.addEventListener('click', function() {
+                currentLanguage = currentLanguage === 'ja' ? 'en' : 'ja';
+                languageToggle.classList.toggle('en-active', currentLanguage === 'en');
+                document.documentElement.lang = currentLanguage;
+                updateLanguage();
+            });
+            
+            // Initial language update
+            updateLanguage();
+            
+            // Payment option selection
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            
+            paymentOptions.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Terms checkbox toggle
+            const termsCheckbox = document.querySelector('.terms-checkbox');
+            const termsContainer = document.querySelector('.terms-container');
+            
+            termsContainer.addEventListener('click', function() {
+                const icon = termsCheckbox.querySelector('.terms-checkbox-icon');
+                if (icon.style.display === 'none') {
+                    icon.style.display = 'block';
+                    termsCheckbox.style.backgroundColor = '#3366CC';
+                } else {
+                    icon.style.display = 'none';
+                    termsCheckbox.style.backgroundColor = 'white';
+                }
+            });
+            
+            // Confirm button
+            const confirmButton = document.querySelector('.confirm-button');
+            
+            confirmButton.addEventListener('click', function() {
+                // Check if terms are accepted
+                const termsIcon = document.querySelector('.terms-checkbox-icon');
+                if (termsIcon.style.display === 'none') {
+                    alert(currentLanguage === 'ja' ?
+                        '利用規約に同意していただく必要があります。' :
+                        'You must agree to the terms of use.');
+                } else {
+                    // Redirect to completed reservation page
+                    window.location.href = 'Reservation_Completed_UI.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

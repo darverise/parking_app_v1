@@ -1,0 +1,11 @@
+arb-dir: lib/l10n
+template-arb-file: app_ja.arb
+output-localization-file: app_localizations.dart
+output-dir: lib/generated
+nullable-getter: false
+sync-deferred-loading: false
+use-deferred-loading: false
+use-material-design: true
+use-async-await: false
+use-async-await-syntax: false
+untranslated-messages-file: untranslated_messages.txt

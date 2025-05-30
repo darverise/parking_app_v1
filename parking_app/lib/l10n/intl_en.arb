@@ -1,0 +1,37 @@
+{
+    "@@locale": "en",
+    "appTitle": "Parking App",
+    "@appTitle": {
+        "description": "The title of the application"
+    },
+    "welcomeMessage": "Welcome to the Parking App",
+    "@welcomeMessage": {
+        "description": "The welcome message displayed on the home screen"
+    },
+    "welcome": "Welcome",
+    "login": "Login",
+    "logout": "Logout",
+    "findParking": "Find Parking",
+    "availableSpots": "Available Spots",
+    "parkingTime": "Parking Time",
+    "startParking": "Start Parking",
+    "endParking": "End Parking",
+    "payment": "Payment",
+    "settings": "Settings",
+    "profile": "Profile",
+    "help": "Help",
+    "language": "Language",
+    
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot your password?",
+    "or": "or",
+    "createAccount": "Don't have an account? Register",
+    "emailHint": "example@email.com",
+    "passwordHint": "Enter your password",
+    "registerNow": "Register",
+    "requiredField": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "invalidInput": "Invalid input"
+}

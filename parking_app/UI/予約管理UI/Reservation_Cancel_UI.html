@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ja="パーキングアプリ - 予約のキャンセル" data-en="Parking App - Reservation Cancellation">パーキングアプリ - 予約のキャンセル</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F5F7FA;
+            color: #333333;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .signal-icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .battery-icon {
+            margin-left: 5px;
+        }
+        
+        .header {
+            background-color: #3366CC;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .back-button {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .container {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+        
+        .reservation-card {
+            background-color: #FFFFFF;
+            border: 1px solid #DDDDDD;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .reservation-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            align-items: center;
+        }
+        
+        .reservation-label {
+            color: #666666;
+            font-weight: 500;
+            text-align: left;
+        }
+        
+        .reservation-value {
+            color: #333333;
+            font-weight: 600;
+            text-align: left;
+        }
+        
+        .reason-section {
+            margin-bottom: 20px;
+        }
+        
+        .reason-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .radio-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #DDDDDD;
+            margin-right: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+        
+        .radio-option.selected .radio-circle {
+            border-color: #4BD964;
+        }
+        
+        .radio-option.selected .radio-circle::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4BD964;
+        }
+        
+        .radio-label {
+            font-size: 16px;
+            color: #333333;
+        }
+        
+        .confirmation-text {
+            font-size: 16px;
+            color: #333333;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .policy-text {
+            font-size: 14px;
+            color: #666666;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cancel-button, .back-button-action {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .cancel-button {
+            background-color: #FF3B30;
+            color: #FFFFFF;
+        }
+        
+        .back-button-action {
+            background-color: #3366CC;
+            color: #FFFFFF;
+        }
+        
+        .error-message {
+            font-size: 12px;
+            color: #FF3B30;
+            margin-top: 5px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector" id="language-toggle">
+        <span class="jp">日本語</span>
+        <span class="en">/ EN</span>
+    </div>
+    
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="signal-icon">📶</span>
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span class="battery-icon">🔋 100%</span>
+        </div>
+    </div>
+    
+    <div class="header">
+        <div class="back-button">←</div>
+        <div class="header-title" data-ja="予約のキャンセル" data-en="Reservation Cancellation">予約のキャンセル</div>
+        <div style="width: 36px;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="reservation-card">
+            <div class="reservation-item">
+                <span class="reservation-label" data-ja="駐車場名" data-en="Parking Name">駐車場名</span>
+                <span class="reservation-value" data-ja="東京中央パーキング" data-en="Tokyo Central Parking">東京中央パーキング</span>
+            </div>
+            <div class="reservation-item">
+                <span class="reservation-label" data-ja="予約日" data-en="Date">予約日</span>
+                <span class="reservation-value">2025年5月10日</span>
+            </div>
+            <div class="reservation-item">
+                <span class="reservation-label" data-ja="時間" data-en="Time">時間</span>
+                <span class="reservation-value">10:00 - 18:00</span>
+            </div>
+            <div class="reservation-item">
+                <span class="reservation-label" data-ja="予約者" data-en="Reserved by">予約者</span>
+                <span class="reservation-value" data-ja="山田太郎" data-en="Taro Yamada">山田太郎</span>
+            </div>
+        </div>
+        
+        <div class="reason-section">
+            <label class="reason-label" data-ja="キャンセル理由" data-en="Cancellation Reason">キャンセル理由</label>
+            <div class="radio-group">
+                <div class="radio-option" data-value="schedule">
+                    <div class="radio-circle"></div>
+                    <div class="radio-label" data-ja="予定変更" data-en="Schedule Change">予定変更</div>
+                </div>
+                <div class="radio-option" data-value="parking">
+                    <div class="radio-circle"></div>
+                    <div class="radio-label" data-ja="駐車場変更" data-en="Parking Change">駐車場変更</div>
+                </div>
+                <div class="radio-option" data-value="other">
+                    <div class="radio-circle"></div>
+                    <div class="radio-label" data-ja="その他" data-en="Other">その他</div>
+                </div>
+            </div>
+            <div class="error-message" data-ja="キャンセル理由を選択してください" data-en="Please select a cancellation reason">キャンセル理由を選択してください</div>
+        </div>
+        
+        <div class="confirmation-text" data-ja="本当にキャンセルしますか？" data-en="Are you sure you want to cancel?">本当にキャンセルしますか？</div>
+        
+        <div class="policy-text" data-ja="キャンセル料がかかる場合があります。詳細は利用規約をご確認ください。" data-en="A cancellation fee may apply. Please check the terms of service for details.">キャンセル料がかかる場合があります。詳細は利用規約をご確認ください。</div>
+        
+        <div class="button-group">
+            <button class="back-button-action" data-ja="戻る" data-en="Back">戻る</button>
+            <button class="cancel-button" data-ja="キャンセルする" data-en="Cancel Reservation">キャンセルする</button>
+        </div>
+        
+        <div class="error-message" data-ja="キャンセルに失敗しました。もう一度お試しください。" data-en="Failed to cancel. Please try again.">キャンセルに失敗しました。もう一度お試しください。</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                    document.title = document.querySelector('title').getAttribute('data-en');
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                    document.title = document.querySelector('title').getAttribute('data-ja');
+                }
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            });
+            
+            // Back button (header)
+            const headerBackButton = document.querySelector('.back-button');
+            headerBackButton.addEventListener('click', function() {
+                window.location.href = 'reservation_list.html';
+            });
+            
+            // Back button (action)
+            const backButtonAction = document.querySelector('.back-button-action');
+            backButtonAction.addEventListener('click', function() {
+                window.location.href = 'reservation_list.html';
+            });
+            
+            // Radio button functionality
+            const radioOptions = document.querySelectorAll('.radio-option');
+            radioOptions.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    radioOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    // Hide error message
+                    document.querySelector('.reason-section .error-message').style.display = 'none';
+                });
+            });
+            
+            // Cancel button
+            const cancelButton = document.querySelector('.cancel-button');
+            cancelButton.addEventListener('click', function() {
+                // Validate cancellation reason
+                const selectedReason = document.querySelector('.radio-option.selected');
+                if (!selectedReason) {
+                    document.querySelector('.reason-section .error-message').style.display = 'block';
+                    return;
+                }
+                
+                // Simulate cancellation
+                const confirmed = confirm(currentLanguage === 'ja' ? 
+                    '予約をキャンセルしますか？' : 
+                    'Are you sure you want to cancel the reservation?');
+                
+                if (confirmed) {
+                    alert(currentLanguage === 'ja' ? 
+                        '予約をキャンセルしました。' : 
+                        'Reservation has been cancelled.');
+                    window.location.href = 'reservation_list.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

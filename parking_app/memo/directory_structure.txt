@@ -1,0 +1,252 @@
+/Users/darverise/WorkspacesApp/v1/parking_app_v1/parking_app
+├── Cargo.lock
+├── Cargo.toml
+├── README.md
+├── android
+│   ├── app
+│   │   ├── build.gradle
+│   │   └── src
+│   │       ├── debug
+│   │       │   └── AndroidManifest.xml
+│   │       ├── main
+│   │       │   ├── AndroidManifest.xml
+│   │       │   ├── kotlin
+│   │       │   │   └── com
+│   │       │   │       └── example
+│   │       │   │           └── parking_app
+│   │       │   │               └── MainActivity.kt
+│   │       │   └── res
+│   │       │       ├── drawable
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── drawable-v21
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── mipmap-hdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-mdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xxhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xxxhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       └── values
+│   │       │           └── styles.xml
+│   │       └── profile
+│   │           └── AndroidManifest.xml
+│   ├── build.gradle
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   └── settings.gradle
+├── assets
+│   ├── fonts
+│   │   └── NotoSansJP-Regular.otf
+│   └── images
+│       ├── car_icon.png
+│       ├── credit_card.png
+│       ├── logo_placeholder.png
+│       ├── map_placeholder.png
+│       ├── parking_placeholder.jpg
+│       └── qr_code_placeholder.png
+├── ios
+│   ├── Flutter
+│   │   ├── AppFrameworkInfo.plist
+│   │   ├── Debug.xcconfig
+│   │   └── Release.xcconfig
+│   ├── Podfile
+│   ├── Runner
+│   │   ├── AppDelegate.swift
+│   │   ├── Assets.xcassets
+│   │   │   ├── AppIcon.appiconset
+│   │   │   │   ├── Contents.json
+│   │   │   │   ├── Icon-App-1024x1024@1x.png
+│   │   │   │   ├── Icon-App-20x20@1x.png
+│   │   │   │   ├── Icon-App-20x20@2x.png
+│   │   │   │   ├── Icon-App-20x20@3x.png
+│   │   │   │   ├── Icon-App-29x29@1x.png
+│   │   │   │   ├── Icon-App-29x29@2x.png
+│   │   │   │   ├── Icon-App-29x29@3x.png
+│   │   │   │   ├── Icon-App-40x40@1x.png
+│   │   │   │   ├── Icon-App-40x40@2x.png
+│   │   │   │   ├── Icon-App-40x40@3x.png
+│   │   │   │   ├── Icon-App-60x60@2x.png
+│   │   │   │   ├── Icon-App-60x60@3x.png
+│   │   │   │   ├── Icon-App-76x76@1x.png
+│   │   │   │   ├── Icon-App-76x76@2x.png
+│   │   │   │   └── Icon-App-83.5x83.5@2x.png
+│   │   │   └── LaunchImage.imageset
+│   │   │       ├── Contents.json
+│   │   │       ├── LaunchImage.png
+│   │   │       ├── LaunchImage@2x.png
+│   │   │       └── LaunchImage@3x.png
+│   │   ├── Base.lproj
+│   │   │   ├── LaunchScreen.storyboard
+│   │   │   └── Main.storyboard
+│   │   ├── Info.plist
+│   │   └── Runner-Bridging-Header.h
+│   ├── Runner.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   │   └── contents.xcworkspacedata
+│   │   └── xcshareddata
+│   │       └── xcschemes
+│   │           └── Runner.xcscheme
+│   └── Runner.xcworkspace
+│       └── contents.xcworkspacedata
+├── lib
+│   ├── main.dart
+│   ├── models
+│   │   ├── car.dart
+│   │   ├── parking.dart
+│   │   ├── payment.dart
+│   │   ├── reservation.dart
+│   │   └── user.dart
+│   ├── services
+│   │   ├── api_service.dart
+│   │   ├── auth_service.dart
+│   │   ├── navigation_service.dart
+│   │   └── notification_service.dart
+│   ├── utils
+│   │   ├── constants.dart
+│   │   ├── date_formatter.dart
+│   │   └── themes.dart
+│   └── views
+│       ├── account
+│       │   ├── bank_account_screen.dart
+│       │   ├── edit_profile_screen.dart
+│       │   ├── login_screen.dart
+│       │   ├── register_screen.dart
+│       │   └── vehicle_info_screen.dart
+│       ├── common
+│       │   ├── bottom_nav_bar.dart
+│       │   ├── error_screen.dart
+│       │   ├── loading_screen.dart
+│       │   └── splash_screen.dart
+│       ├── home
+│       │   ├── home_screen.dart
+│       │   └── notification_screen.dart
+│       ├── owner
+│       │   ├── owner_dashboard_screen.dart
+│       │   ├── owner_manage_parking_screen.dart
+│       │   ├── owner_revenue_screen.dart
+│       │   └── register_parking_screen.dart
+│       ├── parking
+│       │   ├── parking_detail_screen.dart
+│       │   ├── parking_list_screen.dart
+│       │   └── parking_search_screen.dart
+│       ├── payment
+│       │   ├── payment_confirm_screen.dart
+│       │   ├── payment_history_screen.dart
+│       │   └── payment_method_screen.dart
+│       └── reservation
+│           ├── reservation_cancel_screen.dart
+│           ├── reservation_confirm_screen.dart
+│           ├── reservation_detail_screen.dart
+│           └── reservation_history_screen.dart
+├── pubspec.lock
+├── pubspec.yaml
+├── src
+│   ├── controllers
+│   │   ├── auth_controller.rs
+│   │   ├── constants.rs
+│   │   ├── mod.rs
+│   │   ├── parking_controller.rs
+│   │   ├── payment_controller.rs
+│   │   ├── reservation_controller.rs
+│   │   └── user_controller.rs
+│   ├── db
+│   │   ├── mod.rs
+│   │   └── mongo.rs
+│   ├── errors
+│   │   ├── api_error.rs
+│   │   └── mod.rs
+│   ├── lib.rs
+│   ├── main.rs
+│   ├── middleware
+│   │   ├── auth_middleware.rs
+│   │   ├── cors.rs
+│   │   └── mod.rs
+│   ├── models
+│   │   ├── mod.rs
+│   │   ├── parking.rs
+│   │   ├── payment.rs
+│   │   ├── reservation.rs
+│   │   └── user.rs
+│   ├── routes
+│   │   ├── auth_routes.rs
+│   │   ├── mod.rs
+│   │   ├── parking_routes.rs
+│   │   ├── payment_routes.rs
+│   │   ├── reservation_routes.rs
+│   │   └── user_routes.rs
+│   ├── services
+│   │   ├── auth_service.rs
+│   │   ├── mod.rs
+│   │   ├── parking_service.rs
+│   │   ├── payment_service.rs
+│   │   ├── reservation_service.rs
+│   │   └── user_service.rs
+│   └── utils
+│       ├── config.rs
+│       ├── date_utils.rs
+│       ├── mod.rs
+│       └── token.rs
+UI
+├── owner
+│   ├── Owner_Dashboard_UI.html           # オーナーホーム
+│   ├── Owner_Register_add_UI.html        # 駐車場新規追加
+│   ├── Owner_Suspension_UI.html          # 駐車場一時停止
+│   ├── Owner_Start_Usage_UI.html         # 駐車場利用開始
+│   ├── Owner_History_Details_UI.html     # 履歴詳細（如有）
+│   ├── Owner_history_UI.html             # 入出庫履歴（如有）
+├── account
+│   ├── Edit_Profile_UI.html              # プロフィール変更
+│   ├── Vehicle_Information_UI.html       # 車両情報
+│   ├── Bank_Account_Management_UI.html   # 口座管理
+├── revenue
+│   ├── Owner_Revenue_Management_UI.html  # 収益管理
+├── user
+│   ├── Home_UI.html                      # ホーム
+│   ├── History_UI.html                   # 入出庫履歴
+│   ├── Reservation_Detail_UI.html        # 履歴詳細
+│   ├── Reservation_Cancel_UI.html        # 予約キャンセル
+│   ├── Parking_Search_UI.html            # 駐車場検索（如有）
+│   ├── Select_Usage_Datetime_UI.html     # 利用日時選択（如有）
+├── reservation
+│   ├── Reservation_Completed_UI.html     # 予約完了
+│   ├── Reservation_Confirmation_UI.html  # 予約確認
+│   ├── Approve_Reservation_UI.html       # 予約承認
+│   ├── Approval_Completed_UI.html        # 承認完了
+│   ├── Reservation_Management_UI.html    # 予約管理
+├── payment
+│   ├── Confirmation_Payment_UI.html      # 支払確認
+├── auth
+│   ├── ログイン.html                     # ログイン
+│   ├── 新規登録.html                     # 新規登録
+│   ├── 登録完了.html                     # 登録完了
+│   ├── 認証コード.html                   # 認証コード
+├── common
+│   ├── script.js
+│   └── styles.css
+
+Owner_Dashboard_UI.html（オーナーホーム） - 李
+Owner_Register_add_UI.html（駐車場新規追加） - 李
+Owner_Suspension_UI.html（駐車場一時停止） - 李
+Owner_Start_Usage_UI.html（駐車場利用開始） - 李
+
+Edit_Profile_UI.html（口座管理） - 杨
+Vehicle_Information_UI.html（車両情報） - 杨
+Bank_Account_Management_UI.html（プロフィール変更） - 杨
+Owner_Revenue_Management_UI.html（収益管理） - 杨
+
+Home_UI.html（ホーム） - 孔
+History_UI.html（入出庫履歴） - 孔
+Reservation_Detail_UI.html（履歴詳細） - 孔
+Reservation_Cancel_UI.html（予約キャンセル） - 孔
+
+https://www.akippa.com/

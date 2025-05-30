@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>承認完了</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            max-width: 430px;
+            margin: 0 auto;
+        }
+        
+        .modal {
+            background-color: #FFFFFF;
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 390px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            background-color: #3366CC;
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .language-selector {
+            background-color: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 15px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .language-selector .jp {
+            color: #333333;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .language-selector .en {
+            color: #3366CC;
+            font-weight: 500;
+        }
+        
+        .language-selector.en-active .jp {
+            color: #3366CC;
+        }
+        
+        .language-selector.en-active .en {
+            color: #333333;
+        }
+        
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .message {
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        
+        .return-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3366CC;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal">
+        <div class="header">
+            <span data-ja="承認完了" data-en="Approval Completed">承認完了</span>
+            <div class="language-selector" id="language-toggle">
+                <span class="jp">日本語</span>
+                <span class="en">/ EN</span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="message" data-ja="予約の承認が完了しました。" data-en="Reservation approval has been completed.">予約の承認が完了しました。</div>
+            <button class="return-button" data-ja="予約管理に戻る" data-en="Return to Reservation Management">予約管理に戻る</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle
+            let currentLanguage = 'ja';
+            const languageToggle = document.getElementById('language-toggle');
+            
+            languageToggle.addEventListener('click', function() {
+                if (currentLanguage === 'ja') {
+                    currentLanguage = 'en';
+                    languageToggle.classList.add('en-active');
+                    document.documentElement.lang = 'en';
+                    document.title = 'Approval Completed';
+                } else {
+                    currentLanguage = 'ja';
+                    languageToggle.classList.remove('en-active');
+                    document.documentElement.lang = 'ja';
+                    document.title = '承認完了';
+                }
+                
+                // Update text content
+                const elementsToUpdate = document.querySelectorAll('[data-ja][data-en]');
+                elementsToUpdate.forEach(function(element) {
+                    element.textContent = element.getAttribute(`data-${currentLanguage}`);
+                });
+                
+                // Update language selector display
+                if (currentLanguage === 'en') {
+                    document.querySelector('.jp').style.color = '#3366CC';
+                    document.querySelector('.en').style.color = '#333333';
+                } else {
+                    document.querySelector('.jp').style.color = '#333333';
+                    document.querySelector('.en').style.color = '#3366CC';
+                }
+            });
+            
+            // Return button
+            const returnButton = document.querySelector('.return-button');
+            returnButton.addEventListener('click', function() {
+                // Simulate navigation to Reservation Management page
+                window.location.href = 'Reservation Management_UI.html';
+                // For demo purposes, show an alert
+                alert(currentLanguage === 'ja' ? '予約管理画面に戻ります。' : 'Returning to Reservation Management.');
+            });
+        });
+    </script>
+</body>
+</html>
