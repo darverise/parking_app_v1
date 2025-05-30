@@ -333,5 +333,163 @@
     "unauthorizedMessage": "このリソースにアクセスする権限がありません。再度ログインしてください。",
     "@unauthorizedMessage": {
         "description": "Error message for unauthorized access"
+    },
+    "emailPreferences": "メール受信設定",
+    "@emailPreferences": {
+        "description": "Email preferences label"
+    },
+    "promotionalEmail": "プロモーションメールを受け取る",
+    "@promotionalEmail": {
+        "description": "Promotional email preference option"
+    },
+    "serviceEmail": "サービスメールを受け取る",
+    "@serviceEmail": {
+        "description": "Service email preference option"
+    },
+    "remarks": "備考",
+    "@remarks": {
+        "description": "Remarks label"
+    },
+    "remarksHint": "特記事項があれば入力してください",
+    "@remarksHint": {
+        "description": "Remarks input hint"
+    },
+    "nameKana": "氏名（カナ）",
+    "@nameKana": {
+        "description": "Name in Katakana label"
+    },
+    "nameKanaHint": "例: ヤマダタロウ",
+    "@nameKanaHint": {
+        "description": "Name in Katakana input hint"
+    },
+    "testDataFill": "テストデータ自動入力",
+    "@testDataFill": {
+        "description": "Test data auto-fill button text"
+    },
+    "registrationComplete": "登録完了",
+    "@registrationComplete": {
+        "description": "Registration complete title"
+    },
+    "verificationEmailSent": "認証コードをメールアドレスに送信しました。メールを確認してアカウントを有効化してください。",
+    "@verificationEmailSent": {
+        "description": "Verification email sent message"
+    },
+    "registrationError": "登録エラー",
+    "@registrationError": {
+        "description": "Registration error title"
+    },
+    "registrationFailed": "登録に失敗しました。もう一度お試しください。",
+    "@registrationFailed": {
+        "description": "Registration failed message"
+    },
+    "unexpectedError": "予期しないエラーが発生しました",
+    "@unexpectedError": {
+        "description": "Unexpected error message"
+    },
+    "testDataFilled": "のテストデータを入力しました",
+    "@testDataFilled": {
+        "description": "Test data filled notification suffix"
+    },
+    "parkingSearch": "駐車場検索",
+    "@parkingSearch": {
+        "description": "Parking search title"
+    },
+    "searchPlaceholder": "駐車場名や住所を検索...",
+    "@searchPlaceholder": {
+        "description": "Search input placeholder"
+    },
+    "mapView": "マップ表示",
+    "@mapView": {
+        "description": "Map view button text"
+    },
+    "selectDateTime": "日時を選択",
+    "@selectDateTime": {
+        "description": "Select date and time button"
+    },
+    "carType": "車種",
+    "@carType": {
+        "description": "Car type label"
+    },
+    "reservationType": "予約タイプ",
+    "@reservationType": {
+        "description": "Reservation type label"
+    },
+    "searchButton": "検索する",
+    "@searchButton": {
+        "description": "Search button text"
+    },
+    "searchResultsCount": "{count}件の駐車場が見つかりました",
+    "@searchResultsCount": {
+        "description": "Search results count",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "noSearchResults": "検索条件に一致する駐車場がありません",
+    "@noSearchResults": {
+        "description": "No search results message"
+    },
+    "mapPlaceholder": "マップがここに表示されます",
+    "@mapPlaceholder": {
+        "description": "Map placeholder text"
+    },
+    "reserveButton": "予約する",
+    "@reserveButton": {
+        "description": "Reserve button text"
+    },
+    "addToFavorites": "お気に入り登録",
+    "@addToFavorites": {
+        "description": "Add to favorites tooltip"
+    },
+    "removeFromFavorites": "お気に入り解除",
+    "@removeFromFavorites": {
+        "description": "Remove from favorites tooltip"
+    },
+    "hourlyRate": "時間貸し",
+    "@hourlyRate": {
+        "description": "Hourly rate option"
+    },
+    "dailyRate": "日貸し",
+    "@dailyRate": {
+        "description": "Daily rate option"
+    },
+    "monthlyRate": "月極",
+    "@monthlyRate": {
+        "description": "Monthly rate option"
+    },
+    "unspecified": "指定なし",
+    "@unspecified": {
+        "description": "Unspecified option"
+    },
+    "compactCar": "軽自動車",
+    "@compactCar": {
+        "description": "Compact car type"
+    },
+    "regularCar": "普通車",
+    "@regularCar": {
+        "description": "Regular car type"
+    },
+    "largeCar": "大型車",
+    "@largeCar": {
+        "description": "Large car type"
+    },
+    "homeTab": "ホーム",
+    "@homeTab": {
+        "description": "Home tab label"
+    },
+    "searchTab": "検索",
+    "@searchTab": {
+        "description": "Search tab label"
+    },
+    "historyTab": "履歴",
+    "@historyTab": {
+        "description": "History tab label"
+    },
+    "accountTab": "アカウント",
+    "@accountTab": {
+        "description": "Account tab label"
     }
 }
